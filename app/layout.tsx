@@ -5,7 +5,7 @@ import "./globals.css";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0a0a0a",
+  themeColor: "#000000",
 };
 
 const serifFont = Cormorant_Garamond({
@@ -16,37 +16,41 @@ const serifFont = Cormorant_Garamond({
 
 const sansFont = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://noirscents.com"),
-  title: "NOIR SCENTS | Luxury Fragrances & Artisanal Perfumes",
+  metadataBase: new URL("https://www.houseofsahare.com"),
+  title: "Sahare Perfumes | Original Perfume Brand in Pakistan",
   description:
-    "Discover NOIR SCENTS. An exclusive collection of handcrafted artisanal perfumes, pure extrait de parfum, and rare oriental oud blends.",
+    "Sahare is Pakistan's original niche perfume brand. Discover long-lasting fragrances for men, women, and unisex. Buy perfumes online in Pakistan with fast nationwide delivery.",
   keywords: [
-    "Noir Scents",
-    "Luxury Perfumes",
+    "Sahare Perfumes",
+    "House of Sahare",
+    "Niche Perfumes Pakistan",
     "Extrait de Parfum",
-    "Artisanal Fragrance Pakistan",
-    "Oud Perfume",
-    "French Perfumes",
+    "Talis of the Skies",
+    "Hibiscaria",
+    "Gozoire",
+    "Oud Passionata",
+    "Long Lasting Perfumes",
   ],
   openGraph: {
-    title: "NOIR SCENTS | Luxury Fragrances",
-    description: "Handcrafted fine fragrances and pure extrait de parfum.",
-    url: "https://noirscents.com",
-    siteName: "NOIR SCENTS",
+    title: "Sahare Perfumes | Original Perfume Brand in Pakistan",
+    description:
+      "Sahare is Pakistan's original niche perfume brand. Discover long-lasting fragrances for men, women, and unisex. Buy perfumes online in Pakistan with fast nationwide delivery.",
+    url: "https://www.houseofsahare.com",
+    siteName: "House of Saharé",
     images: [
       {
-        url: "/products/p1.jpg",
+        url: "https://www.houseofsahare.com/cdn/shop/files/New_Project_-_2026-04-24T020930.954.webp?v=1776978588",
         width: 1200,
         height: 630,
-        alt: "NOIR SCENTS Luxury Collection",
+        alt: "Sahare Perfumes Pakistan",
       },
     ],
-    locale: "en_US",
+    locale: "en_PK",
     type: "website",
   },
 };
@@ -59,10 +63,10 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Store",
-    name: "NOIR SCENTS",
-    description: "Artisanal luxury perfumes and extrait de parfum.",
-    url: "https://noirscents.com",
-    priceRange: "PKR 4,000 - PKR 12,000",
+    name: "House of Saharé",
+    description: "Pakistan's original niche perfume brand.",
+    url: "https://www.houseofsahare.com",
+    priceRange: "PKR 6,500 - PKR 16,000",
   };
 
   return (
@@ -73,7 +77,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${serifFont.variable} ${sansFont.variable} font-sans bg-[#FAF8F5] text-stone-900 antialiased`}>
+      <body className={`${serifFont.variable} ${sansFont.variable} font-sans bg-white text-[#111111] antialiased`}>
         {children}
       </body>
     </html>

@@ -6,13 +6,13 @@
  * Example for Pakistan: "923322224331" or "923001234567"
  */
 export const STORE_CONFIG = {
-  storeName: "NOIR SCENTS",
-  tagline: "Handcrafted Luxury Fragrances",
-  whatsappNumber: "923322224331", // <-- Set your WhatsApp number here
-  ownerEmail: "junaidalitanoli23@gmail.com", // <-- Order notification recipient email
-  supportEmail: "orders@noirscents.com",
-  freeDeliveryThreshold: 5000,
-  currency: "PKR",
+  storeName: "HOUSE OF SAHARÉ",
+  tagline: "Original Niche Perfume Brand in Pakistan",
+  whatsappNumber: "923322224331", // User business WhatsApp
+  ownerEmail: "junaidalitanoli23@gmail.com",
+  supportEmail: "support@houseofsahare.com",
+  freeDeliveryThreshold: 0, // Free Delivery Nationwide
+  currency: "Rs.",
 };
 
 /**

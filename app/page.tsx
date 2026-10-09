@@ -1,595 +1,929 @@
 "use client";
 
-import React, { useState } from "react";
-import ProductCard, { SelectedProductInfo } from "../components/ProductCard";
-import CheckoutModal from "../components/CheckoutModal";
-import { STORE_CONFIG, getDirectWhatsAppUrl } from "../lib/config";
+import React, { useState, useRef } from "react";
 import {
   Menu,
   X,
-  MessageCircle,
+  Search,
+  User,
+  ShoppingBag,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  ArrowRight,
   Truck,
   Sparkles,
   ShieldCheck,
   Clock,
-  Star,
-  ChevronDown,
-  ArrowRight,
+  ChevronRight,
+  MessageCircle,
 } from "lucide-react";
+import { PRODUCTS, Product } from "../lib/products";
+import ProductCard from "../components/ProductCard";
+import CartDrawer, { CartItem } from "../components/CartDrawer";
+import SearchDrawer from "../components/SearchDrawer";
+import LoginDrawer from "../components/LoginDrawer";
+import QuickViewModal from "../components/QuickViewModal";
+import CheckoutModal from "../components/CheckoutModal";
+import { STORE_CONFIG, getDirectWhatsAppUrl } from "../lib/config";
 
 export default function Home() {
-  const [selectedProduct, setSelectedProduct] = useState<SelectedProductInfo | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string>("All");
+  // Navigation & Category filter state
+  const [activeTab, setActiveTab] = useState<"Men" | "Women" | "Unisex" | "All">("Men");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const businessWhatsApp = STORE_CONFIG.whatsappNumber;
+  // Drawers & Modals
+  const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
+  const [directCheckoutProduct, setDirectCheckoutProduct] = useState<Product | null>(null);
 
-  const handleOpenWhatsAppChat = (customMessage: string) => {
-    const isMobile =
-      typeof navigator !== "undefined" &&
-      /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const targetUrl = getDirectWhatsAppUrl(businessWhatsApp, customMessage);
+  // Cart state
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-    if (isMobile) {
-      window.location.href = targetUrl;
-    } else {
-      window.open(targetUrl, "_blank", "noopener,noreferrer");
+  // Video Banner state
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+
+  // Toggle video sound
+  const toggleVideoMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsVideoMuted(videoRef.current.muted);
     }
   };
 
-  const products: Array<{
-    id: string;
-    title: string;
-    price: string;
-    category: string;
-    image: string;
-    volume: string;
-  }> = [
-    {
-      id: "1",
-      title: "Noir Intense (Extrait de Parfum)",
-      price: "PKR 7,500",
-      category: "Extrait de Parfum",
-      image: "/products/p1.jpg",
-      volume: "50ml Extrait",
-    },
-    {
-      id: "2",
-      title: "Royal Amber Oud",
-      price: "PKR 8,900",
-      category: "Oud Blends",
-      image: "/products/p2.jpg",
-      volume: "50ml Extrait",
-    },
-    {
-      id: "3",
-      title: "Imperial Oud Wood",
-      price: "PKR 9,500",
-      category: "Oud Blends",
-      image: "/products/p5.jpg",
-      volume: "50ml Extrait",
-    },
-    {
-      id: "4",
-      title: "Desert Velvet Rose",
-      price: "PKR 6,400",
-      category: "Extrait de Parfum",
-      image: "/products/p3.jpg",
-      volume: "50ml Extrait",
-    },
-    {
-      id: "5",
-      title: "NOIR Discovery Gift Vault",
-      price: "PKR 11,500",
-      category: "Gift Sets",
-      image: "/products/p4.jpg",
-      volume: "12x 10ml Vault",
-    },
-    {
-      id: "6",
-      title: "Smoky Leather & Tobacco",
-      price: "PKR 9,200",
-      category: "Extrait de Parfum",
-      image: "/products/p6.jpg",
-      volume: "50ml Extrait",
-    },
-  ];
-
-  const handleOpenCheckout = (product: SelectedProductInfo) => {
-    setSelectedProduct(product);
-    setIsModalOpen(true);
+  // Toggle video play
+  const toggleVideoPlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsVideoPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsVideoPlaying(false);
+      }
+    }
   };
 
-  const handleCategoryClick = (category: string) => {
-    setActiveCategory(category);
+  // Cart actions
+  const handleAddToCart = (product: Product, quantity = 1) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+      return [...prev, { product, quantity }];
+    });
+    setCartOpen(true);
+  };
+
+  const handleUpdateQuantity = (productId: string, delta: number) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) => {
+          if (item.product.id === productId) {
+            const nextQty = item.quantity + delta;
+            return nextQty > 0 ? { ...item, quantity: nextQty } : null;
+          }
+          return item;
+        })
+        .filter((it): it is CartItem => it !== null)
+    );
+  };
+
+  const handleRemoveFromCart = (productId: string) => {
+    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+  };
+
+  const cartTotalCount = cartItems.reduce((acc, it) => acc + it.quantity, 0);
+
+  // Filter products for collection section
+  const displayedProducts =
+    activeTab === "All"
+      ? PRODUCTS
+      : PRODUCTS.filter((p) => p.category === activeTab || p.category === "Discovery");
+
+  // Open direct COD checkout modal for cart
+  const handleOpenCartCheckout = () => {
+    setDirectCheckoutProduct(null);
+    setCartOpen(false);
+    setCheckoutModalOpen(true);
+  };
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
     setMobileMenuOpen(false);
-    const section = document.getElementById("collection");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
   };
-
-  const categories = [
-    { label: "All", count: products.length },
-    { label: "Extrait de Parfum", count: products.filter((p) => p.category === "Extrait de Parfum").length },
-    { label: "Oud Blends", count: products.filter((p) => p.category === "Oud Blends").length },
-    { label: "Gift Sets", count: products.filter((p) => p.category === "Gift Sets").length },
-  ];
-
-  const filteredProducts =
-    activeCategory === "All"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
 
   return (
-    <main className="min-h-screen bg-[#FAF8F5] text-stone-900 selection:bg-[#C2A676] selection:text-white">
-      {/* 1. Responsive Announcement Bar */}
-      <div className="bg-stone-950 text-stone-300 text-[11px] sm:text-xs py-2 sm:py-2.5 px-4 text-center tracking-[0.18em] sm:tracking-[0.25em] uppercase font-light border-b border-stone-800">
+    <div className="min-h-screen bg-white text-[#111111] flex flex-col selection:bg-neutral-900 selection:text-white">
+      {/* ─────────────────────────────────────────────────────────────
+          1. TOP ANNOUNCEMENT BAR
+      ───────────────────────────────────────────────────────────── */}
+      <aside
+        aria-label="Announcement"
+        className="bg-[#111111] text-white py-2.5 px-4 text-center text-xs tracking-wider border-b border-neutral-900 shrink-0 font-medium"
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-2">
-          <Sparkles size={13} className="text-[#C2A676] shrink-0 animate-pulse" />
-          <span>Complimentary Nationwide Delivery on Orders Above PKR 5,000</span>
+          <Sparkles size={13} className="text-[#c5a880] shrink-0" />
+          <span>Get FREE Delivery &amp; a FREE 3ml perfume with every purchase.</span>
         </div>
-      </div>
+      </aside>
 
-      {/* 2. Responsive Luxury Navigation */}
-      <header className="border-b border-stone-200/90 bg-white/95 backdrop-blur-md sticky top-0 z-40 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between">
-          {/* Mobile Menu Hamburger Button */}
-          <div className="flex md:hidden items-center">
+      {/* ─────────────────────────────────────────────────────────────
+          2. STICKY LUXURY HEADER
+      ───────────────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+          {/* Left: Mobile Menu Trigger + Desktop Nav */}
+          <div className="flex items-center gap-6">
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 -ml-1 text-stone-700 hover:text-stone-950 transition"
-              aria-label="Toggle navigation menu"
+              onClick={() => setMobileMenuOpen(true)}
+              className="lg:hidden p-2 text-neutral-800 hover:text-black transition-colors"
+              aria-label="Open menu drawer"
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              <Menu size={22} />
             </button>
-          </div>
 
-          {/* Desktop Category Navigation */}
-          <nav className="text-xs uppercase tracking-widest hidden md:flex items-center gap-7 text-stone-600 font-medium">
-            {categories.map((cat) => (
+            {/* Desktop Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-7 text-xs uppercase tracking-[0.18em] font-semibold text-neutral-800">
               <button
-                key={cat.label}
-                onClick={() => handleCategoryClick(cat.label)}
-                className={`py-1 relative transition hover:text-stone-950 ${
-                  activeCategory === cat.label
-                    ? "text-stone-950 font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[1.5px] after:bg-stone-950"
-                    : ""
+                onClick={() => {
+                  const disc = PRODUCTS.find((p) => p.id === "discovery-box");
+                  if (disc) setQuickViewProduct(disc);
+                }}
+                className="hover:text-neutral-500 transition-colors cursor-pointer"
+              >
+                Discovery Box
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab("Men");
+                  scrollToSection("collection-grid");
+                }}
+                className={`transition-colors cursor-pointer ${
+                  activeTab === "Men" ? "text-neutral-950 font-bold" : "hover:text-neutral-500"
                 }`}
               >
-                {cat.label}
+                Men&apos;s Perfumes
               </button>
-            ))}
-          </nav>
-
-          {/* Brand Logo Header */}
-          <div className="text-center">
-            <a href="#" className="inline-block group">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-serif tracking-[0.25em] sm:tracking-[0.3em] font-semibold uppercase text-stone-950">
-                NOIR SCENTS
-              </h1>
-              <span className="block text-[8px] sm:text-[9px] tracking-[0.35em] uppercase text-[#C2A676] font-medium -mt-1 sm:-mt-0.5">
-                Artisanal Parfumerie
-              </span>
-            </a>
+              <button
+                onClick={() => {
+                  setActiveTab("Women");
+                  scrollToSection("collection-grid");
+                }}
+                className={`transition-colors cursor-pointer ${
+                  activeTab === "Women" ? "text-neutral-950 font-bold" : "hover:text-neutral-500"
+                }`}
+              >
+                Women&apos;s Perfumes
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab("Unisex");
+                  scrollToSection("collection-grid");
+                }}
+                className={`transition-colors cursor-pointer ${
+                  activeTab === "Unisex" ? "text-neutral-950 font-bold" : "hover:text-neutral-500"
+                }`}
+              >
+                Unisex Perfumes
+              </button>
+              <button
+                onClick={() => scrollToSection("about-sahare")}
+                className="hover:text-neutral-500 transition-colors cursor-pointer"
+              >
+                About Us
+              </button>
+            </nav>
           </div>
 
-          {/* Right Action: Direct WhatsApp Hotline Button */}
-          <div className="flex items-center gap-3">
+          {/* Center: Brand Logo */}
+          <div className="text-center cursor-pointer select-none" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <div className="flex flex-col items-center">
+              <span className="font-serif text-2xl sm:text-3xl tracking-[0.24em] font-bold text-neutral-950 leading-none">
+                SAHARÉ
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.38em] text-neutral-400 mt-1 font-medium">
+                HOUSE OF SAHARÉ
+              </span>
+            </div>
+          </div>
+
+          {/* Right: Icons (Search, Login, Cart) */}
+          <div className="flex items-center gap-3 sm:gap-4">
             <button
-              onClick={() =>
-                handleOpenWhatsAppChat(
-                  "Hello NOIR SCENTS! I would like to inquire about your fragrance collection."
-                )
-              }
-              className="hidden sm:inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-800 text-[11px] uppercase tracking-wider px-3.5 py-2 rounded-full border border-stone-200 transition duration-200 font-medium"
+              onClick={() => setSearchOpen(true)}
+              className="p-2 text-neutral-700 hover:text-neutral-950 transition-colors"
+              aria-label="Search perfumes"
+              title="Search"
             >
-              <MessageCircle size={14} className="text-[#25D366]" />
-              <span>WhatsApp Store</span>
+              <Search size={19} />
             </button>
 
             <button
-              onClick={() =>
-                handleOpenWhatsAppChat("Hello NOIR SCENTS! I would like to place an order.")
-              }
-              aria-label="Contact on WhatsApp"
-              className="sm:hidden p-2 text-stone-800 hover:text-[#25D366] transition"
+              onClick={() => setLoginOpen(true)}
+              className="p-2 text-neutral-700 hover:text-neutral-950 transition-colors"
+              aria-label="Account Login"
+              title="Account"
             >
-              <MessageCircle size={22} className="text-[#25D366]" />
+              <User size={19} />
+            </button>
+
+            <button
+              onClick={() => setCartOpen(true)}
+              className="relative p-2 text-neutral-900 hover:text-black transition-colors"
+              aria-label="Shopping Cart"
+              title="Cart"
+            >
+              <ShoppingBag size={20} />
+              {cartTotalCount > 0 && (
+                <span className="absolute top-1 right-0.5 bg-neutral-950 text-white text-[10px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold">
+                  {cartTotalCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-stone-200 bg-white px-5 py-4 space-y-3 animate-in slide-in-from-top-3 duration-200">
-            <p className="text-[10px] tracking-[0.2em] uppercase text-stone-400 font-semibold mb-1">
-              Browse Fragrances
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.label}
-                  onClick={() => handleCategoryClick(cat.label)}
-                  className={`text-left text-xs uppercase tracking-wider py-2.5 px-3 rounded-lg border transition ${
-                    activeCategory === cat.label
-                      ? "bg-stone-950 text-white border-stone-950 font-semibold"
-                      : "bg-stone-50 text-stone-700 border-stone-200"
-                  }`}
-                >
-                  {cat.label}
-                  <span className="block text-[10px] opacity-70">
-                    {cat.count} {cat.count === 1 ? "blend" : "blends"}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="pt-2 border-t border-stone-100">
-              <button
-                onClick={() =>
-                  handleOpenWhatsAppChat(
-                    "Assalam-o-Alaikum, I want to inquire about Noir Scents perfumes."
-                  )
-                }
-                className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white text-xs uppercase tracking-wider py-2.5 rounded-lg font-medium transition"
-              >
-                <MessageCircle size={16} />
-                <span>Chat on WhatsApp Directly</span>
-              </button>
-            </div>
-          </div>
-        )}
       </header>
 
-      {/* 3. Hero Section with Video Background and High-Contrast Text */}
-      <section className="relative w-full min-h-[520px] sm:min-h-[600px] h-[72vh] sm:h-[82vh] overflow-hidden bg-stone-950 flex items-center justify-center">
-        {/* Background Video */}
+      {/* ─────────────────────────────────────────────────────────────
+          3. CINEMATIC VIDEO HERO BANNER (from houseofsahare.com)
+      ───────────────────────────────────────────────────────────── */}
+      <section className="relative w-full aspect-[4/5] sm:aspect-[16/9] lg:aspect-[21/9] max-h-[820px] bg-neutral-950 overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
           loop
-          muted
+          muted={isVideoMuted}
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-45"
+          poster="/products/discovery.jpg"
+          className="w-full h-full object-cover object-center opacity-85"
         >
-          <source src="/videos/hero.mp4" type="video/mp4" />
+          <source
+            src="/videos/sahare_hero.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="/videos/hero.mp4"
+            type="video/mp4"
+          />
         </video>
 
-        {/* Ambient Dark Gradient for Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/65 to-stone-950/40" />
+        {/* Cinematic Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/30" />
 
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-5 sm:px-6 max-w-3xl text-white">
-          <div className="inline-flex items-center gap-2 bg-stone-900/80 backdrop-blur-md border border-stone-700/80 px-3.5 py-1.5 rounded-full mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C2A676] animate-ping" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-[#C2A676] font-medium">
-              Handcrafted Extrait de Parfum
+        {/* Hero Overlay Content */}
+        <div className="absolute inset-0 flex flex-col justify-end pb-12 sm:pb-16 px-6 sm:px-12 max-w-7xl mx-auto w-full">
+          <div className="max-w-2xl text-white space-y-3 sm:space-y-4">
+            <span className="text-[11px] sm:text-xs uppercase tracking-[0.3em] font-medium text-[#c5a880] block">
+              Original Niche Fragrance House &bull; Pakistan
             </span>
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light tracking-wide leading-tight text-white">
+              Haute Parfumerie &amp; Extrait de Parfum
+            </h1>
+            <p className="text-xs sm:text-sm text-neutral-300 max-w-lg leading-relaxed font-light">
+              Crafted with 35%+ pure perfume oil concentration for sublime, all-day sillage and timeless distinction.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3 pt-3">
+              <button
+                onClick={() => {
+                  setActiveTab("Men");
+                  scrollToSection("collection-grid");
+                }}
+                className="bg-white hover:bg-neutral-200 text-neutral-950 px-6 sm:px-8 py-3 rounded-xs text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md active:scale-95"
+              >
+                Shop Men
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab("Women");
+                  scrollToSection("collection-grid");
+                }}
+                className="bg-neutral-900/80 hover:bg-neutral-900 text-white border border-neutral-700/80 backdrop-blur-sm px-6 sm:px-8 py-3 rounded-xs text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-md active:scale-95"
+              >
+                Shop Women
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Video Controls (Mute & Play/Pause buttons) */}
+        <div className="absolute bottom-5 right-5 sm:bottom-8 sm:right-8 z-20 flex items-center gap-2">
+          <button
+            onClick={toggleVideoPlay}
+            className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all border border-white/20"
+            title={isVideoPlaying ? "Pause Video" : "Play Video"}
+          >
+            {isVideoPlaying ? <Pause size={14} /> : <Play size={14} />}
+          </button>
+          <button
+            onClick={toggleVideoMute}
+            className="p-2.5 rounded-full bg-black/60 hover:bg-black/80 text-white backdrop-blur-md transition-all border border-white/20"
+            title={isVideoMuted ? "Unmute Sound" : "Mute Sound"}
+          >
+            {isVideoMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+          </button>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. THREE CATEGORY IMAGE BANNERS (MEN, WOMEN, UNISEX)
+          Matching `clickable_banner_kHpxkH`
+      ───────────────────────────────────────────────────────────── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          {/* Card 1: MEN */}
+          <div
+            onClick={() => {
+              setActiveTab("Men");
+              scrollToSection("collection-grid");
+            }}
+            className="group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-xs cursor-pointer bg-neutral-900"
+          >
+            <img
+              src="/images/banner_men.jpg"
+              alt="Men's Fragrances"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end text-white">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a880] font-medium mb-1">
+                Explore Collection
+              </span>
+              <h2 className="text-xl sm:text-2xl font-serif tracking-[0.16em] uppercase font-medium">
+                Men
+              </h2>
+              <div className="flex items-center gap-1.5 text-xs text-neutral-300 mt-2 font-medium group-hover:text-white transition-colors">
+                <span>View Perfumes</span>
+                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-serif tracking-wide font-light mb-4 sm:mb-5 leading-tight sm:leading-none">
-            Timeless Essence & Pure Oud
-          </h2>
+          {/* Card 2: WOMEN */}
+          <div
+            onClick={() => {
+              setActiveTab("Women");
+              scrollToSection("collection-grid");
+            }}
+            className="group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-xs cursor-pointer bg-neutral-900"
+          >
+            <img
+              src="/images/banner_women.jpg"
+              alt="Women's Fragrances"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end text-white">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a880] font-medium mb-1">
+                Explore Collection
+              </span>
+              <h2 className="text-xl sm:text-2xl font-serif tracking-[0.16em] uppercase font-medium">
+                Women
+              </h2>
+              <div className="flex items-center gap-1.5 text-xs text-neutral-300 mt-2 font-medium group-hover:text-white transition-colors">
+                <span>View Perfumes</span>
+                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </div>
 
-          <p className="text-stone-300 text-xs sm:text-sm md:text-base font-light max-w-xl mx-auto mb-7 sm:mb-9 tracking-wide leading-relaxed">
-            Concentrated artisanal perfumes macerated in small batches. Experience 12+ hours of lingering, opulent sillage.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
-            <button
-              onClick={() => handleCategoryClick("All")}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-200 text-stone-950 text-xs uppercase tracking-[0.22em] px-7 py-3.5 rounded-lg font-medium transition duration-200 shadow-lg"
-            >
-              <span>Explore Collection</span>
-              <ChevronDown size={14} />
-            </button>
-
-            <button
-              onClick={() =>
-                handleOpenWhatsAppChat(
-                  "Hello NOIR SCENTS! Please share your perfume recommendations and price list."
-                )
-              }
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/50 hover:border-white hover:bg-white/10 text-white text-xs uppercase tracking-[0.22em] px-7 py-3.5 rounded-lg transition duration-200 backdrop-blur-sm"
-            >
-              <MessageCircle size={15} className="text-[#25D366]" />
-              <span>WhatsApp Consultation</span>
-            </button>
+          {/* Card 3: UNISEX */}
+          <div
+            onClick={() => {
+              setActiveTab("Unisex");
+              scrollToSection("collection-grid");
+            }}
+            className="group relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-xs cursor-pointer bg-neutral-900"
+          >
+            <img
+              src="/images/banner_unisex.jpg"
+              alt="Unisex Fragrances"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col justify-end text-white">
+              <span className="text-[10px] uppercase tracking-[0.25em] text-[#c5a880] font-medium mb-1">
+                Explore Collection
+              </span>
+              <h2 className="text-xl sm:text-2xl font-serif tracking-[0.16em] uppercase font-medium">
+                Unisex
+              </h2>
+              <div className="flex items-center gap-1.5 text-xs text-neutral-300 mt-2 font-medium group-hover:text-white transition-colors">
+                <span>View Perfumes</span>
+                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Luxury Trust & Value Strip (Responsive 2-col on Mobile, 4-col on Desktop) */}
-      <section className="border-y border-stone-200 bg-white py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2.5 sm:gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-[#C2A676] shrink-0">
-              <Sparkles size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider font-bold text-stone-900">
-                30% Extrait de Parfum
-              </h4>
-              <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">
-                Highest oil concentration for rich longevity
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2.5 sm:gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-[#C2A676] shrink-0">
-              <Clock size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider font-bold text-stone-900">
-                12+ Hours Longevity
-              </h4>
-              <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">
-                Potent sillage with deep woody dry-down
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2.5 sm:gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-[#C2A676] shrink-0">
-              <Truck size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider font-bold text-stone-900">
-                Nationwide Delivery
-              </h4>
-              <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">
-                Free shipping on orders above PKR 5,000
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2.5 sm:gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-[#C2A676] shrink-0">
-              <ShieldCheck size={18} />
-            </div>
-            <div>
-              <h4 className="text-xs uppercase tracking-wider font-bold text-stone-900">
-                Cash on Delivery
-              </h4>
-              <p className="text-[11px] text-stone-500 mt-0.5 leading-snug">
-                Pay safely at doorstep across Pakistan
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Product Catalog Grid Section */}
-      <section id="collection" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 scroll-mt-14">
-        {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[#C2A676] font-semibold block mb-2">
-            Private Reserve Collection
+      {/* ─────────────────────────────────────────────────────────────
+          5. COLLECTION TABS & PRODUCT CAROUSEL / GRID
+          Matching `collection_tabs_carousel_zpr39c`
+      ───────────────────────────────────────────────────────────── */}
+      <section id="collection-grid" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        {/* Section Heading & Tabs */}
+        <div className="text-center space-y-4 mb-10 sm:mb-14">
+          <span className="text-[11px] uppercase tracking-[0.28em] text-neutral-500 font-medium">
+            Signature Creations
           </span>
-          <h2 className="text-2xl sm:text-4xl font-serif tracking-wider text-stone-900 font-light">
-            {activeCategory === "All" ? "Featured Fragrances" : activeCategory}
+          <h2 className="text-2xl sm:text-4xl font-serif uppercase tracking-widest text-neutral-950 font-light">
+            Extrait de Parfum
           </h2>
-          <div className="w-16 h-[2px] bg-[#C2A676] mx-auto mt-4" />
-        </div>
 
-        {/* Responsive Category Pills (Horizontally scrollable on mobile) */}
-        <div className="flex sm:justify-center items-center gap-2 sm:gap-3 mb-10 overflow-x-auto no-scrollbar pb-2 px-1">
-          {categories.map((cat) => (
+          {/* Tabs Filter matching House of Sahare */}
+          <div className="flex items-center justify-center gap-6 sm:gap-10 pt-4 border-b border-neutral-200 pb-3">
             <button
-              key={cat.label}
-              onClick={() => handleCategoryClick(cat.label)}
-              className={`shrink-0 text-xs uppercase tracking-widest px-4 sm:px-5 py-2.5 rounded-full border transition duration-200 font-medium ${
-                activeCategory === cat.label
-                  ? "bg-stone-950 text-white border-stone-950 shadow-sm"
-                  : "bg-white text-stone-600 border-stone-300 hover:border-stone-950"
+              onClick={() => setActiveTab("Men")}
+              className={`text-xs uppercase tracking-[0.2em] font-semibold transition-all relative pb-2 ${
+                activeTab === "Men"
+                  ? "text-neutral-950 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-950"
+                  : "text-neutral-400 hover:text-neutral-700"
               }`}
             >
-              {cat.label} ({cat.count})
+              Men’s Perfumes
             </button>
-          ))}
+
+            <button
+              onClick={() => setActiveTab("Women")}
+              className={`text-xs uppercase tracking-[0.2em] font-semibold transition-all relative pb-2 ${
+                activeTab === "Women"
+                  ? "text-neutral-950 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-950"
+                  : "text-neutral-400 hover:text-neutral-700"
+              }`}
+            >
+              Women’s Perfumes
+            </button>
+
+            <button
+              onClick={() => setActiveTab("Unisex")}
+              className={`text-xs uppercase tracking-[0.2em] font-semibold transition-all relative pb-2 ${
+                activeTab === "Unisex"
+                  ? "text-neutral-950 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-950"
+                  : "text-neutral-400 hover:text-neutral-700"
+              }`}
+            >
+              Unisex Perfumes
+            </button>
+
+            <button
+              onClick={() => setActiveTab("All")}
+              className={`text-xs uppercase tracking-[0.2em] font-semibold transition-all relative pb-2 ${
+                activeTab === "All"
+                  ? "text-neutral-950 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-neutral-950"
+                  : "text-neutral-400 hover:text-neutral-700"
+              }`}
+            >
+              All Creations
+            </button>
+          </div>
         </div>
 
-        {/* Responsive Products Grid: 1 col on mobile, 2 col on tablet, 3 col on desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredProducts.map((item) => (
+        {/* Products Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {displayedProducts.map((product) => (
             <ProductCard
-              key={item.id}
-              {...item}
-              onSelect={handleOpenCheckout}
+              key={product.id}
+              product={product}
+              onSelect={(p) => setQuickViewProduct(p)}
+              onAddToCart={(p) => handleAddToCart(p, 1)}
             />
           ))}
         </div>
       </section>
 
-      {/* 6. Brand Story Section */}
-      <section className="bg-stone-950 text-stone-200 py-16 sm:py-24 px-5 sm:px-8 border-y border-stone-800">
-        <div className="max-w-4xl mx-auto text-center space-y-5">
-          <span className="text-[11px] uppercase tracking-[0.35em] text-[#C2A676] font-semibold">
-            The Craft Behind Noir Scents
-          </span>
-          <h3 className="text-2xl sm:text-4xl font-serif font-light text-white tracking-wide">
-            Bottling Elegance Through Artisanal Chemistry
-          </h3>
-          <p className="text-stone-400 text-xs sm:text-sm font-light leading-relaxed max-w-2xl mx-auto">
-            Every creation at NOIR SCENTS begins with precious raw naturals—aged Cambodian oud, French grasse roses, amber resins, and rich smoky tobaccos. Formulated at pure Extrait concentration, each flask delivers unmatched depth and regal sophistication.
-          </p>
-          <div className="pt-4">
-            <button
-              onClick={() =>
-                handleOpenWhatsAppChat(
-                  "Assalam-o-Alaikum, I'd like to learn more about NOIR SCENTS custom orders and gifts."
-                )
-              }
-              className="inline-flex items-center gap-2 border-b border-[#C2A676] pb-1 text-[#C2A676] hover:text-white text-xs uppercase tracking-[0.2em] font-medium transition cursor-pointer"
-            >
-              <span>Speak with Our Fragrance Specialist</span>
-              <ArrowRight size={14} />
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* ─────────────────────────────────────────────────────────────
+          6. DISCOVERY BOX PROMO VAULT HIGHLIGHT
+      ───────────────────────────────────────────────────────────── */}
+      <section className="bg-[#FAF8F5] border-y border-neutral-200/80 my-8 py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12">
+            <div className="w-full lg:w-1/2 aspect-square max-w-md mx-auto rounded-xs overflow-hidden bg-white border border-neutral-200 shadow-sm">
+              <img
+                src="/products/discovery.jpg"
+                alt="House of Sahare Discovery Box"
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
 
-      {/* 7. Verified Client Reviews Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="text-center mb-10 sm:mb-12">
-          <span className="text-[11px] uppercase tracking-[0.3em] text-[#C2A676] font-semibold block mb-2">
-            Client Impressions
-          </span>
-          <h3 className="text-2xl sm:text-3xl font-serif tracking-wider text-stone-900 font-light">
-            Cherished by Fragrance Connoisseurs
-          </h3>
-          <div className="w-12 h-[1.5px] bg-[#C2A676] mx-auto mt-4" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          <div className="bg-white p-6 sm:p-7 rounded-xl border border-stone-200/90 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex gap-1 text-[#C2A676] mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={15} fill="#C2A676" />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-stone-700 italic leading-relaxed mb-4">
-                &ldquo;Noir Intense easily lasts over 14 hours on fabric. It smells richer and more multifaceted than designer niche fragrances three times its price.&rdquo;
+            <div className="w-full lg:w-1/2 space-y-4 text-left">
+              <span className="text-[11px] uppercase tracking-[0.28em] text-[#c5a880] font-semibold">
+                The Sampling Ritual
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-serif font-light text-neutral-950 uppercase tracking-wider">
+                Sahare Discovery Box
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed max-w-xl">
+                Experience 5 of our most celebrated extrait de parfum creations in deluxe 10ml travel atomizers. Includes a 100% redeemable voucher for your first 50ml full bottle purchase.
               </p>
-            </div>
-            <div>
-              <p className="font-serif text-sm font-semibold text-stone-900">Dr. Hamza K.</p>
-              <p className="text-[11px] text-stone-500 uppercase tracking-wider">Lahore, Pakistan</p>
-            </div>
-          </div>
 
-          <div className="bg-white p-6 sm:p-7 rounded-xl border border-stone-200/90 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex gap-1 text-[#C2A676] mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={15} fill="#C2A676" />
-                ))}
+              <div className="pt-2 flex items-baseline gap-3">
+                <span className="text-xl font-bold text-neutral-950">Rs.6,500</span>
+                <span className="text-sm text-neutral-400 line-through">Rs.8,500</span>
+                <span className="text-xs font-semibold text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded">
+                  Free Delivery + Free 3ml Tester
+                </span>
               </div>
-              <p className="text-xs sm:text-sm text-stone-700 italic leading-relaxed mb-4">
-                &ldquo;Ordered Royal Amber Oud via WhatsApp checkout. Received within 48 hours in Karachi. The packaging and bottle weight feel truly royal.&rdquo;
-              </p>
-            </div>
-            <div>
-              <p className="font-serif text-sm font-semibold text-stone-900">Saad Mansoor</p>
-              <p className="text-[11px] text-stone-500 uppercase tracking-wider">Karachi, Pakistan</p>
-            </div>
-          </div>
 
-          <div className="bg-white p-6 sm:p-7 rounded-xl border border-stone-200/90 shadow-sm flex flex-col justify-between">
-            <div>
-              <div className="flex gap-1 text-[#C2A676] mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={15} fill="#C2A676" />
-                ))}
+              <div className="pt-3 flex flex-wrap gap-3">
+                <button
+                  onClick={() => {
+                    const disc = PRODUCTS.find((p) => p.id === "discovery-box");
+                    if (disc) handleAddToCart(disc, 1);
+                  }}
+                  className="bg-neutral-950 hover:bg-neutral-800 text-white px-7 py-3 rounded-xs text-xs uppercase tracking-[0.2em] font-semibold transition-all shadow-sm"
+                >
+                  Add Discovery Box to Cart
+                </button>
+                <button
+                  onClick={() => {
+                    const disc = PRODUCTS.find((p) => p.id === "discovery-box");
+                    if (disc) setQuickViewProduct(disc);
+                  }}
+                  className="border border-neutral-300 hover:border-neutral-950 text-neutral-900 px-6 py-3 rounded-xs text-xs uppercase tracking-[0.18em] font-medium transition-all"
+                >
+                  View Details
+                </button>
               </div>
-              <p className="text-xs sm:text-sm text-stone-700 italic leading-relaxed mb-4">
-                &ldquo;The NOIR Discovery Vault was the perfect wedding gift. Every single miniature scent has an unforgettable identity. 10/10 craftsmanship.&rdquo;
-              </p>
-            </div>
-            <div>
-              <p className="font-serif text-sm font-semibold text-stone-900">Ayesha Tariq</p>
-              <p className="text-[11px] text-stone-500 uppercase tracking-wider">Islamabad, Pakistan</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 8. Responsive Footer */}
-      <footer className="border-t border-stone-200 bg-white py-12 sm:py-16 px-5 sm:px-8 text-xs text-stone-600">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
-          <div>
-            <h4 className="font-serif text-base tracking-[0.2em] uppercase text-stone-950 font-semibold mb-3">
-              NOIR SCENTS
-            </h4>
-            <p className="text-[11px] leading-relaxed text-stone-500 max-w-xs">
-              Handcrafted artisanal extrait de parfum & rare oriental oud creations. Direct order fulfillment via WhatsApp.
-            </p>
-          </div>
+      {/* ─────────────────────────────────────────────────────────────
+          7. BRAND PHILOSOPHY / ABOUT US
+      ───────────────────────────────────────────────────────────── */}
+      <section id="about-sahare" className="max-w-4xl mx-auto px-6 py-16 sm:py-24 text-center space-y-5">
+        <span className="text-[11px] uppercase tracking-[0.3em] text-[#c5a880] font-semibold">
+          About House of Saharé
+        </span>
+        <h2 className="text-2xl sm:text-3xl font-serif uppercase tracking-widest text-neutral-950 font-light">
+          Pakistan&apos;s Original Niche Perfume Brand
+        </h2>
+        <p className="text-sm sm:text-base text-neutral-600 leading-relaxed font-light italic max-w-2xl mx-auto">
+          &ldquo;SAHARÉ is a modern fragrance house dedicated to creating memorable scent experiences through quality, craftsmanship, and attention to detail. Every fragrance is formulated at true Extrait de Parfum strength for uncompromised performance and elegance.&rdquo;
+        </p>
 
-          <div>
-            <h5 className="uppercase tracking-widest text-[11px] font-bold text-stone-900 mb-3">
-              Fragrance Categories
-            </h5>
-            <ul className="space-y-2 text-[11px]">
-              {categories.slice(1).map((cat) => (
-                <li key={cat.label}>
+        <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-neutral-200 mt-10">
+          <div className="p-3">
+            <span className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 block">35%+</span>
+            <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">Extrait Concentration</span>
+          </div>
+          <div className="p-3">
+            <span className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 block">14+ Hours</span>
+            <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">All-Day Longevity</span>
+          </div>
+          <div className="p-3">
+            <span className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 block">Free 3ml</span>
+            <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">Tester with Every Order</span>
+          </div>
+          <div className="p-3">
+            <span className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 block">100%</span>
+            <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-medium">Nationwide Free Delivery</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────
+          8. FOOTER
+          Matching `shopify-section-sections--19473826316442__footer`
+      ───────────────────────────────────────────────────────────── */}
+      <footer className="bg-[#111111] text-white pt-16 pb-12 border-t border-neutral-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-neutral-800">
+            {/* Col 1: About */}
+            <div className="space-y-4">
+              <span className="font-serif text-xl tracking-[0.24em] font-bold text-white block">
+                SAHARÉ
+              </span>
+              <p className="text-xs text-neutral-400 leading-relaxed font-light">
+                SAHARÉ is a modern fragrance house dedicated to creating memorable scent experiences through quality, craftsmanship, and attention to detail.
+              </p>
+              <div className="pt-2 flex items-center gap-3">
+                <a
+                  href={getDirectWhatsAppUrl(STORE_CONFIG.whatsappNumber, "Hi! I have a question about House of Sahare fragrances.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs text-neutral-300 hover:text-white transition-colors"
+                >
+                  <MessageCircle size={15} className="text-[#25D366]" />
+                  <span>WhatsApp Concierge: +92 332 2224331</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Col 2: Shop */}
+            <div className="space-y-3">
+              <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-white">
+                Shop
+              </h3>
+              <ul className="space-y-2 text-xs text-neutral-400 font-light">
+                <li>
                   <button
-                    onClick={() => handleCategoryClick(cat.label)}
-                    className="hover:text-stone-950 transition"
+                    onClick={() => {
+                      setActiveTab("Men");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="hover:text-white transition-colors cursor-pointer"
                   >
-                    {cat.label}
+                    Perfumes for Men
                   </button>
                 </li>
-              ))}
-            </ul>
+                <li>
+                  <button
+                    onClick={() => {
+                      setActiveTab("Women");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Perfumes for Women
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      setActiveTab("Unisex");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Unisex Perfumes
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      const disc = PRODUCTS.find((p) => p.id === "discovery-box");
+                      if (disc) setQuickViewProduct(disc);
+                    }}
+                    className="hover:text-white transition-colors cursor-pointer"
+                  >
+                    Discovery Box (Sampler Set)
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 3: Company */}
+            <div className="space-y-3">
+              <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-white">
+                Company
+              </h3>
+              <ul className="space-y-2 text-xs text-neutral-400 font-light">
+                <li>
+                  <button onClick={() => scrollToSection("about-sahare")} className="hover:text-white transition-colors">
+                    About Us
+                  </button>
+                </li>
+                <li>
+                  <span className="text-neutral-500">Blogs &amp; Stories</span>
+                </li>
+                <li>
+                  <a
+                    href={getDirectWhatsAppUrl(STORE_CONFIG.whatsappNumber, "Hello House of Sahare")}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-white transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <span className="text-neutral-500">FAQs &amp; Guidance</span>
+                </li>
+                <li>
+                  <span className="text-neutral-500">Where To Find Us</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 4: Customer Care & Newsletter */}
+            <div className="space-y-3">
+              <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-white">
+                Customer Care
+              </h3>
+              <ul className="space-y-2 text-xs text-neutral-400 font-light">
+                <li>
+                  <span className="text-neutral-300">Free Nationwide Shipping (Pakistan)</span>
+                </li>
+                <li>
+                  <span className="text-neutral-300">Cash on Delivery (COD) Available</span>
+                </li>
+                <li>
+                  <span className="text-neutral-300">Complimentary 3ml Tester Included</span>
+                </li>
+                <li>
+                  <span className="text-neutral-300">Easy 7-Day Exchange Policy</span>
+                </li>
+              </ul>
+
+              <div className="pt-3">
+                <span className="text-[11px] uppercase tracking-wider text-neutral-400 block mb-1.5 font-semibold">
+                  Subscribe to Saharé
+                </span>
+                <div className="flex gap-1.5">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full text-xs px-3 py-2 bg-neutral-900 border border-neutral-700 rounded-xs text-white placeholder:text-neutral-500 focus:outline-none focus:border-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => alert("Thank you for subscribing to House of Sahare VIP Club.")}
+                    className="px-3 py-2 bg-white text-black text-xs font-semibold uppercase tracking-wider rounded-xs hover:bg-neutral-200"
+                  >
+                    Join
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h5 className="uppercase tracking-widest text-[11px] font-bold text-stone-900 mb-3">
-              Ordering & Delivery
-            </h5>
-            <ul className="space-y-2 text-[11px] text-stone-500">
-              <li>Cash on Delivery (COD) Nationwide</li>
-              <li>Estimated Delivery: 2-3 Business Days</li>
-              <li>Free Shipping on Orders Above PKR 5,000</li>
-              <li>Secure Dispatch from Karachi</li>
-            </ul>
+          {/* Bottom Copyright & Payment Methods */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+            <p>&copy; {new Date().getFullYear()} HOUSE OF SAHARÉ. All rights reserved.</p>
+            <div className="flex items-center gap-3 text-neutral-400 text-[11px]">
+              <span>Cash on Delivery (COD)</span>
+              <span>&bull;</span>
+              <span>Bank Transfer</span>
+              <span>&bull;</span>
+              <span>Visa &amp; Mastercard</span>
+            </div>
           </div>
-
-          <div>
-            <h5 className="uppercase tracking-widest text-[11px] font-bold text-stone-900 mb-3">
-              WhatsApp Concierge
-            </h5>
-            <p className="text-[11px] text-stone-500 mb-3">
-              Available 7 days a week for fragrance recommendations and tracking:
-            </p>
-            <button
-              onClick={() =>
-                handleOpenWhatsAppChat(
-                  "Assalam-o-Alaikum NOIR SCENTS! I want to track my order."
-                )
-              }
-              className="inline-flex items-center gap-2 bg-stone-950 text-white px-3.5 py-2 rounded-lg text-[11px] tracking-wider uppercase font-medium hover:bg-stone-800 transition"
-            >
-              <MessageCircle size={14} className="text-[#25D366]" />
-              <span>+{STORE_CONFIG.whatsappNumber}</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="border-t border-stone-200/80 pt-8 text-center text-[11px] text-stone-500 uppercase tracking-widest flex flex-col sm:flex-row items-center justify-between gap-3 max-w-7xl mx-auto">
-          <p>© 2026 NOIR SCENTS. All Rights Reserved.</p>
-          <p className="normal-case text-stone-400">
-            Crafted for desktop, tablet, and mobile with luxury responsiveness.
-          </p>
         </div>
       </footer>
 
-      {/* 9. Floating WhatsApp Mobile Quick Button */}
-      <button
-        onClick={() =>
-          handleOpenWhatsAppChat(
-            "Assalam-o-Alaikum NOIR SCENTS! I want to inquire about your fragrances."
-          )
-        }
-        aria-label="Direct WhatsApp Chat"
-        className="fixed bottom-5 right-5 z-40 bg-[#25D366] hover:bg-[#20ba59] active:scale-95 text-white p-3.5 rounded-full shadow-2xl flex items-center gap-2.5 transition-all duration-300 hover:shadow-green-500/30 group cursor-pointer"
-      >
-        <MessageCircle size={22} className="shrink-0" />
-        <span className="hidden sm:inline text-xs font-semibold tracking-wider uppercase pr-1">
-          WhatsApp Order
-        </span>
-      </button>
+      {/* ─────────────────────────────────────────────────────────────
+          9. FLOATING WHATSAPP BUTTON (DIRECT ORDER / CONCIERGE)
+      ───────────────────────────────────────────────────────────── */}
+      <aside aria-label="WhatsApp Concierge" className="fixed bottom-6 right-6 z-40">
+        <a
+          href={getDirectWhatsAppUrl(STORE_CONFIG.whatsappNumber, "Hi! I am browsing House of Sahare perfumes and would like assistance.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba59] text-white px-4 py-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 group font-medium text-xs tracking-wider"
+          title="Chat with House of Saharé Concierge"
+        >
+          <MessageCircle size={20} className="shrink-0" />
+          <span className="hidden sm:inline">WhatsApp Concierge</span>
+        </a>
+      </aside>
 
-      {/* 10. WhatsApp Checkout Modal */}
-      <CheckoutModal
-        product={selectedProduct}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      {/* ─────────────────────────────────────────────────────────────
+          10. MOBILE NAVIGATION DRAWER
+      ───────────────────────────────────────────────────────────── */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 flex bg-black/60 backdrop-blur-sm animate-fade">
+          <aside className="w-4/5 max-w-sm bg-white h-full flex flex-col justify-between p-6 shadow-2xl animate-drawer-left">
+            <div>
+              <div className="flex justify-between items-center pb-6 border-b border-neutral-100">
+                <span className="font-serif text-xl font-bold tracking-[0.25em] text-neutral-950">
+                  SAHARÉ
+                </span>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1.5 text-neutral-400 hover:text-black rounded-full"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <nav className="py-6 space-y-4 text-sm uppercase tracking-[0.2em] font-semibold text-neutral-900">
+                <div>
+                  <button
+                    onClick={() => {
+                      const disc = PRODUCTS.find((p) => p.id === "discovery-box");
+                      if (disc) setQuickViewProduct(disc);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-2 hover:text-[#c5a880]"
+                  >
+                    Discovery Box
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setActiveTab("Men");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="block w-full text-left py-2 hover:text-[#c5a880]"
+                  >
+                    Men’s Perfumes
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setActiveTab("Women");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="block w-full text-left py-2 hover:text-[#c5a880]"
+                  >
+                    Women’s Perfumes
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => {
+                      setActiveTab("Unisex");
+                      scrollToSection("collection-grid");
+                    }}
+                    className="block w-full text-left py-2 hover:text-[#c5a880]"
+                  >
+                    Unisex Perfumes
+                  </button>
+                </div>
+                <div>
+                  <button
+                    onClick={() => scrollToSection("about-sahare")}
+                    className="block w-full text-left py-2 hover:text-[#c5a880]"
+                  >
+                    About Us
+                  </button>
+                </div>
+              </nav>
+            </div>
+
+            <div className="pt-6 border-t border-neutral-100 space-y-3">
+              <div className="text-xs text-neutral-500">
+                Free Nationwide Delivery across Pakistan
+              </div>
+              <a
+                href={getDirectWhatsAppUrl(STORE_CONFIG.whatsappNumber, "Hi! I am contacting from the website.")}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 rounded text-xs uppercase tracking-wider font-semibold"
+              >
+                <MessageCircle size={15} />
+                <span>WhatsApp Us</span>
+              </a>
+            </div>
+          </aside>
+          <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
+        </div>
+      )}
+
+      {/* ─────────────────────────────────────────────────────────────
+          11. DRAWERS & MODALS
+      ───────────────────────────────────────────────────────────── */}
+      {/* Slide-over Cart Drawer */}
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cartItems}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveFromCart}
+        onOpenCheckout={handleOpenCartCheckout}
       />
-    </main>
+
+      {/* Search Drawer */}
+      <SearchDrawer
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSelectProduct={(p) => setQuickViewProduct(p)}
+      />
+
+      {/* Login Drawer */}
+      <LoginDrawer
+        isOpen={loginOpen}
+        onClose={() => setLoginOpen(false)}
+      />
+
+      {/* Quick View Fragrance Notes Modal */}
+      <QuickViewModal
+        product={quickViewProduct}
+        isOpen={quickViewProduct !== null}
+        onClose={() => setQuickViewProduct(null)}
+        onAddToCart={handleAddToCart}
+      />
+
+      {/* Cash on Delivery Checkout Modal */}
+      <CheckoutModal
+        isOpen={checkoutModalOpen}
+        onClose={() => setCheckoutModalOpen(false)}
+        product={directCheckoutProduct}
+        cartItems={cartItems}
+        onOrderSuccess={() => {
+          setCartItems([]);
+        }}
+      />
+    </div>
   );
 }

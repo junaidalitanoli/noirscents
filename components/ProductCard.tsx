@@ -1,84 +1,123 @@
 "use client";
 
-import React from "react";
-import { ShoppingBag, Sparkles } from "lucide-react";
+import React, { useState } from "react";
+import { ShoppingBag, Eye, Check, Sparkles } from "lucide-react";
+import { Product } from "../lib/products";
 
-export interface SelectedProductInfo {
-  title: string;
-  price: string;
-  image: string;
-  category: string;
-  volume?: string;
-}
-
-interface ProductProps {
-  id: string;
-  title: string;
-  price: string;
-  image: string;
-  category: string;
-  volume?: string;
-  onSelect: (product: SelectedProductInfo) => void;
+interface ProductCardProps {
+  product: Product;
+  onSelect: (product: Product) => void;
+  onAddToCart: (product: Product) => void;
 }
 
 export default function ProductCard({
-  title,
-  price,
-  image,
-  category,
-  volume = "50ml Extrait",
+  product,
   onSelect,
-}: ProductProps) {
+  onAddToCart,
+}: ProductCardProps) {
+  const [added, setAdded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToCart(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1200);
+  };
+
   return (
-    <article className="group bg-white rounded-xl overflow-hidden border border-stone-200/90 shadow-sm hover:shadow-xl hover:border-stone-400/80 transition-all duration-300 flex flex-col justify-between">
-      {/* Product Image Container */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 cursor-pointer" onClick={() => onSelect({ title, price, image, category, volume })}>
+    <article
+      className="group relative flex flex-col bg-white transition-all duration-300"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Product Image Stage */}
+      <div
+        onClick={() => onSelect(product)}
+        className="relative aspect-[3/4] w-full overflow-hidden bg-[#F6F6F6] cursor-pointer rounded-sm border border-neutral-100/90"
+      >
         <img
-          src={image}
-          alt={title}
+          src={isHovered && product.hoverImage ? product.hoverImage : product.image}
+          alt={product.title}
           loading="lazy"
-          className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+          className="w-full h-full object-cover object-center transition-all duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* Category Pill Tag */}
-        <div className="absolute top-3 left-3 bg-stone-950/85 backdrop-blur-md text-[#C2A676] text-[10px] tracking-[0.2em] uppercase font-medium px-2.5 py-1 rounded-full border border-stone-800">
-          {category}
+        {/* Gender / Category Badge */}
+        <div className="absolute top-2.5 left-2.5 bg-neutral-900/85 backdrop-blur-sm text-white text-[9px] uppercase tracking-[0.2em] font-medium px-2 py-0.5 rounded-sm">
+          {product.genderLabel}
         </div>
 
-        {/* Volume Tag */}
-        <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md text-stone-700 text-[10px] tracking-widest font-semibold px-2 py-1 rounded-full border border-stone-200">
-          {volume}
+        {/* Best seller or discount badge */}
+        {product.originalPrice && (
+          <div className="absolute top-2.5 right-2.5 bg-[#C5A880] text-black text-[9px] uppercase tracking-[0.16em] font-bold px-2 py-0.5 rounded-sm">
+            Save 25%
+          </div>
+        )}
+
+        {/* Quick View Button on Hover */}
+        <div className="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(product);
+            }}
+            className="flex-1 bg-white/95 hover:bg-white text-neutral-950 text-[10px] uppercase tracking-[0.16em] font-semibold py-2 px-3 rounded shadow-md backdrop-blur-sm transition-all flex items-center justify-center gap-1.5 border border-neutral-200"
+          >
+            <Eye size={12} />
+            <span>Fragrance Notes</span>
+          </button>
         </div>
       </div>
 
-      {/* Content Area */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-3">
+      {/* Info Section */}
+      <div className="pt-3.5 pb-1 flex flex-col flex-1 justify-between text-left">
         <div>
-          <div className="flex items-center gap-1.5 text-stone-400 text-[11px] uppercase tracking-wider mb-1">
-            <Sparkles size={12} className="text-[#C2A676]" />
-            <span>Pure Artisanal Perfume</span>
-          </div>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-400 block mb-1">
+            {product.volume}
+          </span>
 
           <h3
-            onClick={() => onSelect({ title, price, image, category, volume })}
-            className="font-serif text-lg sm:text-xl text-stone-900 font-medium tracking-wide cursor-pointer hover:text-[#C2A676] transition-colors leading-snug line-clamp-1"
+            onClick={() => onSelect(product)}
+            className="text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-neutral-900 cursor-pointer hover:text-neutral-600 transition-colors line-clamp-1"
           >
-            {title}
+            {product.title}
           </h3>
 
-          <p className="mt-1.5 text-base sm:text-lg font-bold text-stone-950 tracking-tight">
-            {price}
-          </p>
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="text-xs sm:text-sm font-bold text-neutral-950">
+              {product.formattedPrice}
+            </span>
+            {product.originalPrice && (
+              <span className="text-[11px] text-neutral-400 line-through">
+                {product.originalPrice}
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* Order Button - minimum 44px height for mobile touch accessibility */}
+        {/* Minimal Add to Cart Button */}
         <button
           type="button"
-          onClick={() => onSelect({ title, price, image, category, volume })}
-          className="mt-1 w-full min-h-[44px] bg-stone-950 hover:bg-stone-800 active:scale-[0.98] text-white py-2.5 px-4 rounded-lg text-xs uppercase tracking-[0.18em] font-medium transition-all duration-200 flex items-center justify-center gap-2 shadow-sm"
+          onClick={handleAdd}
+          className={`mt-3 w-full min-h-[38px] py-2 px-3 text-[11px] uppercase tracking-[0.18em] font-semibold rounded-sm transition-all duration-200 flex items-center justify-center gap-1.5 ${
+            added
+              ? "bg-emerald-700 text-white"
+              : "bg-neutral-950 hover:bg-neutral-800 text-white active:scale-[0.98]"
+          }`}
         >
-          <ShoppingBag size={15} className="text-[#C2A676]" />
-          <span>Order on WhatsApp</span>
+          {added ? (
+            <>
+              <Check size={13} />
+              <span>Added to Cart</span>
+            </>
+          ) : (
+            <>
+              <ShoppingBag size={13} />
+              <span>Add to Cart</span>
+            </>
+          )}
         </button>
       </div>
     </article>
