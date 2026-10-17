@@ -1,57 +1,68 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import CartDrawer from "@/components/cart/CartDrawer";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { BRAND_NAME } from "@/lib/constants";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#000000",
+  themeColor: "#121212",
 };
 
-const serifFont = Cormorant_Garamond({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-serif",
-});
-
-const sansFont = Montserrat({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-sans",
+  variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.houseofsahare.com"),
-  title: "Sahare Perfumes | Original Perfume Brand in Pakistan",
+  metadataBase: new URL("https://noir-scents.pk"),
+  title: {
+    default: `${BRAND_NAME} - Best Perfumes In Pakistan`,
+    template: `%s | ${BRAND_NAME}`,
+  },
   description:
-    "Sahare is Pakistan's original niche perfume brand. Discover long-lasting fragrances for men, women, and unisex. Buy perfumes online in Pakistan with fast nationwide delivery.",
+    "Noir Scents - Pakistan's artisanal perfume brand. Handcrafted Extraits de Parfum with high projection and nationwide Cash on Delivery.",
   keywords: [
-    "Sahare Perfumes",
-    "House of Sahare",
-    "Niche Perfumes Pakistan",
-    "Extrait de Parfum",
-    "Talis of the Skies",
-    "Hibiscaria",
-    "Gozoire",
-    "Oud Passionata",
-    "Long Lasting Perfumes",
+    "Noir Scents",
+    "Noir Scents Pakistan",
+    "Pakistani Perfume Brand",
+    "Extrait de Parfum Pakistan",
+    "Cash on Delivery Perfumes",
+    "Oud Perfume Pakistan",
+    "Long Lasting Scents Karachi Lahore Islamabad",
   ],
+  authors: [{ name: "Noir Scents Team" }],
   openGraph: {
-    title: "Sahare Perfumes | Original Perfume Brand in Pakistan",
+    title: `${BRAND_NAME} - Best Perfumes In Pakistan`,
     description:
-      "Sahare is Pakistan's original niche perfume brand. Discover long-lasting fragrances for men, women, and unisex. Buy perfumes online in Pakistan with fast nationwide delivery.",
-    url: "https://www.houseofsahare.com",
-    siteName: "House of Saharé",
+      "Handcrafted luxury Extraits de Parfum, pure ouds, and long projection fragrances in Pakistan. Order online with Cash on Delivery.",
+    url: "https://noir-scents.pk",
+    siteName: BRAND_NAME,
     images: [
       {
-        url: "https://www.houseofsahare.com/cdn/shop/files/New_Project_-_2026-04-24T020930.954.webp?v=1776978588",
-        width: 1200,
-        height: 630,
-        alt: "Sahare Perfumes Pakistan",
+        url: DEFAULT_PRODUCT_IMAGE,
+        width: 1024,
+        height: 1024,
+        alt: `${BRAND_NAME} Artisanal Perfume Packaging`,
       },
     ],
     locale: "en_PK",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${BRAND_NAME} - Best Perfumes In Pakistan`,
+    description:
+      "Pakistan's premier artisanal perfume brand. Long lasting projection with nationwide Cash on Delivery.",
+    images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
 
@@ -60,25 +71,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Store",
-    name: "House of Saharé",
-    description: "Pakistan's original niche perfume brand.",
-    url: "https://www.houseofsahare.com",
-    priceRange: "PKR 6,500 - PKR 16,000",
-  };
-
   return (
-    <html lang="en">
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className={`${serifFont.variable} ${sansFont.variable} font-sans bg-white text-[#111111] antialiased`}>
-        {children}
+    <html lang="en" className={montserrat.variable}>
+      <body className="font-sans bg-white text-[#121212] antialiased flex flex-col min-h-screen">
+        <AnnouncementBar />
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <CartDrawer />
+        <WhatsAppButton />
+        <Footer />
       </body>
     </html>
   );
