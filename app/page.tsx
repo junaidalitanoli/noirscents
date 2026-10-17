@@ -5,18 +5,12 @@ import { INITIAL_PRODUCTS } from "@/lib/data";
 import { BRAND_NAME } from "@/lib/constants";
 import { SITE_IMAGES } from "@/lib/images";
 import ProductCard from "@/components/product/ProductCard";
-import FeaturedProductSection from "@/components/home/FeaturedProductSection";
 
 export default function HomePage() {
   // Products categorized for Dawn layout sections
   const clearanceProducts = INITIAL_PRODUCTS.filter(
     (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price
   ).slice(0, 4);
-
-  const featuredProduct =
-    INITIAL_PRODUCTS.find((p) => p.slug === "noir-oud") ||
-    INITIAL_PRODUCTS.find((p) => p.slug === "urban-legend") ||
-    INITIAL_PRODUCTS[0];
 
   const bestSellers = INITIAL_PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
 
@@ -201,10 +195,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SECTION: Featured Single Product Spotlight ("Noir Oud" / Jamal archetype) */}
-      <FeaturedProductSection product={featuredProduct} />
-
-      {/* 4. SECTION: Best Sellers */}
+      {/* 3. SECTION: Best Sellers */}
       <section id="best-sellers" className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
           <div>
