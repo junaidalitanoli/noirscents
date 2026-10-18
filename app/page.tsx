@@ -122,9 +122,9 @@ export default function HomePage() {
               {/* Main Headline */}
               <div className="space-y-2">
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-white">
-                  Scents That <br />
+                  Crafted For <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-300 to-[#c5a059]">
-                    Command Respect.
+                    Extraordinary People.
                   </span>
                 </h1>
                 <p className="text-[11px] sm:text-sm font-semibold tracking-[0.14em] text-amber-200/90 uppercase">
