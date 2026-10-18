@@ -1,27 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, RotateCcw, Headphones, Award, Star, Sparkles } from "lucide-react";
+import { ArrowRight, RotateCcw, Headphones, Award, Star, Sparkles, Truck, Banknote, ShieldCheck } from "lucide-react";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { BRAND_NAME } from "@/lib/constants";
 import { SITE_IMAGES } from "@/lib/images";
 import ProductCard from "@/components/product/ProductCard";
-import FeaturedProductSection from "@/components/home/FeaturedProductSection";
 
 export default function HomePage() {
-  // Products categorized for Dawn layout sections
-  const clearanceProducts = INITIAL_PRODUCTS.filter(
-    (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price
-  ).slice(0, 4);
-
+  // Best sellers: our top 4 flagship extraits
   const bestSellers = INITIAL_PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
+
+  // Clearance sale: discounted signatures distinct from bestsellers
+  const clearanceProducts = INITIAL_PRODUCTS.filter(
+    (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price && !bestSellers.some((b) => b.id === p.id)
+  ).slice(0, 4);
 
   const bundleProducts = INITIAL_PRODUCTS.filter(
     (p) => p.category === "deals" || p.category === "testers"
   ).slice(0, 4);
-
-  // Spotlight featured product (matches BuyFunoon's Jamal section)
-  const featuredProduct =
-    INITIAL_PRODUCTS.find((p) => p.slug === "urban-legend") || INITIAL_PRODUCTS[0];
 
   const categories = [
     {
@@ -96,132 +92,117 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase (Unobstructed Crystal Clear Bottles + International Punchline) */}
+      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase */}
       <section className="relative w-full overflow-hidden bg-black text-white">
-        {/* Full-bleed background campaign image with razor-sharp clarity */}
-        <div className="relative w-full min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] flex items-center">
+        <div className="relative w-full min-h-[500px] sm:min-h-[580px] lg:min-h-[660px] flex items-center">
+          {/* Full-bleed background campaign image */}
           <Image
             src={SITE_IMAGES.heroBanner.src}
             alt={SITE_IMAGES.heroBanner.alt}
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[78%_center] sm:object-right md:object-center brightness-[1.04] contrast-[1.02]"
+            className="object-cover object-[75%_center] sm:object-right md:object-center brightness-[1.02] contrast-[1.02]"
           />
 
-          {/* Left-side cinematic vignette so typography is effortlessly legible while bottles remain 100% clear & bright on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent lg:w-[65%] pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/20 pointer-events-none lg:hidden" />
-          <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+          {/* Left-side cinematic vignette: preserves luminous bottles on the right while ensuring crisp legibility */}
+          <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-black/92 via-black/60 to-transparent w-[62%] pointer-events-none" />
+          <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-black/95 via-black/65 to-black/30 pointer-events-none" />
+          <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
-          {/* Left-aligned Luxury Content Column (Bottles on the right remain completely unobstructed) */}
-          <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-            <div className="max-w-[620px] space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-black/70 border border-[#c5a059]/60 text-[#f5e7b2] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
-                <span>Haute Parfumerie &bull; 35% Pure French Extrait</span>
+          {/* Luxury Content Column */}
+          <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
+            <div className="max-w-[560px] space-y-4 sm:space-y-6 text-left">
+              {/* Refined Eyebrow */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/60 border border-[#c5a059]/40 text-[#f5e7b2] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-xs">
+                <Sparkles className="w-3 h-3 text-[#c5a059]" />
+                <span>Haute Parfumerie &bull; 35% Extrait</span>
               </div>
 
-              <div className="space-y-3">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.05] text-white">
+              {/* Main Headline */}
+              <div className="space-y-2">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-white">
                   Scents That <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-[#c5a059]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-300 to-[#c5a059]">
                     Command Respect.
                   </span>
                 </h1>
-                <p className="text-sm sm:text-lg font-semibold tracking-[0.14em] text-amber-200/95 uppercase">
+                <p className="text-[11px] sm:text-sm font-semibold tracking-[0.14em] text-amber-200/90 uppercase">
                   14+ Hours Beast Mode Sillage &bull; Engineered For Pakistan
                 </p>
               </div>
 
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light max-w-lg">
-                Crafted with ultra-concentrated French fragrance oils engineered specifically to outlast Pakistan&apos;s heat and humidity. Sillage so captivating, it turns heads and commands every room you enter.
+              {/* Short, Poetic Tagline */}
+              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-md">
+                Pure French perfume oils crafted with high-concentration extraits to conquer Pakistan&apos;s heat. Long-lasting, magnetic, and unforgettable.
               </p>
 
-              {/* Action Buttons matching BuyFunoon / International Luxury Standard */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-1">
                 <a
                   href="#best-sellers"
-                  className="px-8 py-3.5 bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all text-center shadow-xl hover:scale-[1.02]"
+                  className="flex-1 sm:flex-initial px-5 sm:px-8 py-3 sm:py-3.5 bg-white text-black font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all text-center shadow-lg active:scale-95"
                 >
                   Shop Best Sellers
                 </a>
                 <a
                   href="#clearance-sale"
-                  className="px-8 py-3.5 bg-black/60 border border-white/80 text-white font-semibold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all text-center backdrop-blur-xs"
+                  className="flex-1 sm:flex-initial px-5 sm:px-8 py-3 sm:py-3.5 bg-black/60 border border-white/60 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all text-center backdrop-blur-xs active:scale-95"
                 >
-                  Clearance Sale Deals
+                  Clearance Deals
                 </a>
-              </div>
-
-              {/* Pakistani Market Trust & Buying Assurances */}
-              <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] sm:text-xs text-zinc-300">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                  <span>✅ <strong>Free Express Delivery</strong> on orders over Rs. 3,000</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                  <span>💵 <strong>Cash on Delivery (COD)</strong> Nationwide</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-indigo-400 shrink-0" />
-                  <span>⏳ <strong>14+ Hours Lasting</strong> Guaranteed</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-                  <span>🔄 <strong>7-Day Scent Guarantee</strong> &amp; Easy Returns</span>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. SECTION: Clearance Sale (Matches BuyFunoon section #1) */}
-      <section id="clearance-sale" className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
-              Clearance Sale
-            </h2>
-            <p className="text-xs text-zinc-500 mt-1">
-              Limited-time discounted signature bottles. High projection with special savings.
-            </p>
+      {/* 2. LUXURY VALUE PROPOSITION BAR */}
+      <div className="bg-[#0e0e0e] text-white border-b border-white/10 py-3.5 sm:py-4 px-4">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 text-center">
+            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
+              <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
+              <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
+                <strong className="text-white font-semibold">Free Express Delivery</strong> &gt; Rs. 3,000
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
+              <Banknote className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
+              <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
+                <strong className="text-white font-semibold">Cash on Delivery</strong> Nationwide
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
+              <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
+                <strong className="text-white font-semibold">14+ Hours Sillage</strong> Guaranteed
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
+              <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
+                <strong className="text-white font-semibold">7-Day Scent Guarantee</strong>
+              </span>
+            </div>
           </div>
-          <Link
-            href="/collections/deals"
-            className="text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1"
-          >
-            View all <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
         </div>
+      </div>
 
-        {/* 4 columns on desktop, 3 on tablet, 2 on mobile (Matches BuyFunoon Dawn layout) */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-          {clearanceProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
-
-      {/* 3. SECTION: Featured Product Spotlight (Matches BuyFunoon Jamal featured-product section) */}
-      <FeaturedProductSection product={featuredProduct} />
-
-      {/* 4. SECTION: Best Sellers (Matches BuyFunoon section #2) */}
-      <section id="best-sellers" className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
+      {/* 3. SECTION: Best Sellers */}
+      <section id="best-sellers" className="py-10 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex items-end justify-between mb-6 sm:mb-8 pb-3 border-b border-black/8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+            <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
               Best Sellers
             </h2>
-            <p className="text-xs text-zinc-500 mt-1">
+            <p className="text-[11px] sm:text-xs text-zinc-500 mt-1">
               Our most sought-after signature extraits loved across Karachi, Lahore, and Islamabad.
             </p>
           </div>
           <Link
             href="/collections/men"
-            className="text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1"
+            className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3"
           >
             View all <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -234,21 +215,49 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 4. SECTION: Clearance Sale Deals */}
+      <section id="clearance-sale" className="py-10 sm:py-16 bg-[#fafafa]/60 border-t border-black/6">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="flex items-end justify-between mb-6 sm:mb-8 pb-3 border-b border-black/8">
+            <div>
+              <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+                Clearance Sale
+              </h2>
+              <p className="text-[11px] sm:text-xs text-zinc-500 mt-1">
+                Limited-time discounted signature bottles. High projection with special savings.
+              </p>
+            </div>
+            <Link
+              href="/collections/deals"
+              className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3"
+            >
+              View all <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            {clearanceProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 5. SECTION: Bundles (Matches BuyFunoon section #3) */}
       <section id="bundles" className="py-12 sm:py-16 bg-[#fafafa] border-y border-black/8">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
-                Bundles
+              <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+                Bundles &amp; Sets
               </h2>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-[11px] sm:text-xs text-zinc-500 mt-1">
                 Curated twin pairings and multi-bottle sets providing unbeatable value.
               </p>
             </div>
             <Link
               href="/collections/deals"
-              className="text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1"
+              className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3"
             >
               View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -264,11 +273,11 @@ export default function HomePage() {
 
       {/* 6. SECTION: Shop By Category (Matches BuyFunoon collection-list) */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+          <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
             Shop By Category
           </h2>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-[11px] sm:text-xs text-zinc-500 mt-1">
             Explore curated olfactory collections formulated for men, women, and discovery flights.
           </p>
         </div>
@@ -354,8 +363,8 @@ export default function HomePage() {
 
       {/* 8. SECTION: Customer Reviews */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-black/8">
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+        <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
+          <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
             Customer Reviews
           </h2>
           <div className="flex items-center justify-center gap-1.5 text-amber-500 mt-2">

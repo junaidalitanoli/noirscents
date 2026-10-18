@@ -114,7 +114,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <button
             type="button"
             onClick={handleQuickAdd}
-            className={`w-full py-2.5 px-3 text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-1.5 transition-all border ${
+            className={`w-full py-2 sm:py-2.5 px-2 sm:px-3 text-[11px] sm:text-xs font-semibold tracking-wide uppercase flex items-center justify-center gap-1 sm:gap-1.5 transition-all border whitespace-nowrap ${
               isAdded
                 ? "bg-emerald-700 text-white border-emerald-700"
                 : "bg-white text-[#121212] border-[#121212] hover:bg-[#121212] hover:text-white active:scale-[0.98]"
@@ -123,11 +123,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           >
             {isAdded ? (
               <>
-                <Check className="w-3.5 h-3.5" /> Added to Cart
+                <Check className="w-3.5 h-3.5 shrink-0" /> Added to Cart
               </>
             ) : (
               <>
-                <Plus className="w-3.5 h-3.5" /> Add to cart
+                <Plus className="w-3.5 h-3.5 shrink-0" /> Add to cart
               </>
             )}
           </button>
