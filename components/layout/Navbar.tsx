@@ -33,68 +33,99 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-[38px] z-40 bg-white border-b border-black/8 transition-all">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18 sm:h-20">
-            {/* Mobile: Hamburger Button */}
-            <div className="flex items-center lg:hidden">
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(true)}
-                className="p-2 -ml-2 text-zinc-900 hover:text-black focus:outline-hidden"
-                aria-label="Open Navigation Menu"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
+        {/* 1. Mobile Header: Centered Brand Name & Symmetrical Action Icons (matching BuyFunoon mobile) */}
+        <div className="lg:hidden max-w-[1400px] mx-auto px-4 h-16 relative flex items-center justify-between">
+          {/* Left: Mobile Drawer Trigger */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 -ml-2 text-zinc-900 hover:text-black focus:outline-hidden"
+            aria-label="Open Navigation Menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+
+          {/* Center: Brand Name (Centered on Mobile) */}
+          <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto">
+            <Link
+              href="/"
+              className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase text-[#121212] hover:opacity-80 transition-opacity whitespace-nowrap block"
+            >
+              Noir Scents
+            </Link>
+          </div>
+
+          {/* Right: Search & Cart Icons */}
+          <div className="flex items-center space-x-1">
+            <button
+              type="button"
+              onClick={() => setSearchModalOpen(true)}
+              className="p-2 text-zinc-900 hover:text-black"
+              aria-label="Open search"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            <CartBadge />
+          </div>
+        </div>
+
+        {/* 2. Desktop Header (Shopify Dawn header--top-center format: Centered Brand Name + Centered Nav) */}
+        <div className="hidden lg:block max-w-[1400px] mx-auto px-6 lg:px-8">
+          {/* Top Row: Search on Left, Centered Brand Name in Middle, Cart on Right */}
+          <div className="h-20 relative flex items-center justify-between">
+            {/* Desktop Left: Search */}
+            <div className="flex items-center">
               <button
                 type="button"
                 onClick={() => setSearchModalOpen(true)}
-                className="p-2 text-zinc-900 hover:text-black ml-1"
-                aria-label="Open search"
+                className="p-2 text-zinc-700 hover:text-black flex items-center gap-2 text-xs uppercase tracking-[0.12em] font-medium transition-colors"
+                aria-label="Search catalog"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4" />
+                <span>Search</span>
               </button>
             </div>
 
-            {/* Logo: Simple "Noir Scents" Text Logo */}
-            <div className="flex items-center">
+            {/* Desktop Center: Brand Name (Centered!) */}
+            <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto">
               <Link
                 href="/"
-                className="text-lg sm:text-2xl font-bold tracking-[0.16em] uppercase text-[#121212] hover:opacity-80 transition-opacity"
+                className="text-2xl sm:text-3xl font-extrabold tracking-[0.24em] uppercase text-[#121212] hover:opacity-85 transition-opacity block"
               >
                 Noir Scents
               </Link>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-7" aria-label="Main Navigation">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-[13px] uppercase tracking-[0.08em] font-medium text-zinc-800 hover:text-black hover:underline underline-offset-8 transition-colors py-1"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-
-            {/* Header Right Icons */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              {/* Desktop Search Button */}
-              <button
-                type="button"
-                onClick={() => setSearchModalOpen(true)}
-                className="hidden lg:flex p-2 text-zinc-800 hover:text-black transition-colors"
-                aria-label="Search"
+            {/* Desktop Right: Support & Cart */}
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/pages/contact"
+                className="text-xs uppercase tracking-[0.12em] font-medium text-zinc-600 hover:text-black transition-colors"
               >
-                <Search className="w-5 h-5" />
-              </button>
-
-
-              {/* Cart Drawer Trigger */}
+                Contact
+              </Link>
               <CartBadge />
             </div>
           </div>
+
+          {/* Bottom Row: Centered Navigation Menu */}
+          <nav className="border-t border-black/6 flex items-center justify-center space-x-8 py-3" aria-label="Main Navigation">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[13px] uppercase tracking-[0.09em] font-medium text-zinc-800 hover:text-black hover:underline underline-offset-8 transition-colors py-0.5"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/#clearance-sale"
+              className="text-[13px] uppercase tracking-[0.09em] font-semibold text-[#cc0000] hover:text-[#990000] hover:underline underline-offset-8 transition-colors py-0.5"
+            >
+              Sale
+            </Link>
+          </nav>
         </div>
       </header>
 

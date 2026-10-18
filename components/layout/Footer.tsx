@@ -162,21 +162,29 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar: Copyright & Payment Information */}
-      <div className="border-t border-black/8 py-6 bg-[#f4f4f5]">
-        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
-          <p>
-            &copy; {new Date().getFullYear()}, <span className="font-semibold text-black uppercase tracking-wider">{BRAND_NAME}</span>. Powered by Next.js.
+      {/* Bottom Bar: Copyright & Payment Information (Matching BuyFunoon Centered Layout) */}
+      <div className="border-t border-black/8 py-8 bg-[#f4f4f5]">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3.5">
+          <p className="text-xs text-zinc-600">
+            &copy; {new Date().getFullYear()},{" "}
+            <Link
+              href="/"
+              className="font-semibold text-black uppercase tracking-wider hover:underline underline-offset-4"
+            >
+              {BRAND_NAME}
+            </Link>
+            <span className="mx-2 text-zinc-400">&bull;</span>
+            <span>Powered by Next.js</span>
           </p>
-          <div className="flex flex-wrap items-center gap-3 text-zinc-600">
-            <span className="bg-white border border-zinc-200 px-2 py-0.5 text-[10px] font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 text-zinc-600">
+            <span className="bg-white border border-zinc-200 px-2.5 py-1 text-[10px] font-medium tracking-wider">
               Cash on Delivery (COD)
             </span>
-            <span className="bg-white border border-zinc-200 px-2 py-0.5 text-[10px] font-medium">
+            <span className="bg-white border border-zinc-200 px-2.5 py-1 text-[10px] font-medium tracking-wider">
               Bank Transfer
             </span>
-            <span className="bg-white border border-zinc-200 px-2 py-0.5 text-[10px] font-medium">
-              TCS / Leopards
+            <span className="bg-white border border-zinc-200 px-2.5 py-1 text-[10px] font-medium tracking-wider">
+              TCS / Leopards Express
             </span>
           </div>
         </div>
