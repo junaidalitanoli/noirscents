@@ -9,7 +9,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "A magnetic modern masterpiece engineered for the charismatic metropolitan man. Opens with zesty bergamot and fiery pink pepper, before sinking into smoky ambergris, mineral woods, and Haitian vetiver.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2950 },
     ],
@@ -32,7 +32,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "A poetic, soulful harmony of royal oriental tradition and contemporary finesse. Inspired by nocturnal poetic symposiums of Lahore and Delhi, blending smoked vintage oud, crimson Damascus rose, cardamom, and soft glove leather.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3450 },
     ],
@@ -55,7 +55,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "deals",
     description:
       "An invigorating plunge into crashing Arabian Sea waves. Crisp mineral sea salt and sparkling grapefruit blend into aromatics and sun-bleached driftwood. Clean, non-cloying, and ultra-refreshing in Pakistani heat.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2450 },
     ],
@@ -78,7 +78,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "A dark, brooding Extrait de Parfum for true oriental connoisseurs. Pure wild Cambodian agarwood enriched with fiery Iranian saffron, bitter almond, earthy patchouli, and bourbon vanilla.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3850 },
     ],
@@ -101,7 +101,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "Liquid gold in an artisanal decanter. A velvety, comforting, yet strikingly seductive cocktail of golden amber crystals, warm Madagascar vanilla caviar, and blooming night jasmine.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3250 },
     ],
@@ -124,7 +124,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "Inspired by royal courtyards and majestic palaces. Sparkling blood orange and roasted nutmeg transition into frankincense, Virginia cedarwood, and rich earthy moss.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3200 },
     ],
@@ -147,7 +147,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "The quintessence of quiet luxury. Handcrafted suede and smoky leather infused with powdery Tuscan iris, thyme, and roasted tonka bean.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3600 },
     ],
@@ -170,7 +170,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "An opulent bouquet of dew-drenched Bulgarian roses sweet-spun with juicy lychee, crisp peony, and decadent praline, dried down on a bed of sensual white musk.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2950 },
     ],
@@ -193,7 +193,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "A serene and crystalline white floral fragrance embodying graceful elegance. Crisp Williams pear and orange blossom petals floating over Cashmere woods and clean solar musk.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2800 },
     ],
@@ -216,7 +216,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "An unforgettable gourmand-floral night scent echoing festive evenings in the old walled city. Sensual narcotic tuberose laced with bitter cocoa, roasted tonka, and golden honeyed patchouli.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3500 },
     ],
@@ -239,7 +239,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "testers",
     description:
       "The quintessential sampling set for fragrance lovers. Includes 5 deluxe 10ml travel spray atomizers of our top iconic signatures: Urban Legend, Ghalib, Noir Oud, Royal Amber, and Aqua Mist. Comes in a gift box with smelling strips.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-testers.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 1950 },
     ],
@@ -262,7 +262,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "testers",
     description:
       "A hand-picked collector's flight of 4 x 10ml concentrated oriental extraits: Noir Oud, Ghalib, Sultan, and Amber Oud Reserve. Pure unadulterated woods, resins, and spices.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-testers.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2200 },
     ],
@@ -285,7 +285,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "testers",
     description:
       "A set of 3 pure non-alcoholic artisanal attar rollers (12ml each): Royal White Musk, Purity Rose Musk, and Royal Golden Musk. Thick, silky, skin-scent formulas that last for days on clothing.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-testers.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 1850 },
     ],
@@ -308,7 +308,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "deals",
     description:
       "His & Hers ultimate luxury bundle. Includes full bottles of Ghalib (Smoked Rose Oud) and Velvet Rose (Damascena & Praline). Packed in our signature gold-embossed gift box with complimentary samples.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-bundles.jpg", "/images/noir-women.jpg"],
     sizes: [
       { ml: 50, price: 4999 },
     ],
@@ -331,7 +331,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "deals",
     description:
       "The definitive masculine power combo. Pair the crisp versatile magnetism of Urban Legend with the deep nighttime gravity of Noir Oud at an unbeatable 35% discount.",
-    images: [DEFAULT_PRODUCT_IMAGE],
+    images: ["/images/noir-bundles.jpg", "/images/urban-legend-bottle.jpg"],
     sizes: [
       { ml: 50, price: 5499 },
     ],

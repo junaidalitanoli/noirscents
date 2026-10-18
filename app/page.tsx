@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, RotateCcw, Headphones, Award, Star } from "lucide-react";
+import { ArrowRight, RotateCcw, Headphones, Award, Star, Sparkles } from "lucide-react";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { BRAND_NAME } from "@/lib/constants";
 import { SITE_IMAGES } from "@/lib/images";
@@ -13,16 +13,15 @@ export default function HomePage() {
     (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price
   ).slice(0, 4);
 
-  const featuredProduct =
-    INITIAL_PRODUCTS.find((p) => p.slug === "noir-oud") ||
-    INITIAL_PRODUCTS.find((p) => p.slug === "urban-legend") ||
-    INITIAL_PRODUCTS[0];
-
   const bestSellers = INITIAL_PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
 
   const bundleProducts = INITIAL_PRODUCTS.filter(
     (p) => p.category === "deals" || p.category === "testers"
   ).slice(0, 4);
+
+  // Spotlight featured product (matches BuyFunoon's Jamal section)
+  const featuredProduct =
+    INITIAL_PRODUCTS.find((p) => p.slug === "urban-legend") || INITIAL_PRODUCTS[0];
 
   const categories = [
     {
@@ -97,84 +96,75 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. HERO BANNER (Luxury showcase matching reference layout) */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#141416] via-[#0d0d0f] to-[#121214] text-white border-b border-black/10">
-        {/* Subtle background ambient gold glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(212,175,55,0.08),transparent_60%)] pointer-events-none" />
+      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase (matching BuyFunoon Dawn Image-Banner) */}
+      <section className="relative w-full overflow-hidden bg-black text-white">
+        {/* Full-bleed background campaign image */}
+        <div className="relative w-full min-h-[480px] sm:min-h-[580px] lg:min-h-[640px] flex items-center justify-center">
+          <Image
+            src={SITE_IMAGES.heroBanner.src}
+            alt={SITE_IMAGES.heroBanner.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center brightness-[0.72] contrast-[1.08]"
+          />
 
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-5 text-center lg:text-left z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 text-[#d4af37] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em]">
-                <span>Artisanal Haute Parfumerie &bull; Pakistan</span>
-              </div>
+          {/* Dark luxury radial vignette */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-black/80 pointer-events-none" />
 
-              <div className="space-y-2">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-white">
-                  High Projection <br className="hidden sm:inline" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-[#d4af37]">
-                    Perfumes
-                  </span>
-                </h1>
-                <p className="text-base sm:text-xl font-medium tracking-wide text-zinc-300 uppercase">
-                  Be Remembered. Be Legendary.
-                </p>
-              </div>
-
-              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xl mx-auto lg:mx-0 font-light">
-                Handcrafted with 30%+ pure perfume oil concentration for extreme 8 to 12+ hours sillage in subcontinental climates. Cash on delivery available nationwide.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
-                <a
-                  href="#best-sellers"
-                  className="w-full sm:w-auto px-8 py-3.5 bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all text-center shadow-lg"
-                >
-                  Shop Best Sellers
-                </a>
-                <Link
-                  href="/collections/deals"
-                  className="w-full sm:w-auto px-8 py-3.5 bg-transparent border border-white/80 text-white font-semibold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all text-center"
-                >
-                  Explore Bundles
-                </Link>
-              </div>
-
-              {/* Delivery guarantee badge */}
-              <div className="pt-2 flex items-center justify-center lg:justify-start gap-4 text-xs text-zinc-400">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  Free Delivery on Orders Above Rs. 3,000
-                </span>
-                <span className="text-zinc-600">&bull;</span>
-                <span>TCS &amp; Trax Express COD</span>
-              </div>
+          {/* Centered Hero Typography Content */}
+          <div className="relative z-10 max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-black/60 backdrop-blur-md border border-[#c5a059]/40 text-[#f5e7b2] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+              <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
+              <span>Artisanal Haute Parfumerie &bull; Pakistan</span>
             </div>
 
-            {/* Right Packaging Photo Column (The Real Noir Packaging Box) */}
-            <div className="lg:col-span-5 flex justify-center items-center z-10">
-              <div className="relative w-full max-w-[380px] sm:max-w-[440px] aspect-square rounded-2xl overflow-hidden border border-[#d4af37]/30 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_40px_rgba(212,175,55,0.15)] group bg-black">
-                <Image
-                  src={SITE_IMAGES.heroBanner.src}
-                  alt={SITE_IMAGES.heroBanner.alt}
-                  fill
-                  priority
-                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 440px"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10 rounded-2xl" />
-                <div className="absolute bottom-3 left-3 right-3 py-2 px-3 bg-black/80 backdrop-blur-md rounded-lg border border-white/10 flex items-center justify-between text-[11px] uppercase tracking-wider text-white">
-                  <span className="font-semibold text-amber-300">Noir Scents</span>
-                  <span className="text-zinc-400 font-light">50 ML &bull; Eau de Parfum</span>
-                </div>
-              </div>
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.06] text-white">
+                High Projection <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-[#c5a059]">
+                  Perfumes
+                </span>
+              </h1>
+              <p className="text-sm sm:text-lg font-medium tracking-[0.14em] text-zinc-200 uppercase">
+                Be Remembered. Be Legendary.
+              </p>
+            </div>
+
+            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-xl mx-auto font-light">
+              Handcrafted with 30%+ pure perfume oil concentration for extreme 8 to 12+ hours sillage in subcontinental climates. Cash on delivery available nationwide.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+              <a
+                href="#clearance-sale"
+                className="w-full sm:w-auto px-8 py-3.5 bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all text-center shadow-xl hover:scale-[1.02]"
+              >
+                Shop Clearance Sale
+              </a>
+              <a
+                href="#best-sellers"
+                className="w-full sm:w-auto px-8 py-3.5 bg-transparent border border-white text-white font-semibold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all text-center"
+              >
+                View Best Sellers
+              </a>
+            </div>
+
+            {/* Delivery guarantee badge strip */}
+            <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-300">
+              <span className="flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                ✅ Free Delivery Across Pakistan on Orders Above Rs. 3,000
+              </span>
+              <span className="hidden sm:inline text-zinc-500">&bull;</span>
+              <span className="text-zinc-300">TCS &amp; Leopards Express COD</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. SECTION: Clearance Sale */}
+      {/* 2. SECTION: Clearance Sale (Matches BuyFunoon section #1) */}
       <section id="clearance-sale" className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
           <div>
@@ -201,10 +191,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. SECTION: Featured Single Product Spotlight ("Noir Oud" / Jamal archetype) */}
+      {/* 3. SECTION: Featured Product Spotlight (Matches BuyFunoon Jamal featured-product section) */}
       <FeaturedProductSection product={featuredProduct} />
 
-      {/* 4. SECTION: Best Sellers */}
+      {/* 4. SECTION: Best Sellers (Matches BuyFunoon section #2) */}
       <section id="best-sellers" className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
           <div>
@@ -230,7 +220,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. SECTION: Bundles */}
+      {/* 5. SECTION: Bundles (Matches BuyFunoon section #3) */}
       <section id="bundles" className="py-12 sm:py-16 bg-[#fafafa] border-y border-black/8">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
@@ -258,7 +248,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. SECTION: Shop By Category (Dawn collection-list) */}
+      {/* 6. SECTION: Shop By Category (Matches BuyFunoon collection-list) */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-xl mx-auto mb-10">
           <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
@@ -269,7 +259,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* 4 category tiles with 3:4 aspect ratio */}
+        {/* 4 category tiles with 1:1 aspect ratio */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {categories.map((cat) => (
             <Link
@@ -302,13 +292,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. SECTION: Trust Badges (Dawn feature-type1 exact 3 items) */}
+      {/* 7. SECTION: Trust Badges (Matches BuyFunoon Dawn feature-type1 exact 3 items) */}
       <section className="py-12 sm:py-16 bg-[#f8f8f8] border-t border-black/8">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-zinc-200">
-            {/* Box 1 */}
+            {/* Box 1: Money-Back Guarantee */}
             <div className="flex flex-col items-center px-4 pt-6 md:pt-0">
-              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3 shadow-xs">
                 <RotateCcw className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
@@ -319,9 +309,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Box 2 */}
+            {/* Box 2: 24/7 Customer Support */}
             <div className="flex flex-col items-center px-4 pt-6 md:pt-0">
-              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3 shadow-xs">
                 <Headphones className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
@@ -332,9 +322,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Box 3 */}
+            {/* Box 3: Promising Quality */}
             <div className="flex flex-col items-center px-4 pt-6 md:pt-0">
-              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3">
+              <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3 shadow-xs">
                 <Award className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
@@ -354,18 +344,20 @@ export default function HomePage() {
           <h2 className="text-2xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
             Customer Reviews
           </h2>
-          <div className="flex items-center justify-center gap-1 text-amber-500 mt-2">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-            ))}
-            <span className="text-xs font-semibold text-zinc-800 ml-1.5">
-              4.9 out of 5 based on 450+ verified reviews
+          <div className="flex items-center justify-center gap-1.5 text-amber-500 mt-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <span className="text-xs font-semibold text-zinc-800 ml-1">
+              4.97 out of 5.0 based on 800+ verified customer reviews
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 border border-black/8 flex flex-col justify-between">
+          <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex text-amber-500 mb-2.5">
                 {[...Array(5)].map((_, i) => (
@@ -387,7 +379,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 border border-black/8 flex flex-col justify-between">
+          <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex text-amber-500 mb-2.5">
                 {[...Array(5)].map((_, i) => (
@@ -409,7 +401,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="bg-white p-6 border border-black/8 flex flex-col justify-between">
+          <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
               <div className="flex text-amber-500 mb-2.5">
                 {[...Array(5)].map((_, i) => (

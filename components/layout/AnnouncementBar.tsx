@@ -12,7 +12,7 @@ export default function AnnouncementBar() {
           href="/collections/all"
           className="hover:underline flex items-center gap-1.5 transition-all text-zinc-100 font-medium"
         >
-          <span>Free Delivery on orders above {formatPrice(FREE_SHIPPING_THRESHOLD)}</span>
+          <span>✅ Free Delivery on orders above {formatPrice(FREE_SHIPPING_THRESHOLD)}</span>
           <span className="hidden sm:inline text-zinc-400 font-normal">
             &bull; Cash on Delivery Available Nationwide
           </span>
@@ -21,3 +21,4 @@ export default function AnnouncementBar() {
     </div>
   );
 }
+
