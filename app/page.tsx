@@ -96,69 +96,83 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase (matching BuyFunoon Dawn Image-Banner) */}
+      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase (Unobstructed Crystal Clear Bottles + International Punchline) */}
       <section className="relative w-full overflow-hidden bg-black text-white">
-        {/* Full-bleed background campaign image */}
-        <div className="relative w-full min-h-[480px] sm:min-h-[580px] lg:min-h-[640px] flex items-center justify-center">
+        {/* Full-bleed background campaign image with razor-sharp clarity */}
+        <div className="relative w-full min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] flex items-center">
           <Image
             src={SITE_IMAGES.heroBanner.src}
             alt={SITE_IMAGES.heroBanner.alt}
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center brightness-[0.72] contrast-[1.08]"
+            className="object-cover object-[78%_center] sm:object-right md:object-center brightness-[1.04] contrast-[1.02]"
           />
 
-          {/* Dark luxury radial vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-black/80 pointer-events-none" />
+          {/* Left-side cinematic vignette so typography is effortlessly legible while bottles remain 100% clear & bright on the right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent lg:w-[65%] pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/20 pointer-events-none lg:hidden" />
+          <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
-          {/* Centered Hero Typography Content */}
-          <div className="relative z-10 max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-black/60 backdrop-blur-md border border-[#c5a059]/40 text-[#f5e7b2] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-              <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
-              <span>Artisanal Haute Parfumerie &bull; Pakistan</span>
-            </div>
+          {/* Left-aligned Luxury Content Column (Bottles on the right remain completely unobstructed) */}
+          <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+            <div className="max-w-[620px] space-y-6 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-black/70 border border-[#c5a059]/60 text-[#f5e7b2] text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em] shadow-lg">
+                <Sparkles className="w-3.5 h-3.5 text-[#c5a059]" />
+                <span>Haute Parfumerie &bull; 35% Pure French Extrait</span>
+              </div>
 
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.06] text-white">
-                High Projection <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-[#c5a059]">
-                  Perfumes
-                </span>
-              </h1>
-              <p className="text-sm sm:text-lg font-medium tracking-[0.14em] text-zinc-200 uppercase">
-                Be Remembered. Be Legendary.
+              <div className="space-y-3">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.05] text-white">
+                  Scents That <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-[#c5a059]">
+                    Command Respect.
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-lg font-semibold tracking-[0.14em] text-amber-200/95 uppercase">
+                  14+ Hours Beast Mode Sillage &bull; Engineered For Pakistan
+                </p>
+              </div>
+
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light max-w-lg">
+                Crafted with ultra-concentrated French fragrance oils engineered specifically to outlast Pakistan&apos;s heat and humidity. Sillage so captivating, it turns heads and commands every room you enter.
               </p>
-            </div>
 
-            <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-xl mx-auto font-light">
-              Handcrafted with 30%+ pure perfume oil concentration for extreme 8 to 12+ hours sillage in subcontinental climates. Cash on delivery available nationwide.
-            </p>
+              {/* Action Buttons matching BuyFunoon / International Luxury Standard */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
+                <a
+                  href="#best-sellers"
+                  className="px-8 py-3.5 bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all text-center shadow-xl hover:scale-[1.02]"
+                >
+                  Shop Best Sellers
+                </a>
+                <a
+                  href="#clearance-sale"
+                  className="px-8 py-3.5 bg-black/60 border border-white/80 text-white font-semibold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all text-center backdrop-blur-xs"
+                >
+                  Clearance Sale Deals
+                </a>
+              </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
-              <a
-                href="#clearance-sale"
-                className="w-full sm:w-auto px-8 py-3.5 bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all text-center shadow-xl hover:scale-[1.02]"
-              >
-                Shop Clearance Sale
-              </a>
-              <a
-                href="#best-sellers"
-                className="w-full sm:w-auto px-8 py-3.5 bg-transparent border border-white text-white font-semibold text-xs uppercase tracking-wider hover:bg-white hover:text-black transition-all text-center"
-              >
-                View Best Sellers
-              </a>
-            </div>
-
-            {/* Delivery guarantee badge strip */}
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-300">
-              <span className="flex items-center gap-1.5 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                ✅ Free Delivery Across Pakistan on Orders Above Rs. 3,000
-              </span>
-              <span className="hidden sm:inline text-zinc-500">&bull;</span>
-              <span className="text-zinc-300">TCS &amp; Leopards Express COD</span>
+              {/* Pakistani Market Trust & Buying Assurances */}
+              <div className="pt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] sm:text-xs text-zinc-300">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+                  <span>✅ <strong>Free Express Delivery</strong> on orders over Rs. 3,000</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+                  <span>💵 <strong>Cash on Delivery (COD)</strong> Nationwide</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-indigo-400 shrink-0" />
+                  <span>⏳ <strong>14+ Hours Lasting</strong> Guaranteed</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+                  <span>🔄 <strong>7-Day Scent Guarantee</strong> &amp; Easy Returns</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
