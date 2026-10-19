@@ -35,7 +35,7 @@ const COLLECTION_METADATA: Record<
     description:
       "Explore our entire catalogue of handcrafted non-alcoholic Extrait de Parfum, sample sets, and bundles with Cash on Delivery in Pakistan.",
     intro:
-      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated with 25–30% oil concentration and 100% non-alcoholic bases for 8–12+ hours of endurance across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders above Rs. 3,000.",
+      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated with 35% oil concentration and 100% non-alcoholic bases for 8–12+ hours of endurance across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders above Rs. 3,000.",
     image: DEFAULT_PRODUCT_IMAGE,
   },
   men: {
@@ -59,7 +59,7 @@ const COLLECTION_METADATA: Record<
     description:
       "Sample luxury perfumes with our discovery sets and travel testers. Find your signature extrait fragrance before ordering full bottles.",
     intro:
-      "Uncertain which fragrance best complements your skin chemistry? Our discovery sets and travel spray atomizers let you experience our most celebrated extraits at home before choosing a full bottle. Each sample flight features genuine 25–30% oil concentration and includes complimentary smelling strips.",
+      "Uncertain which fragrance best complements your skin chemistry? Our discovery sets and travel spray atomizers let you experience our most celebrated extraits at home before choosing a full bottle. Each sample flight features genuine 35% oil concentration and includes complimentary smelling strips.",
     image: SITE_IMAGES.categories.testers.src,
   },
   deals: {

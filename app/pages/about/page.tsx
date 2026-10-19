@@ -9,14 +9,14 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Our Story & Artisanal Heritage",
   description:
-    "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+    "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 35% oil concentration.",
   alternates: {
     canonical: "/pages/about",
   },
   openGraph: {
     title: "Our Story & Artisanal Heritage",
     description:
-      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 35% oil concentration.",
     url: "/pages/about",
     siteName: "Noir Scents",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Our Story & Artisanal Heritage",
     description:
-      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 35% oil concentration.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

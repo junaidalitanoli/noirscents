@@ -9,7 +9,7 @@ export const STORE_CONFIG = {
   standardShippingFee: 250,
   returnWindowDays: 7,
   longevityText: "8–12+ hours",
-  concentrationText: "25–30% oil concentration",
+  concentrationText: "35% oil concentration",
   perfumeType: "Extrait de Parfum",
   deliveryTime: "2–4 business days",
   couriers: "TCS / Leopards Courier",
@@ -36,7 +36,7 @@ export const STORE_CONFIG = {
     {
       question: "How long do Noir Scents fragrances last?",
       answer:
-        "Our creations are formulated as concentrated Extrait de Parfum with 25–30% oil concentration, providing 8–12+ hours of lingering endurance tailored for Pakistan's climate.",
+        "Our creations are formulated as concentrated Extrait de Parfum with 35% oil concentration, providing 8–12+ hours of lingering endurance tailored for Pakistan's climate.",
     },
     {
       question: "Are your perfumes non-alcoholic?",
