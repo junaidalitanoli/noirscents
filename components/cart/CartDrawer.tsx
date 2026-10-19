@@ -115,7 +115,7 @@ export default function CartDrawer() {
                   <div className="relative w-20 aspect-square bg-[#f4f4f5] border border-black/6 shrink-0 overflow-hidden">
                     <Image
                       src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
-                      alt={`${item.product.name} - Noir Scents Eau de Parfum`}
+                      alt={`${item.product.name} Extrait de Parfum by Noir Scents`}
                       fill
                       sizes="80px"
                       className="object-cover"

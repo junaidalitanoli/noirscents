@@ -17,7 +17,7 @@ All banner and category image paths are organized in [`lib/images.ts`](file:///c
 
 ### Image Asset Table
 
-All product photos currently default to `/images/noir-box.jpg` (the black and gold "NOIR SCENT" Eau de Parfum box packaging photo). You can replace this global placeholder or drop in individual photos per fragrance at any time.
+All product photos currently default to `/images/noir-box.jpg` (the black and gold "NOIR SCENT" Extrait de Parfum box packaging photo). You can replace this global placeholder or drop in individual photos per fragrance at any time.
 
 | Filename | Recommended Resolution | Aspect Ratio | Where It Appears | Description / Usage |
 | :--- | :--- | :--- | :--- | :--- |
@@ -53,7 +53,7 @@ The storefront architecture matches the Shopify Dawn theme layout:
    - Smooth hover flip to secondary angle image (`product.images[1]`).
    - Pill-shaped Sale & Best Seller badges.
    - 5-star customer rating display.
-   - Size badge (50ml Eau de Parfum).
+   - Size badge (50ml Extrait de Parfum).
    - Direct &ldquo;Add to cart&rdquo; button opening the cart drawer.
 4. **Grid Breakpoints**:
    - **Desktop (1440px)**: 4 columns

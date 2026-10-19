@@ -388,7 +388,7 @@ export default function AdminDashboard() {
                           <div className="relative w-10 h-10 bg-zinc-950 rounded-md overflow-hidden shrink-0 border border-zinc-200">
                             <Image
                               src={p.images?.[0] || DEFAULT_PRODUCT_IMAGE}
-                              alt={`${p.name} - Noir Scents Eau de Parfum`}
+                              alt={`${p.name} Extrait de Parfum by Noir Scents`}
                               fill
                               sizes="40px"
                               className="object-cover"
