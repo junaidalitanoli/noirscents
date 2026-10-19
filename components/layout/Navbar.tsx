@@ -27,13 +27,13 @@ export default function Navbar() {
     { label: "Women", href: "/collections/women" },
     { label: "Bundles", href: "/collections/deals" },
     { label: "Testers", href: "/collections/testers" },
-    { label: "Contact", href: "/pages/contact" },
+    { label: "About", href: "/pages/about" },
   ];
 
   return (
     <>
       <header className="sticky top-[38px] z-40 bg-white border-b border-black/8 transition-all">
-        {/* 1. Mobile Header: Centered Brand Name & Symmetrical Action Icons (matching BuyFunoon mobile) */}
+        {/* 1. Mobile Header: Centered Brand Name & Symmetrical Action Icons */}
         <div className="lg:hidden max-w-[1400px] mx-auto px-4 h-16 relative flex items-center justify-between">
           {/* Left: Mobile Drawer Trigger */}
           <button
@@ -69,7 +69,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 2. Desktop Header (Shopify Dawn header--top-center format: Centered Brand Name + Centered Nav) */}
+        {/* 2. Desktop Header: Centered Brand Name + Centered Nav */}
         <div className="hidden lg:block max-w-[1400px] mx-auto px-6 lg:px-8">
           {/* Top Row: Search on Left, Centered Brand Name in Middle, Cart on Right */}
           <div className="h-20 relative flex items-center justify-between">
@@ -86,7 +86,7 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Desktop Center: Brand Name (Centered!) */}
+            {/* Desktop Center: Brand Name */}
             <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto">
               <Link
                 href="/"
@@ -96,7 +96,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Desktop Right: Support & Cart */}
+            {/* Desktop Right: Single Contact Link & Cart */}
             <div className="flex items-center space-x-4">
               <Link
                 href="/pages/contact"
@@ -120,7 +120,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="/#clearance-sale"
+              href="/collections/deals"
               className="text-[13px] uppercase tracking-[0.09em] font-semibold text-[#cc0000] hover:text-[#990000] hover:underline underline-offset-8 transition-colors py-0.5"
             >
               Sale
@@ -215,7 +215,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Mobile Drawer Navigation Menu (Shopify Dawn Style) */}
+      {/* Mobile Drawer Navigation Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex">
           <div className="w-4/5 max-w-sm bg-white h-full shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-slide-over">
@@ -255,6 +255,15 @@ export default function Navbar() {
                     All Products
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/collections/deals"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-base font-semibold uppercase tracking-[0.08em] text-[#cc0000] hover:text-[#990000] block py-1"
+                  >
+                    Sale Deals
+                  </Link>
+                </li>
               </ul>
 
               <div className="pt-6 border-t border-zinc-200 space-y-3">
@@ -289,6 +298,13 @@ export default function Navbar() {
                     className="block hover:text-black"
                   >
                     Returns &amp; Exchanges
+                  </Link>
+                  <Link
+                    href="/policies/terms"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block hover:text-black"
+                  >
+                    Terms &amp; Conditions
                   </Link>
                 </div>
               </div>
