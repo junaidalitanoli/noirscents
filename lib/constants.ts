@@ -1,10 +1,10 @@
-import { SITE_CONFIG } from "./config";
+import { STORE_CONFIG } from "./store-config";
 
-export const BRAND_NAME = SITE_CONFIG.name;
-export const BRAND_TAGLINE = SITE_CONFIG.tagline;
-export const FREE_SHIPPING_THRESHOLD = SITE_CONFIG.freeShippingThreshold;
-export const STANDARD_SHIPPING_FEE = SITE_CONFIG.standardShippingFee;
-export const ADMIN_DEMO_PASSWORD = SITE_CONFIG.adminPassword;
+export const BRAND_NAME = STORE_CONFIG.name;
+export const BRAND_TAGLINE = STORE_CONFIG.tagline;
+export const FREE_SHIPPING_THRESHOLD = STORE_CONFIG.freeDeliveryThreshold;
+export const STANDARD_SHIPPING_FEE = STORE_CONFIG.standardShippingFee;
+export const ADMIN_DEMO_PASSWORD = "admin123";
 
 export const PAKISTANI_CITIES = [
   "Karachi",
@@ -36,8 +36,24 @@ export const PAKISTANI_CITIES = [
 ] as const;
 
 export const CATEGORIES = [
-  { slug: "men", label: "Men", description: "Bold, charismatic, and masculine scents designed for endurance." },
-  { slug: "women", label: "Women", description: "Enchanting, floral, amber, and gourmand blends with alluring trails." },
-  { slug: "testers", label: "Testers", description: "Discovery sets and sample vials to test our artisanal creations." },
-  { slug: "deals", label: "Crazy Deals", description: "Limited-edition bundled offers, duo packs, and clearance specials." },
+  {
+    slug: "men",
+    label: "Men",
+    description: "Bold, charismatic, and masculine extrait perfumes designed for 8–12+ hours endurance in Pakistan.",
+  },
+  {
+    slug: "women",
+    label: "Women",
+    description: "Enchanting, floral, amber, and gourmand extrait blends with alluring trails and graceful sillage.",
+  },
+  {
+    slug: "testers",
+    label: "Testers",
+    description: "Discovery sets and sample vials to test our artisanal creations before selecting your signature bottle.",
+  },
+  {
+    slug: "deals",
+    label: "Crazy Deals",
+    description: "Curated multi-bottle bundles, duo pairings, and special promotional offers at exceptional value.",
+  },
 ] as const;

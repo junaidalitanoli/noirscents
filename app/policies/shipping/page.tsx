@@ -1,12 +1,39 @@
 import type { Metadata } from "next";
 import { Truck, ShieldCheck, Clock } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { BRAND_NAME, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/constants";
+import { BRAND_NAME } from "@/lib/constants";
+import { STORE_CONFIG } from "@/lib/store-config";
 import { formatPrice } from "@/lib/formatters";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery Policy (Pakistan)",
-  description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME}.`,
+  title: "Shipping & Delivery Policy",
+  description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Karachi, Lahore, Islamabad, and all of Pakistan.`,
+  alternates: {
+    canonical: "/policies/shipping",
+  },
+  openGraph: {
+    title: "Shipping & Delivery Policy",
+    description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Pakistan.`,
+    url: "/policies/shipping",
+    siteName: "Noir Scents",
+    images: [
+      {
+        url: DEFAULT_PRODUCT_IMAGE,
+        width: 1024,
+        height: 1024,
+        alt: "Noir Scents Shipping & Delivery Policy",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shipping & Delivery Policy",
+    description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Pakistan.`,
+    images: [DEFAULT_PRODUCT_IMAGE],
+  },
 };
 
 export default function ShippingPolicyPage() {
@@ -23,7 +50,7 @@ export default function ShippingPolicyPage() {
             Shipping &amp; Delivery Policy across Pakistan
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 mt-2">
-            Last updated: February 2025 &bull; Standard courier rules for Pakistani customers.
+            Reliable doorstep fulfillment with Cash on Delivery nationwide.
           </p>
         </div>
 
@@ -33,15 +60,15 @@ export default function ShippingPolicyPage() {
             <Truck className="w-5 h-5 text-[#d4af37] mb-2" />
             <h2 className="font-bold text-zinc-900 text-sm">Free Delivery</h2>
             <p className="text-zinc-500 mt-1">
-              On all orders above {formatPrice(FREE_SHIPPING_THRESHOLD)}. Under {formatPrice(FREE_SHIPPING_THRESHOLD)} is flat {formatPrice(STANDARD_SHIPPING_FEE)}.
+              On all orders of Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)} and above. Flat Rs. {formatPrice(STORE_CONFIG.standardShippingFee)} under threshold.
             </p>
           </div>
 
           <div className="p-4 bg-zinc-50 rounded-xl border border-zinc-200 text-xs">
             <Clock className="w-5 h-5 text-[#d4af37] mb-2" />
-            <h2 className="font-bold text-zinc-900 text-sm">2–4 Business Days</h2>
+            <h2 className="font-bold text-zinc-900 text-sm">{STORE_CONFIG.deliveryTime}</h2>
             <p className="text-zinc-500 mt-1">
-              Major cities: 24–48 hours. Regional tehsils &amp; remote areas: 3–5 working days.
+              Major cities (Karachi, Lahore, Islamabad): 24–48 hours. Regional tehsils &amp; towns: 3–4 working days.
             </p>
           </div>
 
@@ -60,7 +87,7 @@ export default function ShippingPolicyPage() {
               1. Courier Partners &amp; Tracking
             </h2>
             <p>
-              We dispatch all orders through registered Tier-1 courier networks including <strong>TCS Express, Leopards Courier, Trax Logistics, and Call Courier</strong>. Upon dispatch, a tracking link is generated and sent to your registered WhatsApp or mobile number.
+              We dispatch all orders through registered Tier-1 courier networks including <strong>{STORE_CONFIG.couriers}</strong>. Upon dispatch, an official tracking link is generated and sent to your registered WhatsApp or mobile number.
             </p>
           </div>
 
@@ -72,7 +99,7 @@ export default function ShippingPolicyPage() {
               The courier delivery rider will collect the exact invoice amount indicated on the parcel manifest in Pakistani Rupees (PKR). Please keep exact cash ready to expedite the doorstep delivery process.
             </p>
             <p>
-              Note: As per Pakistani courier standards, riders do not open sealed parcel packaging prior to receiving payment. However, all our parcels are covered under our <strong>7-Day Free Scent Exchange Guarantee</strong>.
+              Note: As per Pakistani courier standards, riders do not open sealed parcel packaging prior to receiving payment. However, all our parcels are covered under our <strong>{STORE_CONFIG.returnWindowDays}-Day Scent Exchange Policy</strong>.
             </p>
           </div>
 
@@ -81,7 +108,7 @@ export default function ShippingPolicyPage() {
               3. Packaging &amp; Bottle Safety
             </h2>
             <p>
-              Every glass perfume bottle is housed inside an internal gold-embossed foam bed and cocooned in heavy shock-absorbing bubble wrap to withstand rough transit across long inter-city routes. If a bottle arrives cracked or leaking, photograph it immediately and send it to our WhatsApp helpline (+92 300 0000000) for a replacement dispatched within 24 hours at zero cost to you.
+              Every glass perfume bottle is housed inside an internal gold-embossed foam bed and cocooned in heavy shock-absorbing bubble wrap to withstand rough transit across long inter-city routes. If a bottle arrives cracked or leaking, photograph it immediately and send it to our WhatsApp helpline ({STORE_CONFIG.whatsappDisplay}) for a replacement dispatched within 24 hours at zero cost to you.
             </p>
           </div>
         </div>

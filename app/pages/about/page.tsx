@@ -2,14 +2,46 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { BRAND_NAME } from "@/lib/constants";
+import { STORE_CONFIG } from "@/lib/store-config";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "About Our Artisanal Heritage",
-  description: `Discover the story of ${BRAND_NAME}, handcrafted in Pakistan to deliver long-lasting, non-alcoholic Extraits de Parfum.`,
+  title: "Our Story & Artisanal Heritage",
+  description:
+    "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+  alternates: {
+    canonical: "/pages/about",
+  },
+  openGraph: {
+    title: "Our Story & Artisanal Heritage",
+    description:
+      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+    url: "/pages/about",
+    siteName: "Noir Scents",
+    images: [
+      {
+        url: DEFAULT_PRODUCT_IMAGE,
+        width: 1024,
+        height: 1024,
+        alt: "Noir Scents Artisanal Heritage Story",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Our Story & Artisanal Heritage",
+    description:
+      "Discover the story of Noir Scents, handcrafted in Pakistan to deliver enduring, non-alcoholic Extrait de Parfum with 25–30% oil concentration.",
+    images: [DEFAULT_PRODUCT_IMAGE],
+  },
 };
 
 export default function AboutPage() {
+  const showDisclaimer = STORE_CONFIG.showProjectDisclaimer;
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 w-full">
       <Breadcrumbs items={[{ label: "About Us" }]} />
@@ -17,9 +49,11 @@ export default function AboutPage() {
       <div className="space-y-12">
         {/* Header */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs text-[#b48325] font-semibold">
-            <Sparkles className="w-3.5 h-3.5" /> University Project Prototype &bull; Pakistani Perfumery
-          </div>
+          {showDisclaimer && (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs text-[#b48325] font-semibold">
+              <Sparkles className="w-3.5 h-3.5" /> University Project Prototype &bull; Pakistani Perfumery
+            </div>
+          )}
           <h1 className="font-heading text-4xl sm:text-5xl font-bold text-zinc-950">
             The Story of {BRAND_NAME}
           </h1>
@@ -28,7 +62,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Narrative Section 1 */}
+        {/* Narrative Section */}
         <div className="prose prose-zinc max-w-none text-zinc-700 space-y-6 leading-relaxed text-sm sm:text-base">
           <div className="bg-zinc-50 border border-zinc-200 rounded-2xl p-6 sm:p-8 space-y-4">
             <h2 className="font-heading text-2xl font-bold text-zinc-950">
@@ -41,7 +75,7 @@ export default function AboutPage() {
               However, modern imported European perfumes often fail when tested against Pakistan&apos;s intense summer heat and humidity, fading away into a faint skin scent within an hour or two.
             </p>
             <p>
-              {BRAND_NAME} was conceptualized as a rigorous university e-commerce project to explore how modern digital storefront architecture can revive Pakistan&apos;s artisanal perfume trade with high oil concentrations (30%+ Extrait de Parfum) and a seamless Cash on Delivery experience.
+              {BRAND_NAME} was conceptualized to revive Pakistan&apos;s artisanal perfume heritage with concentrated oil formulations ({STORE_CONFIG.concentrationText} {STORE_CONFIG.perfumeType}) and a seamless Cash on Delivery experience nationwide.
             </p>
           </div>
 
@@ -61,9 +95,9 @@ export default function AboutPage() {
               <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
                 02
               </div>
-              <h3 className="font-bold text-base text-zinc-900">8–12+ Hr Sillage</h3>
+              <h3 className="font-bold text-base text-zinc-900">{STORE_CONFIG.longevityText} Longevity</h3>
               <p className="text-xs text-zinc-500 leading-relaxed">
-                Utilizing natural resinous fixatives like Cambodian agarwood, ambergris accords, and musk to guarantee all-day projection.
+                Utilizing natural resinous fixatives like agarwood, ambergris accords, and musk to ensure enduring all-day projection.
               </p>
             </div>
 
@@ -73,19 +107,21 @@ export default function AboutPage() {
               </div>
               <h3 className="font-bold text-base text-zinc-900">Transparent COD</h3>
               <p className="text-xs text-zinc-500 leading-relaxed">
-                Doorstep Cash On Delivery available nationwide from Karachi to Gilgit with simple 7-day exchange policies.
+                Doorstep Cash On Delivery available nationwide from Karachi to Gilgit with a {STORE_CONFIG.returnWindowDays}-day scent exchange policy.
               </p>
             </div>
           </div>
 
-          <div className="border-t border-zinc-200 pt-8 space-y-4">
-            <h2 className="font-heading text-2xl font-bold text-zinc-950">
-              Project Acknowledgment &amp; Disclaimer
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-600 bg-amber-50/60 p-4 rounded-xl border border-amber-200">
-              <strong>Notice:</strong> This website is an educational demonstration developed as a university term project. All perfume names, formulations, descriptions, and vector graphics have been created as original assets. No real financial card transactions are processed; all orders run through a simulated Cash on Delivery flow.
-            </p>
-          </div>
+          {showDisclaimer && (
+            <div className="border-t border-zinc-200 pt-8 space-y-4">
+              <h2 className="font-heading text-2xl font-bold text-zinc-950">
+                Project Acknowledgment &amp; Disclaimer
+              </h2>
+              <p className="text-xs sm:text-sm text-zinc-600 bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+                <strong>Notice:</strong> This website is an educational demonstration developed as a university term project. All perfume names, formulations, descriptions, and vector graphics have been created as original assets. No real financial card transactions are processed; all orders run through a simulated Cash on Delivery flow.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* CTA */}

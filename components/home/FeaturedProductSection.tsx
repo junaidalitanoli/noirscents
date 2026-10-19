@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Star, Check, Sparkles, ChevronDown } from "lucide-react";
+import { Check, Sparkles, ChevronDown } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
-
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { STORE_CONFIG } from "@/lib/store-config";
 
 interface FeaturedProductSectionProps {
   product: Product;
@@ -30,7 +30,8 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
   const displayImages = uniqueImages.length > 0 ? uniqueImages : [DEFAULT_PRODUCT_IMAGE];
   const hasMultipleImages = displayImages.length > 1;
   const currentImage = displayImages[selectedImageIndex] || displayImages[0] || DEFAULT_PRODUCT_IMAGE;
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > selectedSize.price;
+  const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
+  const displaySize = product.sizeLabel || `${selectedSize.ml}ml`;
 
   const handleAddToCart = () => {
     addItem(product, selectedSize, quantity);
@@ -53,7 +54,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
             <div className="relative aspect-square w-full bg-[#f4f4f5] overflow-hidden border border-black/6">
               <Image
                 src={currentImage}
-                alt={`${product.name} - Noir Scents Eau de Parfum`}
+                alt={`${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scents`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover transition-all duration-300"
@@ -65,7 +66,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
               )}
             </div>
 
-            {/* Thumbnail selector (hidden when images are identical) */}
+            {/* Thumbnail selector */}
             {hasMultipleImages && (
               <div className="flex items-center gap-3">
                 {displayImages.map((img, idx) => (
@@ -81,7 +82,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                   >
                     <Image
                       src={img}
-                      alt={`${product.name} - Noir Scents Eau de Parfum thumbnail ${idx + 1}`}
+                      alt={`${product.name} Extrait de Parfum thumbnail ${idx + 1} by Noir Scents`}
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -101,16 +102,6 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
               <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-[#121212]">
                 {product.name}
               </h2>
-
-              <div className="flex items-center gap-2 mt-2">
-                <div className="flex text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <span className="text-xs font-semibold text-zinc-700">4.9 / 5.0</span>
-                <span className="text-zinc-400 text-xs">(128 customer reviews)</span>
-              </div>
             </div>
 
             {/* Price Row */}
@@ -118,14 +109,14 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
               <span className="text-2xl sm:text-3xl font-bold text-[#121212]">
                 {formatPrice(selectedSize.price)} PKR
               </span>
-              {hasDiscount && (
+              {hasDiscount && product.compareAtPrice && (
                 <span className="text-base sm:text-lg text-zinc-400 line-through">
-                  {formatPrice(product.compareAtPrice!)} PKR
+                  {formatPrice(product.compareAtPrice)} PKR
                 </span>
               )}
-              {hasDiscount && (
+              {hasDiscount && product.compareAtPrice && (
                 <span className="text-xs font-semibold text-[#cc0000] bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-                  Save {Math.round(((product.compareAtPrice! - selectedSize.price) / product.compareAtPrice!) * 100)}%
+                  Save {Math.round(((product.compareAtPrice - selectedSize.price) / product.compareAtPrice) * 100)}%
                 </span>
               )}
             </div>
@@ -137,7 +128,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
             {/* Size Variant Selector */}
             <div className="space-y-2 pt-2 border-t border-zinc-100">
               <label className="text-xs font-bold uppercase tracking-wider text-zinc-800">
-                Size: <span className="font-semibold text-zinc-900">{selectedSize.ml}ml Flacon (Eau de Parfum)</span>
+                Format: <span className="font-semibold text-zinc-900">{displaySize} ({STORE_CONFIG.perfumeType})</span>
               </label>
               <div className="flex items-center gap-3">
                 {product.sizes.map((size, idx) => (
@@ -151,7 +142,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                         : "border-zinc-300 bg-white text-zinc-800 hover:border-black"
                     }`}
                   >
-                    {size.ml}ml Flacon &bull; {formatPrice(size.price)} PKR
+                    {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)} PKR
                   </button>
                 ))}
               </div>
@@ -185,19 +176,19 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
               </div>
             </div>
 
-            {/* Trust Bullet Points (Matches BuyFunoon Jamal feature) */}
+            {/* Trust Bullet Points */}
             <div className="py-2 space-y-1.5 text-xs text-zinc-700">
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>14 days Easy Return Policy</span>
+                <span>{STORE_CONFIG.returnWindowDays}-Day Easy Scent Exchange Policy</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>Accurate Scent Profile &amp; High Projection</span>
+                <span>Accurate Scent Profile &amp; {STORE_CONFIG.longevityText} Longevity</span>
               </div>
               <div className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>25% to 30% Pure Extrait Concentration</span>
+                <span>{STORE_CONFIG.concentrationText} ({STORE_CONFIG.perfumeType})</span>
               </div>
             </div>
 
@@ -262,8 +253,8 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                 </button>
                 {openShipping && (
                   <div className="p-4 bg-white text-xs space-y-1.5 text-zinc-600 border-t border-zinc-100">
-                    <p>Free delivery on all orders over Rs. 4,999.</p>
-                    <p>Dispatched via TCS / Leopards Courier in 24 hours. Delivery takes 2–4 business days with Cash on Delivery nationwide.</p>
+                    <p>Free delivery on all orders over Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)}.</p>
+                    <p>Dispatched via {STORE_CONFIG.couriers} in 24 hours. Delivery takes {STORE_CONFIG.deliveryTime} with Cash on Delivery nationwide.</p>
                   </div>
                 )}
               </div>

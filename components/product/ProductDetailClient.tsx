@@ -6,6 +6,7 @@ import { Check, Plus, Minus, Sparkles, CheckCircle2 } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
+import { STORE_CONFIG } from "@/lib/store-config";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -20,7 +21,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   const selectedSize = product.sizes[selectedSizeIndex] || product.sizes[0];
   const totalPrice = selectedSize.price * quantity;
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > selectedSize.price;
+  const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
+  const sizeLabel = product.sizeLabel || `${selectedSize.ml}ml`;
 
   const handleAddToCart = () => {
     addItem(product, selectedSize, quantity);
@@ -41,26 +43,26 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         <span className="text-2xl sm:text-3xl font-bold text-[#121212]">
           {formatPrice(selectedSize.price)} PKR
         </span>
-        {hasDiscount && (
+        {hasDiscount && product.compareAtPrice && (
           <span className="text-base text-zinc-400 line-through">
-            {formatPrice(product.compareAtPrice!)} PKR
+            {formatPrice(product.compareAtPrice)} PKR
           </span>
         )}
-        {hasDiscount && (
+        {hasDiscount && product.compareAtPrice && (
           <span className="text-xs font-semibold text-[#cc0000] bg-red-50 border border-red-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-            Sale &bull; Save {Math.round(((product.compareAtPrice! - selectedSize.price) / product.compareAtPrice!) * 100)}%
+            Sale &bull; Save {Math.round(((product.compareAtPrice - selectedSize.price) / product.compareAtPrice) * 100)}%
           </span>
         )}
       </div>
 
       <p className="text-xs text-zinc-500 font-light">
-        Taxes included. Free delivery across Pakistan on orders over Rs. 4,999.
+        Taxes included. Free express delivery across Pakistan on orders over Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)}.
       </p>
 
       {/* Size Selector */}
       <div className="space-y-2 pt-2 border-t border-black/8">
         <label className="block text-xs font-bold uppercase tracking-wider text-zinc-800">
-          Bottle Size: <span className="font-semibold text-zinc-900">{selectedSize.ml}ml Flacon (Eau de Parfum)</span>
+          Format: <span className="font-semibold text-zinc-900">{sizeLabel} ({STORE_CONFIG.perfumeType})</span>
         </label>
         <div className="flex flex-wrap gap-2.5">
           {product.sizes.map((size, idx) => {
@@ -76,7 +78,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     : "border-zinc-300 bg-white text-zinc-800 hover:border-black"
                 }`}
               >
-                {size.ml}ml Flacon &bull; {formatPrice(size.price)} PKR
+                {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)} PKR
               </button>
             );
           })}
@@ -111,19 +113,19 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </div>
       </div>
 
-      {/* 3 Value Highlights from BuyFunoon reference */}
+      {/* 3 Value Highlights unified with store-config */}
       <div className="py-2 space-y-1.5 text-xs text-zinc-700">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-          <span>14 days Easy Return Policy</span>
+          <span>{STORE_CONFIG.returnWindowDays}-Day Easy Scent Exchange Policy</span>
         </div>
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-          <span>Accurate Scent Profile &amp; 8-12 Hours Projection</span>
+          <span>Accurate Scent Profile &amp; {STORE_CONFIG.longevityText} Longevity</span>
         </div>
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-          <span>25% to 30% Pure Extrait Concentration</span>
+          <span>{STORE_CONFIG.concentrationText} ({STORE_CONFIG.perfumeType})</span>
         </div>
       </div>
 

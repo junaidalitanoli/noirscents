@@ -2,10 +2,37 @@ import type { Metadata } from "next";
 import { RefreshCw } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { BRAND_NAME } from "@/lib/constants";
+import { STORE_CONFIG } from "@/lib/store-config";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const metadata: Metadata = {
   title: "Returns & Exchanges Policy",
-  description: `7-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
+  description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan. Zero-risk doorstep bottle swaps.`,
+  alternates: {
+    canonical: "/policies/returns",
+  },
+  openGraph: {
+    title: "Returns & Exchanges Policy",
+    description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
+    url: "/policies/returns",
+    siteName: "Noir Scents",
+    images: [
+      {
+        url: DEFAULT_PRODUCT_IMAGE,
+        width: 1024,
+        height: 1024,
+        alt: "Noir Scents Returns & Exchanges Policy",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Returns & Exchanges Policy",
+    description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
+    images: [DEFAULT_PRODUCT_IMAGE],
+  },
 };
 
 export default function ReturnsPolicyPage() {
@@ -19,7 +46,7 @@ export default function ReturnsPolicyPage() {
             Customer Satisfaction
           </span>
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950 mt-1">
-            Returns &amp; 7-Day Exchange Policy
+            Returns &amp; {STORE_CONFIG.returnWindowDays}-Day Exchange Policy
           </h1>
           <p className="text-xs sm:text-sm text-zinc-500 mt-2">
             We want you to fall in love with your scent. Our zero-risk guarantee protects your purchase.
@@ -29,10 +56,10 @@ export default function ReturnsPolicyPage() {
         <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-6 text-xs text-amber-900 space-y-2">
           <div className="flex items-center gap-2 font-bold text-sm">
             <RefreshCw className="w-4 h-4 text-amber-700" />
-            7-Day Hassle-Free Scent Swap
+            {STORE_CONFIG.returnWindowDays}-Day Hassle-Free Scent Swap
           </div>
           <p className="leading-relaxed">
-            If you purchased a full bottle and discover the notes do not match your skin chemistry, simply notify our WhatsApp concierge (+92 300 0000000) within 7 calendar days of delivery.
+            If you purchased a full bottle and discover the notes do not match your skin chemistry, simply notify our WhatsApp concierge ({STORE_CONFIG.whatsappDisplay}) within {STORE_CONFIG.returnWindowDays} calendar days of delivery.
           </p>
         </div>
 
@@ -44,7 +71,7 @@ export default function ReturnsPolicyPage() {
             <ul className="list-disc pl-5 space-y-1.5 text-zinc-600">
               <li>The bottle must have at least 90% liquid remaining (tested 2-3 sprays max).</li>
               <li>Original decorative box, outer sleeve, and protective cap must be intact.</li>
-              <li>Request submitted within 7 days from parcel delivery date.</li>
+              <li>Request submitted within {STORE_CONFIG.returnWindowDays} days from parcel delivery date.</li>
             </ul>
           </div>
 
@@ -53,7 +80,7 @@ export default function ReturnsPolicyPage() {
               2. How the Exchange Works
             </h2>
             <p>
-              1. Message our WhatsApp support with your Order ID (e.g. <code>FN-89210</code>) and mention which fragrance you wish to swap to.
+              1. Message our WhatsApp support ({STORE_CONFIG.whatsappDisplay}) with your Order ID (e.g. <code>FN-89210</code>) and mention which fragrance you wish to swap to.
             </p>
             <p>
               2. Pack the bottle securely in its original packaging.

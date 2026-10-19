@@ -1,4 +1,5 @@
 import { Clock, Wind } from "lucide-react";
+import { STORE_CONFIG } from "@/lib/store-config";
 
 interface LongevityMeterProps {
   longevity: number; // 1 to 5
@@ -11,7 +12,7 @@ export default function LongevityMeter({ longevity, projection }: LongevityMeter
   const getLongevityLabel = (rating: number) => {
     switch (rating) {
       case 5:
-        return "Beast Mode (10-14+ Hours)";
+        return `Extrait Strength (${STORE_CONFIG.longevityText})`;
       case 4:
         return "Long Lasting (8-10 Hours)";
       case 3:
@@ -58,7 +59,7 @@ export default function LongevityMeter({ longevity, projection }: LongevityMeter
           <span className="text-base font-bold text-white">{projection}</span>
         </div>
         <p className="text-[11px] text-zinc-400 leading-tight">
-          Leaves a mesmerizing scented trail in air-conditioned environments and outdoor gatherings.
+          Leaves a mesmerizing scented trail in air-conditioned environments and outdoor gatherings across Pakistan.
         </p>
       </div>
     </div>
