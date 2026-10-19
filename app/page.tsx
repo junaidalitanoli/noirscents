@@ -1,10 +1,46 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, RotateCcw, Headphones, Award, Star, Sparkles, Truck, Banknote, ShieldCheck } from "lucide-react";
+import { ArrowRight, RotateCcw, Headphones, Award, Sparkles, Truck, Banknote, ShieldCheck, HelpCircle } from "lucide-react";
 import { INITIAL_PRODUCTS } from "@/lib/data";
-import { BRAND_NAME } from "@/lib/constants";
-import { SITE_IMAGES } from "@/lib/images";
+import { SITE_IMAGES, DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { STORE_CONFIG } from "@/lib/store-config";
 import ProductCard from "@/components/product/ProductCard";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+  },
+  description:
+    "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+    description:
+      "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+    url: "/",
+    siteName: "Noir Scents",
+    images: [
+      {
+        url: DEFAULT_PRODUCT_IMAGE,
+        width: 1024,
+        height: 1024,
+        alt: "Noir Scents Artisanal Perfumes Showcase",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+    description:
+      "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+    images: [DEFAULT_PRODUCT_IMAGE],
+  },
+};
 
 export default function HomePage() {
   // Best sellers: our top 4 flagship extraits
@@ -12,12 +48,11 @@ export default function HomePage() {
 
   // Clearance sale: discounted signatures distinct from bestsellers
   const clearanceProducts = INITIAL_PRODUCTS.filter(
-    (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price && !bestSellers.some((b) => b.id === p.id)
+    (p) => p.compareAtPrice && p.compareAtPrice > p.sizes[0].price && !p.isBestSeller
   ).slice(0, 4);
 
-  const bundleProducts = INITIAL_PRODUCTS.filter(
-    (p) => p.category === "deals" || p.category === "testers"
-  ).slice(0, 4);
+  // Bundles & Sets: exclusively from the "deals" collection
+  const bundleProducts = INITIAL_PRODUCTS.filter((p) => p.category === "deals").slice(0, 4);
 
   const categories = [
     {
@@ -50,51 +85,11 @@ export default function HomePage() {
     },
   ];
 
-  // Schema.org JSON-LD
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://noir-scents.pk/#organization",
-        name: BRAND_NAME,
-        url: "https://noir-scents.pk",
-        logo: "https://noir-scents.pk/images/logo.svg",
-        description:
-          "Pakistan's premier artisanal perfume brand. Handcrafted Extraits de Parfum with 8-12+ hours projection.",
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "PK",
-        },
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://noir-scents.pk/#website",
-        url: "https://noir-scents.pk",
-        name: BRAND_NAME,
-        publisher: {
-          "@id": "https://noir-scents.pk/#organization",
-        },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: "https://noir-scents.pk/search?q={search_term_string}",
-          "query-input": "required name=search_term_string",
-        },
-      },
-    ],
-  };
-
   return (
     <div className="flex flex-col bg-white">
-      {/* JSON-LD Rich Snippet */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
       {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase */}
       <section className="relative w-full overflow-hidden bg-black text-white">
-        <div className="relative w-full min-h-[500px] sm:min-h-[580px] lg:min-h-[660px] flex items-center">
+        <div className="relative w-full min-h-[520px] sm:min-h-[600px] lg:min-h-[680px] flex items-center">
           {/* Full-bleed background campaign image */}
           <Image
             src={SITE_IMAGES.heroBanner.src}
@@ -105,36 +100,36 @@ export default function HomePage() {
             className="object-cover object-[75%_center] sm:object-right md:object-center brightness-[1.02] contrast-[1.02]"
           />
 
-          {/* Left-side cinematic vignette: preserves luminous bottles on the right while ensuring crisp legibility */}
+          {/* Left-side cinematic vignette */}
           <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-black/92 via-black/60 to-transparent w-[62%] pointer-events-none" />
           <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-black/95 via-black/65 to-black/30 pointer-events-none" />
           <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-black to-transparent pointer-events-none" />
 
           {/* Luxury Content Column */}
           <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
-            <div className="max-w-[560px] space-y-4 sm:space-y-6 text-left">
-              {/* Refined Eyebrow */}
+            <div className="max-w-[580px] space-y-4 sm:space-y-6 text-left">
+              {/* Eyebrow */}
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/60 border border-[#c5a059]/40 text-[#f5e7b2] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-xs">
                 <Sparkles className="w-3 h-3 text-[#c5a059]" />
-                <span>Haute Parfumerie &bull; 35% Extrait</span>
+                <span>Haute Parfumerie &bull; {STORE_CONFIG.concentrationText}</span>
               </div>
 
-              {/* Main Headline */}
+              {/* Main Headline & Supporting Tagline */}
               <div className="space-y-2">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-white">
-                  Crafted For <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-300 to-[#c5a059]">
-                    Extraordinary People.
-                  </span>
+                <h1 className="text-3xl sm:text-5xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.12] text-white">
+                  Non-Alcoholic Extrait Perfumes in Pakistan
                 </h1>
-                <p className="text-[11px] sm:text-sm font-semibold tracking-[0.14em] text-amber-200/90 uppercase">
-                  14+ Hours Beast Mode Sillage &bull; Engineered For Pakistan
+                <p className="text-sm sm:text-base font-semibold tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-300 to-[#c5a059] uppercase">
+                  Scents That Command Respect
+                </p>
+                <p className="text-[11px] sm:text-xs font-medium tracking-[0.12em] text-zinc-300 uppercase">
+                  {STORE_CONFIG.longevityText} Longevity &bull; Engineered For Pakistan
                 </p>
               </div>
 
-              {/* Short, Poetic Tagline */}
-              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-md">
-                Pure French perfume oils crafted with high-concentration extraits to conquer Pakistan&apos;s heat. Long-lasting, magnetic, and unforgettable.
+              {/* Intro paragraph covering extrait, non-alcoholic, COD, and Karachi/Lahore/Islamabad */}
+              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-lg">
+                Welcome to Noir Scents, Pakistan&apos;s dedicated artisanal fragrance house crafting long-lasting Extrait de Parfum. Each creation is formulated with 25–30% pure fragrance oil concentration and a 100% non-alcoholic base, ensuring skin comfort and full suitability for daily prayers. Engineered specifically to withstand the intense heat and humidity of the subcontinental climate, our extraits project with distinguished authority for 8–12+ hours. We offer doorstep Cash on Delivery (COD) across Karachi, Lahore, Islamabad, and more than 250 cities and towns nationwide, dispatched swiftly with registered couriers in 2–4 business days.
               </p>
 
               {/* Action Buttons */}
@@ -145,26 +140,26 @@ export default function HomePage() {
                 >
                   Shop Best Sellers
                 </a>
-                <a
-                  href="#clearance-sale"
+                <Link
+                  href="/collections/deals"
                   className="flex-1 sm:flex-initial px-5 sm:px-8 py-3 sm:py-3.5 bg-black/60 border border-white/60 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all text-center backdrop-blur-xs active:scale-95"
                 >
-                  Clearance Deals
-                </a>
+                  Explore Deals
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. LUXURY VALUE PROPOSITION BAR */}
+      {/* 2. VALUE PROPOSITION BAR */}
       <div className="bg-[#0e0e0e] text-white border-b border-white/10 py-3.5 sm:py-4 px-4">
         <div className="max-w-[1320px] mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 text-center">
             <div className="flex items-center justify-center gap-2 py-1 px-1.5">
               <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
               <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
-                <strong className="text-white font-semibold">Free Express Delivery</strong> &gt; Rs. 3,000
+                <strong className="text-white font-semibold">Free Express Delivery</strong> &gt; Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}
               </span>
             </div>
             <div className="flex items-center justify-center gap-2 py-1 px-1.5">
@@ -176,13 +171,13 @@ export default function HomePage() {
             <div className="flex items-center justify-center gap-2 py-1 px-1.5">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
               <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
-                <strong className="text-white font-semibold">14+ Hours Sillage</strong> Guaranteed
+                <strong className="text-white font-semibold">{STORE_CONFIG.longevityText}</strong> Longevity
               </span>
             </div>
             <div className="flex items-center justify-center gap-2 py-1 px-1.5">
               <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c5a059] shrink-0" />
               <span className="text-[11px] sm:text-xs text-zinc-300 font-medium tracking-wide">
-                <strong className="text-white font-semibold">7-Day Scent Guarantee</strong>
+                <strong className="text-white font-semibold">{STORE_CONFIG.returnWindowDays}-Day Scent Swap</strong>
               </span>
             </div>
           </div>
@@ -201,7 +196,7 @@ export default function HomePage() {
             </p>
           </div>
           <Link
-            href="/collections/men"
+            href="/collections/all"
             className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3"
           >
             View all <ArrowRight className="w-3.5 h-3.5" />
@@ -224,7 +219,7 @@ export default function HomePage() {
                 Clearance Sale
               </h2>
               <p className="text-[11px] sm:text-xs text-zinc-500 mt-1">
-                Limited-time discounted signature bottles. High projection with special savings.
+                Limited-time discounted signature bottles with exceptional savings.
               </p>
             </div>
             <Link
@@ -243,7 +238,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. SECTION: Bundles (Matches BuyFunoon section #3) */}
+      {/* 5. SECTION: Bundles & Sets (exclusively from deals collection) */}
       <section id="bundles" className="py-12 sm:py-16 bg-[#fafafa] border-y border-black/8">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8">
@@ -271,7 +266,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. SECTION: Shop By Category (Matches BuyFunoon collection-list) */}
+      {/* 6. SECTION: Shop By Category */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
@@ -282,7 +277,6 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* 4 category tiles with 1:1 aspect ratio */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {categories.map((cat) => (
             <Link
@@ -300,7 +294,6 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Title banner at bottom */}
               <div className="p-4 bg-white border-t border-black/6 flex items-center justify-between">
                 <div>
                   <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212] group-hover:underline underline-offset-4">
@@ -315,33 +308,33 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. SECTION: Trust Badges (Matches BuyFunoon Dawn feature-type1 exact 3 items) */}
+      {/* 7. SECTION: Trust Badges */}
       <section className="py-12 sm:py-16 bg-[#f8f8f8] border-t border-black/8">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-zinc-200">
-            {/* Box 1: Money-Back Guarantee */}
+            {/* Box 1: Scent Swap */}
             <div className="flex flex-col items-center px-4 pt-6 md:pt-0">
               <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3 shadow-xs">
                 <RotateCcw className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
-                Money-Back Guarantee
+                {STORE_CONFIG.returnWindowDays}-Day Scent Swap
               </h3>
               <p className="text-xs text-zinc-600 mt-1 max-w-xs">
-                We return the money within 15 days
+                Exchange your bottle within {STORE_CONFIG.returnWindowDays} days if the fragrance notes do not suit your taste.
               </p>
             </div>
 
-            {/* Box 2: 24/7 Customer Support */}
+            {/* Box 2: Customer Support */}
             <div className="flex flex-col items-center px-4 pt-6 md:pt-0">
               <div className="w-12 h-12 bg-white border border-black/10 flex items-center justify-center mb-3 shadow-xs">
                 <Headphones className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
-                24/7 Customer Support
+                Concierge Support
               </h3>
               <p className="text-xs text-zinc-600 mt-1 max-w-xs">
-                Our Support Team is Ready For You 7 days a week
+                Our team is available on WhatsApp ({STORE_CONFIG.businessHours}).
               </p>
             </div>
 
@@ -351,64 +344,44 @@ export default function HomePage() {
                 <Award className="w-6 h-6 text-[#121212]" />
               </div>
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212]">
-                Promising Quality
+                {STORE_CONFIG.concentrationText}
               </h3>
               <p className="text-xs text-zinc-600 mt-1 max-w-xs">
-                All our products assure the utmost quality
+                Handcrafted {STORE_CONFIG.perfumeType} providing {STORE_CONFIG.longevityText} endurance.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 8. SECTION: Customer Reviews */}
+      {/* 8. SECTION: Sample Customer Feedback (Honest cleanup) */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-black/8">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
-            Customer Reviews
+            Sample Customer Feedback
           </h2>
-          <div className="flex items-center justify-center gap-1.5 text-amber-500 mt-2">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-              ))}
-            </div>
-            <span className="text-xs font-semibold text-zinc-800 ml-1">
-              4.97 out of 5.0 based on 800+ verified customer reviews
-            </span>
-          </div>
+          <p className="text-xs text-zinc-500 mt-1">
+            Real experiences shared by fragrance lovers across Karachi, Lahore, and Islamabad.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <div className="flex text-amber-500 mb-2.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
               <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
-                &ldquo;Urban Legend projection is truly beast mode level! Lasted through an entire wedding evening in Karachi heat. Very high quality extrait.&rdquo;
+                &ldquo;Urban Legend projection is truly impressive! Lasted through an entire wedding evening in Karachi heat. Very high quality extrait.&rdquo;
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
               <div>
                 <div className="font-semibold text-zinc-900">Muhammad Bilal</div>
-                <div className="text-zinc-400">Karachi &bull; Verified Buyer</div>
+                <div className="text-zinc-500">Karachi</div>
               </div>
-              <span className="text-emerald-700 font-semibold text-[10px] bg-emerald-50 px-2 py-0.5 rounded-full">
-                Verified
-              </span>
             </div>
           </div>
 
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <div className="flex text-amber-500 mb-2.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
               <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
                 &ldquo;Ordered Aqua Mist and Royal Amber. Arrived in 2 days via TCS COD. The flacons look sleek and the scent lasts all day at university.&rdquo;
               </p>
@@ -416,21 +389,13 @@ export default function HomePage() {
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
               <div>
                 <div className="font-semibold text-zinc-900">Ayesha Khan</div>
-                <div className="text-zinc-400">Lahore &bull; Verified Buyer</div>
+                <div className="text-zinc-500">Lahore</div>
               </div>
-              <span className="text-emerald-700 font-semibold text-[10px] bg-emerald-50 px-2 py-0.5 rounded-full">
-                Verified
-              </span>
             </div>
           </div>
 
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <div className="flex text-amber-500 mb-2.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
               <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
                 &ldquo;The discovery tester pack is the best way to choose. Ended up ordering Ghalib 50ml. Support on WhatsApp assisted me within minutes.&rdquo;
               </p>
@@ -438,12 +403,40 @@ export default function HomePage() {
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
               <div>
                 <div className="font-semibold text-zinc-900">Hamza Tariq</div>
-                <div className="text-zinc-400">Islamabad &bull; Verified Buyer</div>
+                <div className="text-zinc-500">Islamabad</div>
               </div>
-              <span className="text-emerald-700 font-semibold text-[10px] bg-emerald-50 px-2 py-0.5 rounded-full">
-                Verified
-              </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. SECTION: FAQ Section (Text only, pulled from store-config values) */}
+      <section className="py-12 sm:py-16 bg-[#fafafa] border-t border-black/8">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-black/10 text-xs font-semibold uppercase tracking-wider text-zinc-800 mb-3">
+              <HelpCircle className="w-3.5 h-3.5 text-[#c5a059]" />
+              <span>Common Questions</span>
+            </div>
+            <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs text-zinc-500 mt-1">
+              Everything you need to know about our non-alcoholic extraits, Cash on Delivery, and delivery timelines.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            {STORE_CONFIG.faqs.map((faq, idx) => (
+              <div key={idx} className="bg-white p-6 border border-black/8 space-y-2">
+                <h3 className="font-semibold text-sm text-[#121212]">
+                  {faq.question}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-600 font-light leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

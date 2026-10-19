@@ -7,7 +7,6 @@ import { Star, Check, Plus } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
-
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 interface ProductCardProps {
@@ -16,7 +15,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
-  const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
+  const [selectedSizeIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const { addItem, openCart } = useCartStore();
@@ -34,11 +33,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     setTimeout(() => setIsAdded(false), 1500);
   };
 
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > selectedSize.price;
+  const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
+  const displaySize = product.sizeLabel || `${selectedSize.ml}ml`;
+  const imageAlt = `${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scents`;
 
   return (
     <div
-      className="group relative flex flex-col bg-white border border-zinc-200/90 hover:border-black/30 hover:shadow-sm transition-all duration-300"
+      className="group relative flex flex-col bg-white border border-zinc-200/90 hover:border-black/30 hover:shadow-xs transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -49,23 +50,23 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       >
         <Image
           src={isHovered ? hoverImage : primaryImage}
-          alt={`${product.name} - Noir Scents Eau de Parfum`}
+          alt={imageAlt}
           fill
           priority={priority}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover object-center group-hover:scale-105 transition-all duration-500 ease-out"
         />
 
-        {/* Dawn Style Badges */}
-        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
-          {hasDiscount && (
-            <span className="bg-[#cc0000] text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-              Sale
+        {/* Badges */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10 pointer-events-none">
+          {product.isBestSeller && (
+            <span className="bg-[#121212] text-white text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+              Best Seller
             </span>
           )}
-          {product.isBestSeller && (
-            <span className="bg-[#121212] text-white text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-              Best Seller
+          {hasDiscount && (
+            <span className="bg-[#cc0000] text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+              Sale
             </span>
           )}
         </div>
@@ -74,17 +75,19 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       {/* Info Column Below Image */}
       <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-3">
         <div className="space-y-1.5">
-          {/* Star Rating & Review Count matching Funoon */}
-          <div className="flex items-center gap-1.5 text-amber-500 text-xs">
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              ))}
+          {/* Honest Star Rating: Render only if real review data exists */}
+          {product.rating && product.reviewCount ? (
+            <div className="flex items-center gap-1.5 text-amber-500 text-xs">
+              <div className="flex items-center">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <span className="text-[11px] text-zinc-500 font-medium">
+                {product.rating} ({product.reviewCount})
+              </span>
             </div>
-            <span className="text-[11px] text-zinc-500 font-medium">
-              4.97 (812)
-            </span>
-          </div>
+          ) : null}
 
           {/* Product Name */}
           <h3 className="text-[13px] sm:text-[15px] font-semibold text-[#121212] group-hover:underline underline-offset-4 line-clamp-1">
@@ -93,16 +96,16 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
           {/* Scent brief / category tag */}
           <p className="text-[11px] text-zinc-500 uppercase tracking-wider font-medium">
-            50 ML &bull; Extrait de Parfum
+            {displaySize} &bull; Extrait de Parfum
           </p>
         </div>
 
         {/* Price & Quick Add Button */}
         <div className="pt-2 border-t border-zinc-100 flex flex-col gap-2.5">
           <div className="flex items-baseline gap-2 flex-wrap">
-            {hasDiscount && (
+            {hasDiscount && product.compareAtPrice && (
               <span className="text-xs text-zinc-400 line-through">
-                {formatPrice(product.compareAtPrice!)} PKR
+                {formatPrice(product.compareAtPrice)} PKR
               </span>
             )}
             <span className="text-sm sm:text-base font-bold text-[#121212]">
@@ -136,4 +139,3 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     </div>
   );
 }
-

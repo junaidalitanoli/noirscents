@@ -25,6 +25,10 @@ export interface Product {
   projection: string;
   isBestSeller: boolean;
   isNewArrival: boolean;
+  sizeLabel?: string;
+  badge?: string;
+  rating?: number;
+  reviewCount?: number;
   createdAt: string;
 }
 
