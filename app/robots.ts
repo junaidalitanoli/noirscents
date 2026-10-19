@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/checkout", "/order-success/"],
+        disallow: ["/admin", "/checkout", "/order-success"],
       },
     ],
-    sitemap: "https://noir-scents.pk/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

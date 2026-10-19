@@ -1,69 +1,47 @@
 import { MetadataRoute } from "next";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { CATEGORIES } from "@/lib/constants";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://noir-scents.pk";
-
-  // Static core routes
-  const routes: MetadataRoute.Sitemap = [
+  // Core static pages (omitting lastModified and changeFrequency/priority)
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1.0,
+      url: SITE_URL,
     },
     {
-      url: `${baseUrl}/pages/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
+      url: `${SITE_URL}/collections/all`,
     },
     {
-      url: `${baseUrl}/pages/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
+      url: `${SITE_URL}/pages/about`,
     },
     {
-      url: `${baseUrl}/policies/shipping`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
+      url: `${SITE_URL}/pages/contact`,
     },
     {
-      url: `${baseUrl}/policies/returns`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
+      url: `${SITE_URL}/policies/shipping`,
     },
     {
-      url: `${baseUrl}/policies/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.4,
+      url: `${SITE_URL}/policies/returns`,
+    },
+    {
+      url: `${SITE_URL}/policies/privacy`,
+    },
+    {
+      url: `${SITE_URL}/policies/terms`,
     },
   ];
 
-  // Collection categories
-  for (const cat of CATEGORIES) {
-    routes.push({
-      url: `${baseUrl}/collections/${cat.slug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    });
-  }
+  // Collection category routes
+  const collectionRoutes: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
+    url: `${SITE_URL}/collections/${cat.slug}`,
+  }));
 
-  // All individual products
-  for (const product of INITIAL_PRODUCTS) {
-    routes.push({
-      url: `${baseUrl}/products/${product.slug}`,
-      lastModified: new Date(product.createdAt),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    });
-  }
+  // Individual product routes (real per-item createdAt date only)
+  const productRoutes: MetadataRoute.Sitemap = INITIAL_PRODUCTS.map((product) => ({
+    url: `${SITE_URL}/products/${product.slug}`,
+    ...(product.createdAt ? { lastModified: new Date(product.createdAt) } : {}),
+  }));
 
-  return routes;
+  return [...staticRoutes, ...collectionRoutes, ...productRoutes];
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Search, Sparkles } from "lucide-react";
 import { searchProducts, INITIAL_PRODUCTS } from "@/lib/data";
 import { BRAND_NAME } from "@/lib/constants";
+import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import ProductGrid from "@/components/product/ProductGrid";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
@@ -16,11 +17,41 @@ export async function generateMetadata({
   searchParams,
 }: SearchPageProps): Promise<Metadata> {
   const { q } = await searchParams;
-  const query = q || "";
+  const query = (q || "").trim();
+  const pageTitle = query ? `Search: "${query}"` : "Search Fragrances";
+  const pageDescription = query
+    ? `Discover handcrafted non-alcoholic perfumes matching "${query}" at ${BRAND_NAME} with Cash on Delivery across Pakistan.`
+    : `Search our catalogue of handcrafted non-alcoholic Extrait de Parfum creations in Pakistan from ${BRAND_NAME}.`;
+  const canonicalUrl = query ? `/search?q=${encodeURIComponent(query)}` : "/search";
 
   return {
-    title: query ? `Search results for "${query}"` : "Search Perfumes",
-    description: `Discover handcrafted artisanal fragrances matching "${query}" at ${BRAND_NAME}. Cash on delivery across Pakistan.`,
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: pageDescription,
+      url: canonicalUrl,
+      siteName: "Noir Scents",
+      images: [
+        {
+          url: DEFAULT_PRODUCT_IMAGE,
+          width: 1024,
+          height: 1024,
+          alt: "Noir Scents Search Directory",
+        },
+      ],
+      locale: "en_PK",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: pageDescription,
+      images: [DEFAULT_PRODUCT_IMAGE],
+    },
   };
 }
 
