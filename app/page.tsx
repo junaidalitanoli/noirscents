@@ -127,11 +127,6 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* Intro paragraph covering extrait, non-alcoholic, COD, and Karachi/Lahore/Islamabad */}
-              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed max-w-lg">
-                Welcome to Noir Scents, Pakistan&apos;s dedicated artisanal fragrance house crafting long-lasting Extrait de Parfum. Each creation is formulated with 25–30% pure fragrance oil concentration and a 100% non-alcoholic base, ensuring skin comfort and full suitability for daily prayers. Engineered specifically to withstand the intense heat and humidity of the subcontinental climate, our extraits project with distinguished authority for 8–12+ hours. We offer doorstep Cash on Delivery (COD) across Karachi, Lahore, Islamabad, and more than 250 cities and towns nationwide, dispatched swiftly with registered couriers in 2–4 business days.
-              </p>
-
               {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-1">
                 <a
