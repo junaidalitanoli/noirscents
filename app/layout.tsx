@@ -6,7 +6,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
-import { BRAND_NAME } from "@/lib/constants";
+import { SITE_URL, getAbsoluteUrl } from "@/lib/site";
+import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const viewport: Viewport = {
@@ -22,36 +23,32 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+const defaultTitle = "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan";
+const defaultDescription =
+  "Handcrafted non-alcoholic Extrait de Parfum in Pakistan with 8–12+ hours longevity. Premium scents with nationwide Cash on Delivery across Karachi, Lahore & Islamabad.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://noir-scents.pk"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${BRAND_NAME} - Best Perfumes In Pakistan`,
-    template: `%s | ${BRAND_NAME}`,
+    default: defaultTitle,
+    template: "%s | Noir Scents",
   },
-  description:
-    "Noir Scents - Pakistan's artisanal perfume brand. Handcrafted Extraits de Parfum with high projection and nationwide Cash on Delivery.",
-  keywords: [
-    "Noir Scents",
-    "Noir Scents Pakistan",
-    "Pakistani Perfume Brand",
-    "Extrait de Parfum Pakistan",
-    "Cash on Delivery Perfumes",
-    "Oud Perfume Pakistan",
-    "Long Lasting Scents Karachi Lahore Islamabad",
-  ],
+  description: defaultDescription,
   authors: [{ name: "Noir Scents Team" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: `${BRAND_NAME} - Best Perfumes In Pakistan`,
-    description:
-      "Handcrafted luxury Extraits de Parfum, pure ouds, and long projection fragrances in Pakistan. Order online with Cash on Delivery.",
-    url: "https://noir-scents.pk",
-    siteName: BRAND_NAME,
+    title: defaultTitle,
+    description: defaultDescription,
+    url: SITE_URL,
+    siteName: "Noir Scents",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: `${BRAND_NAME} Artisanal Perfume Packaging`,
+        alt: "Noir Scents Artisanal Perfume Packaging",
       },
     ],
     locale: "en_PK",
@@ -59,9 +56,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${BRAND_NAME} - Best Perfumes In Pakistan`,
-    description:
-      "Pakistan's premier artisanal perfume brand. Long lasting projection with nationwide Cash on Delivery.",
+    title: defaultTitle,
+    description: defaultDescription,
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
@@ -71,8 +67,53 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const sameAs: string[] = [];
+  if (STORE_CONFIG.instagramUrl) sameAs.push(STORE_CONFIG.instagramUrl);
+  if (STORE_CONFIG.facebookUrl) sameAs.push(STORE_CONFIG.facebookUrl);
+
+  const rootJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: STORE_CONFIG.name,
+        legalName: STORE_CONFIG.legalName,
+        url: SITE_URL,
+        logo: getAbsoluteUrl("/images/logo.svg"),
+        email: STORE_CONFIG.contactEmail,
+        telephone: STORE_CONFIG.phone,
+        ...(sameAs.length > 0 ? { sameAs } : {}),
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "PK",
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: STORE_CONFIG.name,
+        publisher: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: `${SITE_URL}/search?q={search_term_string}`,
+          "query-input": "required name=search_term_string",
+        },
+      },
+    ],
+  };
+
   return (
     <html lang="en" className={montserrat.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(rootJsonLd) }}
+        />
+      </head>
       <body className="font-sans bg-white text-[#121212] antialiased flex flex-col min-h-screen">
         <AnnouncementBar />
         <Navbar />

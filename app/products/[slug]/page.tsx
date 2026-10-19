@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Truck, Star } from "lucide-react";
+import { Truck, RotateCcw, Droplets, Star, HelpCircle } from "lucide-react";
 import { getProductBySlug, INITIAL_PRODUCTS, getProductsByCategory } from "@/lib/data";
-import { BRAND_NAME } from "@/lib/constants";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { getAbsoluteUrl } from "@/lib/site";
+import { STORE_CONFIG } from "@/lib/store-config";
 import ImageGallery from "@/components/product/ImageGallery";
 import NotesPyramid from "@/components/product/NotesPyramid";
 import ProductDetailClient from "@/components/product/ProductDetailClient";
@@ -36,25 +37,36 @@ export async function generateMetadata({
   }
 
   const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
+  const pageTitle = `${product.name} Extrait de Parfum`;
+  const pageDescription = `Experience ${product.name} Extrait de Parfum in Pakistan. Non-alcoholic luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
 
   return {
-    title: `${product.name} Extrait de Parfum | ${BRAND_NAME}`,
-    description: `${product.description} Buy online with Cash on Delivery in Pakistan from ${BRAND_NAME}.`,
+    title: pageTitle,
+    description: pageDescription,
+    alternates: {
+      canonical: `/products/${product.slug}`,
+    },
     openGraph: {
-      title: `${product.name} | ${BRAND_NAME}`,
-      description: product.description,
-      url: `https://noir-scents.pk/products/${product.slug}`,
+      title: pageTitle,
+      description: pageDescription,
+      url: `/products/${product.slug}`,
+      siteName: "Noir Scents",
       images: [
         {
           url: primaryImage,
           width: 1024,
           height: 1024,
-          alt: `${product.name} - Noir Scents Eau de Parfum`,
+          alt: `${product.name} 50ml Extrait de Parfum bottle by Noir Scents`,
         },
       ],
+      locale: "en_PK",
+      type: "website",
     },
-    alternates: {
-      canonical: `https://noir-scents.pk/products/${product.slug}`,
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: pageDescription,
+      images: [primaryImage],
     },
   };
 }
@@ -72,80 +84,66 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
+  // Category display label
+  const categoryLabel =
+    product.category === "men"
+      ? "Men"
+      : product.category === "women"
+      ? "Women"
+      : product.category === "deals"
+      ? "Deals & Bundles"
+      : "Testers";
+
   // Schema.org JSON-LD
-  const jsonLd = {
+  const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Product",
-        "@id": `https://noir-scents.pk/products/${product.slug}/#product`,
-        name: product.name,
-        description: product.description,
-        image: `https://noir-scents.pk${product.images?.[0] || DEFAULT_PRODUCT_IMAGE}`,
-        brand: {
-          "@type": "Brand",
-          name: BRAND_NAME,
-        },
-        offers: {
-          "@type": "Offer",
-          priceCurrency: "PKR",
-          price: product.sizes[0].price,
-          availability: "https://schema.org/InStock",
-          url: `https://noir-scents.pk/products/${product.slug}`,
-          seller: {
-            "@type": "Organization",
-            name: BRAND_NAME,
-          },
-        },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: "4.9",
-          reviewCount: "87",
-        },
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: getAbsoluteUrl(product.images?.[0] || DEFAULT_PRODUCT_IMAGE),
+    brand: {
+      "@type": "Brand",
+      name: "Noir Scents",
+    },
+    sku: product.slug,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "PKR",
+      price: product.sizes[0].price,
+      availability: "https://schema.org/InStock",
+      url: getAbsoluteUrl(`/products/${product.slug}`),
+      seller: {
+        "@type": "Organization",
+        name: "Noir Scents",
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "Home",
-            item: "https://noir-scents.pk",
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: product.category,
-            item: `https://noir-scents.pk/collections/${product.category}`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: product.name,
-            item: `https://noir-scents.pk/products/${product.slug}`,
-          },
-        ],
-      },
-    ],
+    },
   };
+
+  // Only include aggregateRating if real review data exists
+  if (product.rating && product.reviewCount) {
+    productJsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: product.rating.toString(),
+      reviewCount: product.reviewCount.toString(),
+    };
+  }
 
   return (
     <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full">
       {/* Product JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
 
       <Breadcrumbs
         items={[
-          { label: "Home", href: "/" },
-          { label: product.category.toUpperCase(), href: `/collections/${product.category}` },
+          { label: categoryLabel, href: `/collections/${product.category}` },
           { label: product.name },
         ]}
       />
 
-      {/* Main Product Showcase Section (2-Column Dawn Archetype) */}
+      {/* Main Product Showcase Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 mt-6 items-start">
         {/* Left: Sticky Image Gallery */}
         <div className="lg:col-span-7">
@@ -156,27 +154,29 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <div className="lg:col-span-5 space-y-6">
           <div>
             <p className="text-xs uppercase tracking-[0.14em] text-zinc-500 font-semibold mb-1">
-              Noir Scents
+              Noir Scents &bull; {STORE_CONFIG.perfumeType}
             </p>
             <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-[#121212]">
               {product.name}
             </h1>
 
-            {/* Rating Stars & Reviews */}
-            <div className="flex items-center gap-2 mt-2 text-xs">
-              <div className="flex items-center text-amber-500">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
+            {/* Rating Stars: render only if honest review data exists */}
+            {product.rating && product.reviewCount ? (
+              <div className="flex items-center gap-2 mt-2 text-xs">
+                <div className="flex items-center text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="font-semibold text-zinc-900">{product.rating} / 5.0</span>
+                <span className="text-zinc-500">({product.reviewCount} customer reviews)</span>
               </div>
-              <span className="font-semibold text-zinc-900">4.9 / 5.0</span>
-              <span className="text-zinc-500">(87 customer reviews)</span>
-            </div>
+            ) : null}
           </div>
 
-          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-            {product.description}
-          </p>
+          <div className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-normal space-y-3">
+            <p>{product.description}</p>
+          </div>
 
           {/* Client Buy Box Component */}
           <ProductDetailClient product={product} />
@@ -188,7 +188,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               Express Delivery Across Pakistan
             </div>
             <p>
-              Orders are dispatched via TCS / Leopards Courier in 24 hours. Expected delivery is 2–4 business days with Cash on Delivery nationwide.
+              Dispatched via {STORE_CONFIG.couriers} within 24 hours. Expected delivery is {STORE_CONFIG.deliveryTime} with Cash on Delivery nationwide.
             </p>
           </div>
         </div>
@@ -201,6 +201,67 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             Olfactory Profile &amp; Notes
           </h2>
           <NotesPyramid notes={product.notes} />
+        </div>
+      </div>
+
+      {/* How to Wear It & Shipping/Returns Blocks */}
+      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* How to Wear It Block */}
+        <div className="p-6 bg-[#fafafa] border border-black/8 space-y-3">
+          <div className="flex items-center gap-2 text-[#121212] font-semibold text-sm uppercase tracking-wider">
+            <Droplets className="w-4 h-4 text-[#c5a059]" />
+            <h3>How to Wear It</h3>
+          </div>
+          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
+            Due to our high {STORE_CONFIG.concentrationText}, apply 2–3 sprays directly onto warm pulse points: the base of the throat, inner wrists, and behind the ears. Since our formula is 100% non-alcoholic and oil-rich, spritzing collarbones or fabric also ensures a radiant {STORE_CONFIG.longevityText} scent trail throughout Pakistani summers and winter evenings.
+          </p>
+        </div>
+
+        {/* Shipping & Returns Block */}
+        <div className="p-6 bg-[#fafafa] border border-black/8 space-y-3">
+          <div className="flex items-center gap-2 text-[#121212] font-semibold text-sm uppercase tracking-wider">
+            <RotateCcw className="w-4 h-4 text-[#c5a059]" />
+            <h3>Shipping &amp; Returns</h3>
+          </div>
+          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
+            We deliver nationwide across Pakistan in {STORE_CONFIG.deliveryTime} with Cash on Delivery (COD). Free delivery is included on orders exceeding Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}. Every full-bottle purchase is backed by our {STORE_CONFIG.returnWindowDays}-day easy scent swap policy if the fragrance does not match your taste.
+          </p>
+        </div>
+      </div>
+
+      {/* Product Specific FAQ Section */}
+      <div className="mt-12 p-6 sm:p-8 bg-white border border-black/8 space-y-6">
+        <div className="flex items-center gap-2 pb-3 border-b border-black/8">
+          <HelpCircle className="w-4 h-4 text-[#c5a059]" />
+          <h3 className="text-sm sm:text-base font-semibold uppercase tracking-wider text-[#121212]">
+            Frequently Asked Questions
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-zinc-600">
+          <div>
+            <h4 className="font-semibold text-zinc-900 mb-1">Is Cash on Delivery available?</h4>
+            <p className="font-light leading-relaxed">
+              Yes, Cash on Delivery (COD) is supported across all cities and towns in Pakistan.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-semibold text-zinc-900 mb-1">How long will this bottle last?</h4>
+            <p className="font-light leading-relaxed">
+              Our concentrated Extrait de Parfum delivers {STORE_CONFIG.longevityText} of projection on skin and garments.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-semibold text-zinc-900 mb-1">Is this scent non-alcoholic?</h4>
+            <p className="font-light leading-relaxed">
+              Yes, 100% non-alcoholic and formulated with pure perfume oils, safe for daily prayer and sensitive skin.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-semibold text-zinc-900 mb-1">What if I want to exchange it?</h4>
+            <p className="font-light leading-relaxed">
+              Notify our WhatsApp team within {STORE_CONFIG.returnWindowDays} days of receiving your order to arrange a smooth fragrance exchange.
+            </p>
+          </div>
         </div>
       </div>
 
