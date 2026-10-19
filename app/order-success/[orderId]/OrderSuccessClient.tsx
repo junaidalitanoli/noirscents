@@ -44,10 +44,10 @@ export default function OrderSuccessClient({ orderId }: OrderSuccessClientProps)
           Order Confirmed &bull; Cash on Delivery
         </span>
         <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950">
-          Shukriya! Your Order is Placed
+          Thank You — Your Order is Confirmed
         </h1>
         <p className="text-sm text-zinc-600 max-w-md mx-auto">
-          We have registered order <strong className="font-mono text-zinc-900">{orderId}</strong>. Our dispatch center will prepare your artisanal flacons for swift courier transit.
+          We are truly grateful for your trust. Order <strong className="font-mono text-zinc-900">#{orderId}</strong> has been received and is being carefully prepared for dispatch.
         </p>
       </div>
 
