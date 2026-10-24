@@ -12,7 +12,7 @@ export const SITE_IMAGES = {
     height: 80,
   },
   heroBanner: {
-    src: "/images/noir-hero-banner.jpg",
+    src: "/images/noir-light-hero.jpg",
     alt: "Noir Scents Luxury Extraits de Parfum Showcase",
     width: 1920,
     height: 1080,
