@@ -89,3 +89,12 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 .animate-slide-over {
   animation: slideOver 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.animate-progress {
+  animation: progress linear forwards;
+}

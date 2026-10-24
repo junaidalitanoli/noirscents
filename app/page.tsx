@@ -6,6 +6,7 @@ import { INITIAL_PRODUCTS } from "@/lib/data";
 import { SITE_IMAGES, DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { STORE_CONFIG } from "@/lib/store-config";
 import ProductCard from "@/components/product/ProductCard";
+import HeroSlider from "@/components/home/HeroSlider";
 
 export const metadata: Metadata = {
   title: {
@@ -87,68 +88,8 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* 1. HERO BANNER: Full-width Cinematic Luxury Showcase (Light Aesthetic) */}
-      <section className="relative w-full overflow-hidden bg-[#faf8f5] text-stone-900">
-        <div className="relative w-full min-h-[520px] sm:min-h-[600px] lg:min-h-[680px] flex items-center">
-          {/* Full-bleed background campaign image */}
-          <Image
-            src={SITE_IMAGES.heroBanner.src}
-            alt={SITE_IMAGES.heroBanner.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[80%_center] sm:object-right md:object-center brightness-[1.02] contrast-[1.02]"
-          />
-
-          {/* Left-side luminous vignette for crisp text contrast */}
-          <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-[#faf8f5]/95 via-[#faf8f5]/85 to-transparent w-[60%] pointer-events-none" />
-          <div className="lg:hidden absolute inset-0 bg-gradient-to-t from-[#faf8f5]/98 via-[#faf8f5]/80 to-[#faf8f5]/30 pointer-events-none" />
-          <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#faf8f5] to-transparent pointer-events-none" />
-
-          {/* Luxury Content Column */}
-          <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20">
-            <div className="max-w-[580px] space-y-4 sm:space-y-6 text-left">
-              {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/85 border border-[#b48325]/30 text-[#8c6218] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-md shadow-xs rounded-full">
-                <Sparkles className="w-3 h-3 text-[#b48325]" />
-                <span>Haute Parfumerie &bull; {STORE_CONFIG.concentrationText}</span>
-              </div>
-
-              {/* Main Headline & Supporting Tagline */}
-              <div className="space-y-2">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-stone-950">
-                  Crafted For <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9b6f1e] via-[#c59a3f] to-[#7d5612]">
-                    Extraordinary People.
-                  </span>
-                </h1>
-                <p className="text-sm sm:text-base font-semibold tracking-[0.16em] text-[#9b6f1e] uppercase">
-                  Scents That Command Respect
-                </p>
-                <p className="text-[11px] sm:text-xs font-medium tracking-[0.12em] text-stone-600 uppercase">
-                  {STORE_CONFIG.longevityText} Longevity &bull; Engineered For Pakistan
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-3 pt-1">
-                <a
-                  href="#best-sellers"
-                  className="flex-1 sm:flex-initial px-5 sm:px-8 py-3.5 bg-stone-950 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-[#b48325] transition-all text-center shadow-md hover:shadow-lg active:scale-95"
-                >
-                  Shop Best Sellers
-                </a>
-                <Link
-                  href="/collections/deals"
-                  className="flex-1 sm:flex-initial px-5 sm:px-8 py-3.5 bg-white/90 border border-stone-300 text-stone-900 font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95"
-                >
-                  Explore Deals
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 1. HERO CAROUSEL: 4 Distinct Luxury Light Themes & Auto-Rotating Banners */}
+      <HeroSlider />
 
       {/* 2. VALUE PROPOSITION BAR (Light Luxury Aesthetic) */}
       <div className="bg-[#f5f1eb] text-stone-800 border-y border-stone-200/80 py-3.5 sm:py-4 px-4">

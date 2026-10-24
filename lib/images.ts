@@ -17,6 +17,32 @@ export const SITE_IMAGES = {
     width: 1920,
     height: 1080,
   },
+  heroBanners: {
+    signature: {
+      src: "/images/noir-light-hero.jpg",
+      alt: "Noir Scents Luxury Extraits de Parfum Showcase",
+      width: 1920,
+      height: 1080,
+    },
+    aqua: {
+      src: "/images/noir-hero-aqua.jpg",
+      alt: "Aqua Mist Crisp Marine & Sea Salt Extrait",
+      width: 1920,
+      height: 1080,
+    },
+    rose: {
+      src: "/images/noir-hero-rose.jpg",
+      alt: "Royal Amber & Velvety Rose Floral Extraits",
+      width: 1920,
+      height: 1080,
+    },
+    bundles: {
+      src: "/images/noir-hero-bundles.jpg",
+      alt: "Curated Luxury Perfume Sets & Discovery Flights",
+      width: 1920,
+      height: 1080,
+    },
+  },
   promoBanner: {
     src: "/images/noir-hero-banner.jpg",
     alt: "Noir Scents Limited Edition Reserve",
