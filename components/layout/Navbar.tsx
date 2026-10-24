@@ -33,46 +33,38 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-[38px] z-40 bg-white border-b border-black/8 transition-all">
-        {/* 1. Mobile Header: Centered Brand Name & Symmetrical Action Icons */}
+        {/* 1. Mobile Header: Clean, balanced spacing with zero collision */}
         <div className="lg:hidden max-w-[1400px] mx-auto px-4 h-16 relative flex items-center justify-between">
           {/* Left: Mobile Drawer Trigger */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-zinc-900 hover:text-black focus:outline-hidden"
+            className="p-2 -ml-2 text-stone-900 hover:text-black focus:outline-hidden"
             aria-label="Open Navigation Menu"
           >
             <Menu className="w-5 h-5" />
           </button>
 
-          {/* Center: Brand Name (Centered on Mobile) */}
-          <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto">
+          {/* Center: Brand Name (Centered on Mobile with safe width) */}
+          <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto max-w-[55%]">
             <Link
               href="/"
-              className="text-lg sm:text-xl font-bold tracking-[0.2em] uppercase text-[#121212] hover:opacity-80 transition-opacity whitespace-nowrap block"
+              className="text-base sm:text-lg font-bold tracking-[0.16em] uppercase text-stone-950 hover:opacity-80 transition-opacity whitespace-nowrap block font-serif"
             >
               Noir Scents
             </Link>
           </div>
 
-          {/* Right: Search, Customer Account & Cart Icons */}
+          {/* Right: Search & Cart (Customer account in drawer) */}
           <div className="flex items-center space-x-1">
             <button
               type="button"
               onClick={() => setSearchModalOpen(true)}
-              className="p-2 text-zinc-900 hover:text-black"
+              className="p-2 text-stone-900 hover:text-black"
               aria-label="Open search"
             >
               <Search className="w-5 h-5" />
             </button>
-            <Link
-              href="/account"
-              className="p-2 text-zinc-900 hover:text-black transition-colors"
-              aria-label="Customer Account"
-              title="Customer Account"
-            >
-              <User className="w-5 h-5" />
-            </Link>
             <CartBadge />
           </div>
         </div>

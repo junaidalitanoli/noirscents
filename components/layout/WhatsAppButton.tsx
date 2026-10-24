@@ -26,7 +26,7 @@ export default function WhatsAppButton() {
   const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex items-center group">
+    <div className="fixed bottom-4 right-3.5 sm:bottom-6 sm:right-6 z-40 flex items-center group">
       {/* Tooltip */}
       <span className="hidden sm:inline-block mr-3 px-3 py-1.5 rounded-full bg-zinc-900/90 text-white text-xs font-semibold shadow-lg backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
         Chat with us
@@ -38,14 +38,14 @@ export default function WhatsAppButton() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
-        className="w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-xl hover:shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 relative focus:outline-hidden"
+        className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white flex items-center justify-center shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 relative focus:outline-hidden"
       >
         {/* Ambient Ring */}
-        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-30 animate-ping -z-10" />
+        <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-25 animate-ping -z-10" />
 
         {/* Official WhatsApp SVG Vector Icon */}
         <svg
-          className="w-7 h-7 fill-white"
+          className="w-5 h-5 sm:w-6 sm:h-6 fill-white"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >

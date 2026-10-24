@@ -92,32 +92,47 @@ export default function HomePage() {
       <HeroSlider />
 
       {/* 2. VALUE PROPOSITION BAR (Light Luxury Aesthetic) */}
-      <div className="bg-[#f5f1eb] text-stone-800 border-y border-stone-200/80 py-3.5 sm:py-4 px-4">
+      <div className="bg-[#faf8f5] text-stone-800 border-y border-[#eae4d9] py-3 sm:py-4 px-3 sm:px-6">
         <div className="max-w-[1320px] mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 text-center">
-            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
-              <Truck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#b48325] shrink-0" />
-              <span className="text-[11px] sm:text-xs text-stone-600 font-medium tracking-wide">
-                <strong className="text-stone-950 font-semibold">Free Express Delivery</strong> &gt; Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}
-              </span>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-6">
+            <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
+              <div className="w-7 h-7 rounded-full bg-amber-100/60 flex items-center justify-center shrink-0">
+                <Truck className="w-3.5 h-3.5 text-[#b48325]" />
+              </div>
+              <div className="text-left">
+                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 uppercase tracking-wider">Free TCS Shipping</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Orders &gt; Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}</p>
+              </div>
             </div>
-            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
-              <Banknote className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#b48325] shrink-0" />
-              <span className="text-[11px] sm:text-xs text-stone-600 font-medium tracking-wide">
-                <strong className="text-stone-950 font-semibold">Cash on Delivery</strong> Nationwide
-              </span>
+
+            <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
+              <div className="w-7 h-7 rounded-full bg-amber-100/60 flex items-center justify-center shrink-0">
+                <Banknote className="w-3.5 h-3.5 text-[#b48325]" />
+              </div>
+              <div className="text-left">
+                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 uppercase tracking-wider">Cash on Delivery</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Nationwide Doorstep Pay</p>
+              </div>
             </div>
-            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#b48325] shrink-0" />
-              <span className="text-[11px] sm:text-xs text-stone-600 font-medium tracking-wide">
-                <strong className="text-stone-950 font-semibold">{STORE_CONFIG.longevityText}</strong> Longevity
-              </span>
+
+            <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
+              <div className="w-7 h-7 rounded-full bg-amber-100/60 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-[#b48325]" />
+              </div>
+              <div className="text-left">
+                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 uppercase tracking-wider">{STORE_CONFIG.longevityText} Longevity</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Pure Artisan Extrait</p>
+              </div>
             </div>
-            <div className="flex items-center justify-center gap-2 py-1 px-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#b48325] shrink-0" />
-              <span className="text-[11px] sm:text-xs text-stone-600 font-medium tracking-wide">
-                <strong className="text-stone-950 font-semibold">{STORE_CONFIG.returnWindowDays}-Day Scent Swap</strong>
-              </span>
+
+            <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
+              <div className="w-7 h-7 rounded-full bg-amber-100/60 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#b48325]" />
+              </div>
+              <div className="text-left">
+                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 uppercase tracking-wider">{STORE_CONFIG.returnWindowDays}-Day Guarantee</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Hassle-free Scent Swap</p>
+              </div>
             </div>
           </div>
         </div>
