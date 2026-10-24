@@ -377,12 +377,6 @@ export default function HeroSlider() {
           })}
         </div>
 
-        {/* Top-Right Editorial Slide Counter */}
-        <div className="hidden sm:flex absolute top-5 right-6 lg:right-10 z-20 items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full border border-stone-200/80 shadow-xs text-xs font-mono tracking-widest text-stone-700 pointer-events-none">
-          <span className="font-bold text-stone-950">0{realIndex + 1}</span>
-          <span className="text-stone-300">/</span>
-          <span className="text-stone-400">0{SLIDES.length}</span>
-        </div>
 
         {/* Previous / Next Chevrons */}
         <div className="hidden sm:flex absolute inset-y-0 inset-x-4 lg:inset-x-8 items-center justify-between z-20 pointer-events-none">
