@@ -36,8 +36,6 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
-  const showDisclaimer = STORE_CONFIG.showProjectDisclaimer;
-
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16 w-full">
       <Breadcrumbs items={[{ label: "Terms and Conditions" }]} />
@@ -100,7 +98,7 @@ export default function TermsPage() {
               All customer transactions on this store operate under Cash on Delivery (COD) within Pakistan. You are required to pay the exact invoice amount printed on the courier consignment note directly to the delivery rider in Pakistani Rupees.
             </p>
             <p>
-              Orders over Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} qualify for free express shipping. Orders below this threshold carry a standard shipping fee of Rs. {STORE_CONFIG.standardShippingFee.toLocaleString()}.
+              Orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} and above qualify for free express shipping. Orders below this threshold carry a standard shipping fee of Rs. {STORE_CONFIG.standardShippingFee.toLocaleString()}.
             </p>
           </div>
 
@@ -131,16 +129,14 @@ export default function TermsPage() {
             </p>
           </div>
 
-          {showDisclaimer && (
-            <div className="space-y-3 border-t border-zinc-200 pt-6">
-              <h2 className="font-heading text-xl font-bold text-zinc-950">
-                6. Educational Demonstration Notice
-              </h2>
-              <p className="bg-amber-50/60 p-4 rounded-xl border border-amber-200 text-xs sm:text-sm text-zinc-600">
-                This digital storefront is an educational prototype developed for a university term project. All product names, artistic decanters, descriptions, and vector graphics have been formulated as original demonstration content.
-              </p>
-            </div>
-          )}
+          <div className="space-y-3 border-t border-zinc-200 pt-6">
+            <h2 className="font-heading text-xl font-bold text-zinc-950">
+              6. Authentic Artisanal Guarantee
+            </h2>
+            <p className="bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-xs sm:text-sm text-zinc-600">
+              All Noir Scents flacons and discovery sets are original artisanal fragrance compositions handcrafted and packaged with high-grade perfume oils and botanical carriers. Every order dispatched via Cash on Delivery is backed by our customer concierge support.
+            </p>
+          </div>
         </div>
       </div>
     </div>

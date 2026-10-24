@@ -107,11 +107,11 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
             {/* Price Row */}
             <div className="flex items-baseline gap-3 pt-1">
               <span className="text-2xl sm:text-3xl font-bold text-[#121212]">
-                {formatPrice(selectedSize.price)} PKR
+                {formatPrice(selectedSize.price)}
               </span>
               {hasDiscount && product.compareAtPrice && (
                 <span className="text-base sm:text-lg text-zinc-400 line-through">
-                  {formatPrice(product.compareAtPrice)} PKR
+                  {formatPrice(product.compareAtPrice)}
                 </span>
               )}
               {hasDiscount && product.compareAtPrice && (
@@ -142,7 +142,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                         : "border-zinc-300 bg-white text-zinc-800 hover:border-black"
                     }`}
                   >
-                    {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)} PKR
+                    {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)}
                   </button>
                 ))}
               </div>
@@ -208,7 +208,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                     <Check className="w-4 h-4" /> Added to Cart
                   </>
                 ) : (
-                  <>Add to cart &bull; {formatPrice(selectedSize.price * quantity)} PKR</>
+                  <>Add to cart &bull; {formatPrice(selectedSize.price * quantity)}</>
                 )}
               </button>
 
@@ -253,7 +253,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                 </button>
                 {openShipping && (
                   <div className="p-4 bg-white text-xs space-y-1.5 text-zinc-600 border-t border-zinc-100">
-                    <p>Free delivery on all orders over Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)}.</p>
+                    <p>Free delivery on all orders of {formatPrice(STORE_CONFIG.freeDeliveryThreshold)} and above.</p>
                     <p>Dispatched via {STORE_CONFIG.couriers} in 24 hours. Delivery takes {STORE_CONFIG.deliveryTime} with Cash on Delivery nationwide.</p>
                   </div>
                 )}

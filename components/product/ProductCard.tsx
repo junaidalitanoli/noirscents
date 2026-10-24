@@ -105,11 +105,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <div className="flex items-baseline gap-2 flex-wrap">
             {hasDiscount && product.compareAtPrice && (
               <span className="text-xs text-zinc-400 line-through">
-                {formatPrice(product.compareAtPrice)} PKR
+                {formatPrice(product.compareAtPrice)}
               </span>
             )}
             <span className="text-sm sm:text-base font-bold text-[#121212]">
-              {formatPrice(selectedSize.price)} PKR
+              {formatPrice(selectedSize.price)}
             </span>
           </div>
 

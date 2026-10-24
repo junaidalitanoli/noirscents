@@ -35,23 +35,23 @@ const COLLECTION_METADATA: Record<
     description:
       "Explore our entire catalogue of handcrafted non-alcoholic Extrait de Parfum, sample sets, and bundles with Cash on Delivery in Pakistan.",
     intro:
-      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated with 35% oil concentration and 100% non-alcoholic bases for 8–12+ hours of endurance across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders above Rs. 3,000.",
+      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated as a concentrated alcohol-free oil extrait engineered for enduring sillage across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders of Rs. 3,000 and above.",
     image: DEFAULT_PRODUCT_IMAGE,
   },
   men: {
     title: "Men's Perfumes in Pakistan",
     description:
-      "Shop long-lasting masculine extrait perfumes in Pakistan. Bold woody, spicy, and fresh notes crafted for 8–12+ hours sillage.",
+      "Shop long-lasting masculine extrait perfumes in Pakistan. Bold woody, spicy, and fresh notes crafted for enduring all-day sillage.",
     intro:
-      "Designed for the charismatic modern man, our men's collection features bold woody accords, smoldering ouds, and revitalizing fresh notes. Formulated to triumph over Pakistan's climate, these extraits project with distinguished authority for 8–12+ hours. Order with seamless Cash on Delivery across Karachi, Lahore, Islamabad, and nationwide.",
+      "Designed for the charismatic modern man, our men's collection features bold woody accords, smoldering ouds, and revitalizing fresh notes. Formulated to triumph over Pakistan's climate, these extraits project with distinguished authority and enduring presence. Order with seamless Cash on Delivery across Karachi, Lahore, Islamabad, and nationwide.",
     image: SITE_IMAGES.categories.men.src,
   },
   women: {
     title: "Women's Perfumes in Pakistan",
     description:
-      "Discover enchanting floral, amber, and gourmand extrait perfumes for women in Pakistan. 100% non-alcoholic with graceful projection.",
+      "Discover enchanting floral, amber, and gourmand extrait perfumes for women in Pakistan. Alcohol-free oil bases with graceful projection.",
     intro:
-      "Envelop yourself in velvet floral bouquets, warm Madagascar ambers, and decadent gourmand trails crafted exclusively for women. Each non-alcoholic extrait melts into the skin for 8–12+ hours of graceful, sophisticated projection. Dispatched nationwide with 2–4 business days delivery and a 7-day scent exchange guarantee.",
+      "Envelop yourself in velvet floral bouquets, warm Madagascar ambers, and decadent gourmand trails crafted exclusively for women. Each alcohol-free extrait melts into the skin for graceful, enduring projection. Dispatched nationwide with 2–4 business days delivery and a 7-day scent exchange guarantee.",
     image: SITE_IMAGES.categories.women.src,
   },
   testers: {
@@ -59,13 +59,13 @@ const COLLECTION_METADATA: Record<
     description:
       "Sample luxury perfumes with our discovery sets and travel testers. Find your signature extrait fragrance before ordering full bottles.",
     intro:
-      "Uncertain which fragrance best complements your skin chemistry? Our discovery sets and travel spray atomizers let you experience our most celebrated extraits at home before choosing a full bottle. Each sample flight features genuine 35% oil concentration and includes complimentary smelling strips.",
+      "Uncertain which fragrance best complements your skin chemistry? Our discovery sets and travel spray atomizers let you experience our most celebrated extraits at home before choosing a full bottle. Each sample flight features concentrated extrait formulations and includes complimentary smelling strips.",
     image: SITE_IMAGES.categories.testers.src,
   },
   deals: {
     title: "Perfume Bundles & Deals",
     description:
-      "Curated fragrance bundles, duo packs, and clearance specials at exceptional value. Free delivery across Pakistan over Rs. 3,000.",
+      "Curated fragrance bundles, duo packs, and clearance specials at exceptional value. Free delivery across Pakistan on orders of Rs. 3,000 and above.",
     intro:
       "Maximize your fragrance value with our curated multi-bottle duos, couple pairings, and limited-run promotional sets. Whether refreshing your seasonal rotation or gifting someone special, our bundles deliver exceptional artisanal quality at unmatched savings. Dispatched nationwide with Cash on Delivery.",
     image: SITE_IMAGES.categories.deals.src,

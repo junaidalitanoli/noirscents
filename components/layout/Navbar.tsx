@@ -326,7 +326,7 @@ export default function Navbar() {
             </div>
 
             <div className="pt-6 border-t border-zinc-200 text-xs text-zinc-500 space-y-1">
-              <p className="font-semibold text-black">Pakistan (PKR Rs.)</p>
+              <p className="font-semibold text-black">Pakistan (PKR)</p>
               <p>Cash on Delivery Available Nationwide</p>
             </div>
           </div>

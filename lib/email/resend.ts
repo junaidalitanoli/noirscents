@@ -22,7 +22,7 @@ export function getResendApiKey(): string | undefined {
 }
 
 export function getSenderEmail(): string {
-  const from = process.env.RESEND_FROM_EMAIL;
+  const from = process.env.RESEND_FROM_EMAIL || process.env.SENDER_EMAIL;
   if (from && from.trim().length > 0) {
     return from.trim();
   }

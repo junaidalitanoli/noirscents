@@ -25,6 +25,7 @@ export default function CheckoutForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const subtotal = getSubtotal();
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
@@ -70,13 +71,15 @@ export default function CheckoutForm() {
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
 
-    // Generate unique Pakistani order number with NS prefix
+    // Client idempotency key to prevent accidental duplicate submission
+    const idempotencyKey = `ns_chk_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
     const randomDigits = Math.floor(10000 + Math.random() * 90000);
-    const orderId = `NS-${randomDigits}`;
+    const clientTempOrderId = `NS-${randomDigits}`;
 
     const newOrder: Order = {
-      id: orderId,
+      id: clientTempOrderId,
       customer: {
         fullName: formData.fullName.trim(),
         phone: formatPakistaniPhone(formData.phone),
@@ -92,30 +95,64 @@ export default function CheckoutForm() {
       status: "Pending",
       paymentMethod: "Cash on Delivery",
       createdAt: new Date().toISOString(),
+      idempotencyKey,
     };
 
     try {
-      // Send email first to store owner via server route
-      await fetch("/api/send-order", {
+      const res = await fetch("/api/send-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ order: newOrder }),
+        body: JSON.stringify({ order: newOrder, idempotencyKey }),
       });
-    } catch (err) {
-      console.error("[Checkout] Order email trigger error:", err);
-      // Fallback: Continue so customer order is never lost
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Order validation failed on server. Please check your details.");
+      }
+
+      if (data.success === false && !data.simulated) {
+        throw new Error(data.error || "Order processing failed. Please contact WhatsApp support.");
+      }
+
+      // Authoritative server-confirmed order ID and figures
+      const confirmedOrderId = typeof data.orderId === "string" ? data.orderId : clientTempOrderId;
+      const verifiedOrder: Order = {
+        ...newOrder,
+        id: confirmedOrderId,
+        subtotal: typeof data.subtotal === "number" ? data.subtotal : newOrder.subtotal,
+        shippingFee: typeof data.shippingFee === "number" ? data.shippingFee : newOrder.shippingFee,
+        total: typeof data.total === "number" ? data.total : newOrder.total,
+      };
+
+      addOrder(verifiedOrder);
+      clearCart();
+
+      // Redirect to Order Confirmation page with server-confirmed order ID
+      router.push(`/order-success/${confirmedOrderId}`);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to place your order. Please try again.";
+      console.error("[Checkout] Order processing error:", msg);
+      setSubmitError(msg);
+      setIsSubmitting(false);
+      return;
     }
-
-    // Save order to persisted store and clear cart
-    addOrder(newOrder);
-    clearCart();
-
-    // Redirect to Order Confirmation page
-    router.push(`/order-success/${orderId}`);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {submitError && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="p-4 rounded-xl bg-red-50 border border-red-200 text-xs sm:text-sm text-red-800 flex items-start gap-2.5"
+        >
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+          <div>
+            <strong className="block font-semibold">Order Submission Notice</strong>
+            <span>{submitError}</span>
+          </div>
+        </div>
+      )}
       <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
         <div className="border-b border-zinc-200 pb-4 flex items-center justify-between">
           <div>

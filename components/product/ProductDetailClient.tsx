@@ -41,11 +41,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* Price Display */}
       <div className="flex items-baseline gap-3 pt-2">
         <span className="text-2xl sm:text-3xl font-bold text-[#121212]">
-          {formatPrice(selectedSize.price)} PKR
+          {formatPrice(selectedSize.price)}
         </span>
         {hasDiscount && product.compareAtPrice && (
           <span className="text-base text-zinc-400 line-through">
-            {formatPrice(product.compareAtPrice)} PKR
+            {formatPrice(product.compareAtPrice)}
           </span>
         )}
         {hasDiscount && product.compareAtPrice && (
@@ -56,7 +56,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       </div>
 
       <p className="text-xs text-zinc-500 font-light">
-        Taxes included. Free express delivery across Pakistan on orders over Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)}.
+        Taxes included. Free express delivery across Pakistan on orders of {formatPrice(STORE_CONFIG.freeDeliveryThreshold)} and above.
       </p>
 
       {/* Size Selector */}
@@ -78,7 +78,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     : "border-zinc-300 bg-white text-zinc-800 hover:border-black"
                 }`}
               >
-                {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)} PKR
+                {product.sizeLabel || `${size.ml}ml Flacon`} &bull; {formatPrice(size.price)}
               </button>
             );
           })}
@@ -145,7 +145,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <Check className="w-4 h-4 text-white" /> Added to Cart!
             </>
           ) : (
-            <>Add to cart &bull; {formatPrice(totalPrice)} PKR</>
+            <>Add to cart &bull; {formatPrice(totalPrice)}</>
           )}
         </button>
 

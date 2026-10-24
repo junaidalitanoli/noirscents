@@ -60,7 +60,7 @@ export default function ShippingPolicyPage() {
             <Truck className="w-5 h-5 text-[#d4af37] mb-2" />
             <h2 className="font-bold text-zinc-900 text-sm">Free Delivery</h2>
             <p className="text-zinc-500 mt-1">
-              On all orders of Rs. {formatPrice(STORE_CONFIG.freeDeliveryThreshold)} and above. Flat Rs. {formatPrice(STORE_CONFIG.standardShippingFee)} under threshold.
+              On all orders of {formatPrice(STORE_CONFIG.freeDeliveryThreshold)} and above. Flat {formatPrice(STORE_CONFIG.standardShippingFee)} under threshold.
             </p>
           </div>
 

@@ -75,10 +75,10 @@ The storefront architecture matches the Shopify Dawn theme layout:
 
 ---
 
-## 🔑 Demo Admin Credentials
+## 🔑 Admin Portal Authentication
 
 - **URL**: [`/admin`](http://localhost:3000/admin)
-- **Password**: `admin123`
+- **Authentication**: Secured via `ADMIN_SECRET` environment variable configured in `.env.local` or Netlify dashboard. No default or hardcoded fallback credentials.
 
 ---
 

@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import { BRAND_NAME } from "@/lib/constants";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { formatPrice } from "@/lib/formatters";
 
 export const metadata: Metadata = {
   title: "Returns & Exchanges Policy",
@@ -86,7 +87,7 @@ export default function ReturnsPolicyPage() {
               2. Pack the bottle securely in its original packaging.
             </p>
             <p>
-              3. Our courier will deliver the replacement bottle and collect the returned flacon right at your doorstep. A nominal reverse courier charge of Rs. 200 is applicable for standard scent swaps.
+              3. Our courier will deliver the replacement bottle and collect the returned flacon right at your doorstep. A nominal reverse courier charge of {formatPrice(STORE_CONFIG.reverseCourierFee)} is applicable for standard scent swaps.
             </p>
           </div>
 

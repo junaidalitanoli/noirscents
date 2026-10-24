@@ -61,6 +61,9 @@ export interface Order {
   status: OrderStatus;
   paymentMethod: "Cash on Delivery";
   createdAt: string;
+  emailStatus?: "pending" | "sent" | "failed" | "unconfigured" | "skipped";
+  emailError?: string;
+  idempotencyKey?: string;
 }
 
 export interface CityOption {

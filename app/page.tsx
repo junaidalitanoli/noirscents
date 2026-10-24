@@ -13,14 +13,14 @@ export const metadata: Metadata = {
     absolute: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
   },
   description:
-    "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+    "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
     description:
-      "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+      "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
     url: "/",
     siteName: "Noir Scents",
     images: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
     description:
-      "Discover handcrafted, non-alcoholic Extrait de Parfum with 8–12+ hours longevity. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+      "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
@@ -101,7 +101,7 @@ export default function HomePage() {
               </div>
               <div className="text-left">
                 <p className="text-[11px] sm:text-xs font-semibold text-stone-950 uppercase tracking-wider">Free TCS Shipping</p>
-                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Orders &gt; Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-500 font-medium">Orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} &amp; above</p>
               </div>
             </div>
 
@@ -308,59 +308,78 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. SECTION: Sample Customer Feedback (Honest cleanup) */}
+      {/* 8. SECTION: Brand Standards & Transparent Commitments */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full border-t border-black/8">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-3xl font-semibold uppercase tracking-tight text-[#121212]">
-            Sample Customer Feedback
+            Artisanal Standards &amp; Commitments
           </h2>
           <p className="text-xs text-zinc-500 mt-1">
-            Real experiences shared by fragrance lovers across Karachi, Lahore, and Islamabad.
+            Our direct pledges to quality, formulation integrity, and reliable nationwide delivery.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
-                &ldquo;Urban Legend projection is truly impressive! Lasted through an entire wedding evening in Karachi heat. Very high quality extrait.&rdquo;
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 flex items-center justify-center mb-3">
+                <Sparkles className="w-4 h-4 text-[#b48325]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 uppercase tracking-wider mb-2">
+                Extrait Concentration &amp; Longevity
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                Handcrafted as artisanal Extrait de Parfum in alcohol-free bases, formulated specifically to deliver enduring {STORE_CONFIG.longevityText} in Pakistan&apos;s climate.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
-              <div>
-                <div className="font-semibold text-zinc-900">Muhammad Bilal</div>
-                <div className="text-zinc-500">Karachi</div>
-              </div>
+              <span className="font-semibold text-zinc-900">Pure Extrait Formulation</span>
+              <span className="text-zinc-500">Non-Drying Base</span>
             </div>
           </div>
 
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
-                &ldquo;Ordered Aqua Mist and Royal Amber. Arrived in 2 days via TCS COD. The flacons look sleek and the scent lasts all day at university.&rdquo;
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 flex items-center justify-center mb-3">
+                <Truck className="w-4 h-4 text-[#b48325]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 uppercase tracking-wider mb-2">
+                Nationwide Doorstep Pay
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                Dispatched via TCS and Leopards Courier with Cash on Delivery across Karachi, Lahore, Islamabad, and 250+ cities. Complimentary shipping on orders of Rs. 3,000 and above.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
-              <div>
-                <div className="font-semibold text-zinc-900">Ayesha Khan</div>
-                <div className="text-zinc-500">Lahore</div>
-              </div>
+              <span className="font-semibold text-zinc-900">Doorstep COD</span>
+              <span className="text-zinc-500">2–4 Business Days</span>
             </div>
           </div>
 
           <div className="bg-white p-6 border border-zinc-200/90 flex flex-col justify-between shadow-xs">
             <div>
-              <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed italic">
-                &ldquo;The discovery tester pack is the best way to choose. Ended up ordering Ghalib 50ml. Support on WhatsApp assisted me within minutes.&rdquo;
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 flex items-center justify-center mb-3">
+                <ShieldCheck className="w-4 h-4 text-[#b48325]" />
+              </div>
+              <h3 className="text-sm font-semibold text-zinc-950 uppercase tracking-wider mb-2">
+                7-Day Fragrance Swap Guarantee
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                Fragrance is deeply personal. If your selected scent profile does not resonate with you, exchange your bottle within 7 days by contacting our direct WhatsApp concierge.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
-              <div>
-                <div className="font-semibold text-zinc-900">Hamza Tariq</div>
-                <div className="text-zinc-500">Islamabad</div>
-              </div>
+              <span className="font-semibold text-zinc-900">7-Day Guarantee</span>
+              <span className="text-zinc-500">Hassle-Free Swap</span>
             </div>
           </div>
+        </div>
+
+        {/* Transparency note */}
+        <div className="mt-6 text-center">
+          <p className="text-[11px] text-zinc-400">
+            Note: Verified customer reviews will be displayed as genuine post-launch orders are fulfilled.
+          </p>
         </div>
       </section>
 

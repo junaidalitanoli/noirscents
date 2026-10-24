@@ -69,12 +69,15 @@ export async function POST(req: Request) {
     const storeEmail = getStoreNotificationEmail();
 
     if (!resend) {
-      console.warn("[ContactAPI] RESEND_API_KEY is not configured. Simulating contact inquiry email send.");
-      return NextResponse.json({
-        success: true,
-        simulated: true,
-        message: "Your message has been received (simulation mode).",
-      });
+      console.error("[ContactAPI] Server configuration error: RESEND_API_KEY is not set.");
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Email service is currently unconfigured. Please contact our concierge directly on WhatsApp (+92 332 2224331).",
+        },
+        { status: 503 }
+      );
     }
 
     const template = generateContactNotificationEmail({

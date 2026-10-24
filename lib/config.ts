@@ -12,7 +12,6 @@ export const SITE_CONFIG = {
   freeShippingThreshold: STORE_CONFIG.freeDeliveryThreshold,
   standardShippingFee: STORE_CONFIG.standardShippingFee,
   returnWindowDays: STORE_CONFIG.returnWindowDays,
-  adminPassword: "admin123",
   businessHours: STORE_CONFIG.businessHours,
 } as const;
 

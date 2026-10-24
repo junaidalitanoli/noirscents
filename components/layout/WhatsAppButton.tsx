@@ -18,7 +18,8 @@ export default function WhatsAppButton() {
   if (pathname.startsWith("/products/")) {
     const slug = pathname.replace("/products/", "").split("/")[0];
     const product = getProductBySlug(slug);
-    const fullUrl = `${SITE_CONFIG.url}${pathname}`;
+    const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : SITE_CONFIG.url;
+    const fullUrl = `${origin}${pathname}`;
     const name = product ? product.name : "fragrance";
     message = getWhatsAppProductMessage(name, fullUrl);
   }

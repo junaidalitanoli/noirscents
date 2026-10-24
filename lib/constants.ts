@@ -4,7 +4,6 @@ export const BRAND_NAME = STORE_CONFIG.name;
 export const BRAND_TAGLINE = STORE_CONFIG.tagline;
 export const FREE_SHIPPING_THRESHOLD = STORE_CONFIG.freeDeliveryThreshold;
 export const STANDARD_SHIPPING_FEE = STORE_CONFIG.standardShippingFee;
-export const ADMIN_DEMO_PASSWORD = "admin123";
 
 export const PAKISTANI_CITIES = [
   "Karachi",
@@ -39,7 +38,7 @@ export const CATEGORIES = [
   {
     slug: "men",
     label: "Men",
-    description: "Bold, charismatic, and masculine extrait perfumes designed for 8–12+ hours endurance in Pakistan.",
+    description: "Bold, charismatic, and masculine extrait perfumes designed for enduring all-day sillage in Pakistan.",
   },
   {
     slug: "women",

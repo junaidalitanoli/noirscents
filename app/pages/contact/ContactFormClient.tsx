@@ -120,11 +120,12 @@ export default function ContactFormClient() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+          <form onSubmit={handleSubmit} className="space-y-4 text-xs" noValidate={false}>
             {/* Honeypot field for bot mitigation */}
             <input
               type="text"
               name="website"
+              id="contact-website-hp"
               value={form.website}
               onChange={(e) => setForm({ ...form, website: e.target.value })}
               tabIndex={-1}
@@ -138,41 +139,55 @@ export default function ContactFormClient() {
             </h2>
 
             <div>
-              <label className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
-                Your Full Name <span className="text-red-500">*</span>
+              <label htmlFor="contact-name" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+                Your Full Name <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <input
+                id="contact-name"
+                name="name"
                 type="text"
                 placeholder="e.g. Ali Ahmed"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:outline-hidden text-zinc-900"
+                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
                 required
+                aria-required="true"
+                autoComplete="name"
               />
             </div>
 
             <div>
-              <label className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
-                Phone / WhatsApp <span className="text-red-500">*</span>
+              <label htmlFor="contact-phone" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+                Phone / WhatsApp <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <input
+                id="contact-phone"
+                name="phone"
                 type="tel"
                 placeholder="0300-1234567"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:outline-hidden text-zinc-900"
+                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
                 required
+                aria-required="true"
+                aria-describedby="contact-phone-hint"
+                autoComplete="tel"
               />
+              <span id="contact-phone-hint" className="text-[11px] text-zinc-500 block mt-1">
+                Pakistani mobile format: 03XX-XXXXXXX or 03XXXXXXXXX
+              </span>
             </div>
 
             <div>
-              <label className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+              <label htmlFor="contact-subject" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
                 Inquiry Topic
               </label>
               <select
+                id="contact-subject"
+                name="subject"
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:outline-hidden text-zinc-900 font-medium bg-white"
+                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 font-medium bg-white transition-all cursor-pointer"
               >
                 <option value="">Select Topic...</option>
                 <option value="recommendation">Scent Recommendation</option>
@@ -183,29 +198,38 @@ export default function ContactFormClient() {
             </div>
 
             <div>
-              <label className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
-                Your Message <span className="text-red-500">*</span>
+              <label htmlFor="contact-message" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+                Your Message <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <textarea
+                id="contact-message"
+                name="message"
                 rows={4}
                 placeholder="How can we assist you with our artisanal fragrances?"
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:outline-hidden text-zinc-900"
+                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
                 required
+                aria-required="true"
+                aria-describedby={errorMsg ? "contact-error" : undefined}
               />
             </div>
 
             {errorMsg && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl">
-                {errorMsg}
+              <div
+                id="contact-error"
+                role="alert"
+                aria-live="assertive"
+                className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2"
+              >
+                <span>{errorMsg}</span>
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-zinc-950 text-[#fef08a] font-bold text-sm rounded-xl hover:bg-zinc-800 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-3.5 bg-zinc-950 text-[#fef08a] font-bold text-sm rounded-xl hover:bg-zinc-800 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:ring-zinc-950 focus:outline-hidden"
             >
               <Send className="w-4 h-4 text-[#d4af37]" /> {loading ? "Sending Message..." : "Send Inquiry"}
             </button>

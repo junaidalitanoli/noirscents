@@ -25,7 +25,7 @@ const montserrat = Montserrat({
 
 const defaultTitle = "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan";
 const defaultDescription =
-  "Handcrafted non-alcoholic Extrait de Parfum in Pakistan with 8–12+ hours longevity. Premium scents with nationwide Cash on Delivery across Karachi, Lahore & Islamabad.";
+  "Handcrafted alcohol-free Extrait de Parfum in Pakistan with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery across Karachi, Lahore & Islamabad.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

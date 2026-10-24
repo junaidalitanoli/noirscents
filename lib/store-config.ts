@@ -7,9 +7,10 @@ export const STORE_CONFIG = {
   tagline: "Artisanal Luxury Scents Crafted for Pakistan",
   freeDeliveryThreshold: 3000,
   standardShippingFee: 250,
+  reverseCourierFee: 200,
   returnWindowDays: 7,
-  longevityText: "8–12+ hours",
-  concentrationText: "35% oil concentration",
+  longevityText: "long-lasting sillage",
+  concentrationText: "artisanal Extrait de Parfum",
   perfumeType: "Extrait de Parfum",
   deliveryTime: "2–4 business days",
   couriers: "TCS / Leopards Courier",
@@ -20,7 +21,7 @@ export const STORE_CONFIG = {
   businessHours: "Monday to Saturday: 10 AM – 8 PM PKT",
   instagramUrl: (process.env.NEXT_PUBLIC_INSTAGRAM_URL || "").trim(),
   facebookUrl: (process.env.NEXT_PUBLIC_FACEBOOK_URL || "").trim(),
-  showProjectDisclaimer: process.env.NEXT_PUBLIC_SHOW_PROJECT_DISCLAIMER !== "false",
+  showProjectDisclaimer: process.env.NEXT_PUBLIC_SHOW_PROJECT_DISCLAIMER === "true",
   cities: ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad"] as const,
   faqs: [
     {
@@ -36,17 +37,17 @@ export const STORE_CONFIG = {
     {
       question: "How long do Noir Scents fragrances last?",
       answer:
-        "Our creations are formulated as concentrated Extrait de Parfum with 35% oil concentration, providing 8–12+ hours of lingering endurance tailored for Pakistan's climate.",
+        "Our creations are formulated as concentrated Extrait de Parfum using high-grade perfume oils, engineered for enduring all-day sillage tailored for Pakistan's climate (longevity varies naturally based on skin chemistry and note profiles).",
     },
     {
       question: "Are your perfumes non-alcoholic?",
       answer:
-        "Yes. All Noir Scents formulations are 100% non-alcoholic extrait creations, making them prayer-safe, skin-friendly, and non-drying.",
+        "Yes, our formulations are alcohol-free oil extrait creations, making them suitable for daily wear and non-drying on skin. We always advise a standard 24-hour patch test for sensitive skin.",
     },
     {
       question: "What is your return & exchange policy?",
       answer:
-        "We offer a 7-day scent exchange policy. If the fragrance notes do not suit you, reach out to our WhatsApp concierge within 7 days of delivery to arrange an exchange.",
+        "We offer a 7-day scent exchange policy. If the fragrance notes do not suit you, reach out to our WhatsApp concierge within 7 days of delivery to arrange an exchange (nominal reverse courier fee applies for standard preference swaps; damaged items replaced free).",
     },
     {
       question: "How do I qualify for free shipping?",

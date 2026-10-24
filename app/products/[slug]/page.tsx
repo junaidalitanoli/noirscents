@@ -224,7 +224,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             <h3>Shipping &amp; Returns</h3>
           </div>
           <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-            We deliver nationwide across Pakistan in {STORE_CONFIG.deliveryTime} with Cash on Delivery (COD). Free delivery is included on orders exceeding Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()}. Every full-bottle purchase is backed by our {STORE_CONFIG.returnWindowDays}-day easy scent swap policy if the fragrance does not match your taste.
+            We deliver nationwide across Pakistan in {STORE_CONFIG.deliveryTime} with Cash on Delivery (COD). Free delivery is included on orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} and above. Every full-bottle purchase is backed by our {STORE_CONFIG.returnWindowDays}-day easy scent swap policy if the fragrance does not match your taste.
           </p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           <div>
             <h4 className="font-semibold text-zinc-900 mb-1">Is this scent non-alcoholic?</h4>
             <p className="font-light leading-relaxed">
-              Yes, 100% non-alcoholic and formulated with pure perfume oils, safe for daily prayer and sensitive skin.
+              Yes, formulated with non-alcoholic perfume oil bases, making it suitable for daily prayer and non-drying on skin. We recommend a patch test before regular use if you have sensitive skin.
             </p>
           </div>
           <div>

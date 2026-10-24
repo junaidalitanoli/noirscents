@@ -1,9 +1,9 @@
 /**
  * Single source of truth for site URL and domain configuration.
- * Default fallback is https://noirscents.vercel.app as required.
+ * Default fallback is https://noirscents.netlify.app as required in production.
  */
 export const SITE_URL: string = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://noirscents.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://noirscents.netlify.app"
 ).replace(/\/+$/, "");
 
 /**

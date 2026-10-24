@@ -13,7 +13,7 @@ export default function AnnouncementBar() {
           className="hover:text-amber-300 flex items-center gap-2 transition-all"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#c59a3f] shrink-0 animate-pulse" />
-          <span>Complimentary Delivery Above {formatPrice(FREE_SHIPPING_THRESHOLD)}</span>
+          <span>Complimentary Delivery on Orders of {formatPrice(FREE_SHIPPING_THRESHOLD)} &amp; Above</span>
           <span className="hidden sm:inline text-stone-400 font-normal">
             &bull; Pure Artisan Extraits &bull; Cash on Delivery
           </span>

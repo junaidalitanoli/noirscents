@@ -73,7 +73,7 @@ export default function CartDrawer() {
           <div className="bg-[#f8f8f8] p-3 sm:p-4 border-b border-black/6 text-xs">
             {amountToFreeShipping > 0 ? (
               <p className="text-zinc-700">
-                Add <strong className="font-semibold text-black">{formatPrice(amountToFreeShipping)} PKR</strong> more for{" "}
+                Add <strong className="font-semibold text-black">{formatPrice(amountToFreeShipping)}</strong> more for{" "}
                 <span className="font-semibold uppercase text-black">Free Delivery</span>!
               </p>
             ) : (
@@ -142,7 +142,7 @@ export default function CartDrawer() {
                       </div>
 
                       <div className="text-[11px] text-zinc-500 mt-0.5">
-                        {item.size.ml}ml &bull; {formatPrice(item.size.price)} PKR
+                        {item.size.ml}ml &bull; {formatPrice(item.size.price)}
                       </div>
                     </div>
 
@@ -169,7 +169,7 @@ export default function CartDrawer() {
                       </div>
 
                       <div className="text-xs sm:text-sm font-bold text-[#121212]">
-                        {formatPrice(item.size.price * item.quantity)} PKR
+                        {formatPrice(item.size.price * item.quantity)}
                       </div>
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export default function CartDrawer() {
               <div className="flex justify-between items-center text-sm">
                 <span className="text-zinc-600 font-medium">Subtotal</span>
                 <span className="text-base font-bold text-[#121212]">
-                  {formatPrice(subtotal)} PKR
+                  {formatPrice(subtotal)}
                 </span>
               </div>
               <p className="text-[11px] text-zinc-500 font-light">

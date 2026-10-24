@@ -82,13 +82,22 @@ export default function PrivacyPolicyPage() {
             </p>
           </div>
 
+          <div className="space-y-3">
+            <h2 className="font-heading text-xl font-bold text-zinc-950">
+              4. Data Processing &amp; Transactional Notifications
+            </h2>
+            <p>
+              Your shopping cart and recent order numbers are retained locally on your device using browser local storage for seamless navigation and offline order tracking. When an order is placed, order details and contact information are transmitted securely via encrypted HTTPS to our server API endpoints solely to record your order and dispatch transactional email notifications to store management and to your email address (via our transactional email provider, Resend). Contact form submissions are similarly transmitted over HTTPS exclusively to answer customer inquiries.
+            </p>
+          </div>
+
           {showDisclaimer && (
-            <div className="space-y-3">
-              <h2 className="font-heading text-xl font-bold text-zinc-950">
-                4. Educational &amp; Academic Project Status
+            <div className="space-y-3 bg-amber-50/60 p-4 rounded-xl border border-amber-200">
+              <h2 className="font-heading text-base font-bold text-zinc-950">
+                5. Demonstration &amp; Prototype Notice
               </h2>
-              <p>
-                This website serves as an educational prototype developed as a university term project. Any data entered into client demo forms is stored in your local browser session via Zustand state persistence and is never transmitted to unauthorized external servers.
+              <p className="text-xs text-zinc-600 leading-relaxed">
+                This digital storefront was conceptualized as an advanced academic showcase and prototype for an artisanal Pakistani perfume brand. While full end-to-end checkout, courier calculations, and transactional notifications are operational, live financial card transactions are disabled, and payment is conducted via Cash on Delivery upon physical parcel delivery.
               </p>
             </div>
           )}

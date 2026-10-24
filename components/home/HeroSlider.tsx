@@ -67,7 +67,7 @@ const SLIDES: SlideData[] = [
     headlineHighlight: "Aqua Mist Extrait.",
     headlineGradient: "from-sky-700 via-teal-600 to-cyan-800",
     tagline: "Sparkling Sea Salt, Zesty Grapefruit & Driftwood",
-    subText: "10–12+ Hours Breezy Endurance • Zero Evaporation",
+    subText: "All-Day Invigorating Sillage • Fresh Aquatic Notes",
     primaryButton: {
       label: "Explore Aqua Mist",
       href: "/products/aqua-mist",
@@ -157,16 +157,26 @@ export default function HeroSlider() {
       : activeIndex - 1;
 
   const nextSlide = useCallback(() => {
-    setIsTransitioning(true);
-    setEnableTransition(true);
-    setActiveIndex((prev) => prev + 1);
+    setActiveIndex((prev) => {
+      if (prev >= ALL_SLIDES.length - 1) {
+        return 1;
+      }
+      setIsTransitioning(true);
+      setEnableTransition(true);
+      return prev + 1;
+    });
     setTimerKey((k) => k + 1);
   }, []);
 
   const prevSlide = useCallback(() => {
-    setIsTransitioning(true);
-    setEnableTransition(true);
-    setActiveIndex((prev) => prev - 1);
+    setActiveIndex((prev) => {
+      if (prev <= 0) {
+        return SLIDES.length;
+      }
+      setIsTransitioning(true);
+      setEnableTransition(true);
+      return prev - 1;
+    });
     setTimerKey((k) => k + 1);
   }, []);
 
@@ -180,7 +190,7 @@ export default function HeroSlider() {
 
   const handleTransitionEnd = () => {
     setIsTransitioning(false);
-    if (activeIndex === ALL_SLIDES.length - 1) {
+    if (activeIndex >= ALL_SLIDES.length - 1) {
       setEnableTransition(false);
       setActiveIndex(1);
       requestAnimationFrame(() => {
@@ -188,7 +198,7 @@ export default function HeroSlider() {
           setEnableTransition(true);
         });
       });
-    } else if (activeIndex === 0) {
+    } else if (activeIndex <= 0) {
       setEnableTransition(false);
       setActiveIndex(SLIDES.length);
       requestAnimationFrame(() => {
@@ -199,8 +209,55 @@ export default function HeroSlider() {
     }
   };
 
+  // Safety fallback: If browser delays or drops transitionend event
+  useEffect(() => {
+    if (!isTransitioning) return;
+    const safetyTimeout = setTimeout(() => {
+      setIsTransitioning(false);
+      setActiveIndex((curr) => {
+        if (curr >= ALL_SLIDES.length - 1) return 1;
+        if (curr <= 0) return SLIDES.length;
+        return curr;
+      });
+    }, 850);
+    return () => clearTimeout(safetyTimeout);
+  }, [isTransitioning]);
+
+  // Window Focus & Visibility Change Handler to prevent desync when tab is minimized or backgrounded
+  useEffect(() => {
+    const handleVisibilitySync = () => {
+      if (typeof document !== "undefined" && document.hidden) {
+        return; // Tab is hidden/minimized: pause
+      }
+      // When tab becomes active again, restore healthy state
+      setIsTransitioning(false);
+      setEnableTransition(false);
+      setActiveIndex((curr) => {
+        if (curr <= 0 || curr >= ALL_SLIDES.length - 1) {
+          return 1;
+        }
+        return curr;
+      });
+      requestAnimationFrame(() => {
+        setEnableTransition(true);
+      });
+      setTimerKey((k) => k + 1);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilitySync);
+    window.addEventListener("focus", handleVisibilitySync);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilitySync);
+      window.removeEventListener("focus", handleVisibilitySync);
+    };
+  }, []);
+
+  // Autoplay interval with visibility check: strictly pauses while tab is minimized
   useEffect(() => {
     const timer = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) {
+        return; // Do not advance in background tabs
+      }
       nextSlide();
     }, SLIDE_DURATION);
 

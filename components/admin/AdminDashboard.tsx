@@ -23,18 +23,17 @@ import {
 import { useOrderStore } from "@/store/orderStore";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { formatPrice } from "@/lib/formatters";
-import { ADMIN_DEMO_PASSWORD } from "@/lib/constants";
-import { OrderStatus, Product, Category } from "@/types";
+import { Order, OrderStatus, Product, Category } from "@/types";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export default function AdminDashboard() {
   const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<"orders" | "products" | "inbox">("orders");
   const [showAddProductModal, setShowAddProductModal] = useState(false);
 
-  // Inbound Resend emails state
   const [inboxEmails, setInboxEmails] = useState<Array<{
     id: string;
     emailId: string;
@@ -46,33 +45,100 @@ export default function AdminDashboard() {
     snippet?: string;
   }>>([]);
   const [loadingInbox, setLoadingInbox] = useState(false);
+  const [inboxError, setInboxError] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
 
-  const fetchInbox = async () => {
-    setLoadingInbox(true);
+  const [serverOrders, setServerOrders] = useState<Order[] | null>(null);
+  const [storageProvider, setStorageProvider] = useState<string>("");
+  const [isDurableStorage, setIsDurableStorage] = useState<boolean>(false);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [ordersError, setOrdersError] = useState("");
+
+  const fetchOrders = async (token?: string) => {
+    const authToken = token || password;
+    if (!authToken) return;
+    setLoadingOrders(true);
+    setOrdersError("");
     try {
-      const res = await fetch("/api/inbox", {
+      const res = await fetch("/api/orders", {
         headers: {
-          "x-admin-token": password,
+          "x-admin-token": authToken.trim(),
         },
       });
       const data = await res.json();
-      if (data.emails) {
+      if (res.ok && data.success && Array.isArray(data.orders)) {
+        setServerOrders(data.orders);
+        if (data.storageStatus) {
+          setStorageProvider(data.storageStatus.provider);
+          setIsDurableStorage(Boolean(data.storageStatus.isDurableProduction));
+        }
+      } else {
+        setOrdersError(data.error || "Failed to load orders from server.");
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error loading orders";
+      setOrdersError(msg);
+      console.error("Failed to load orders:", err);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  const fetchInbox = async (token?: string) => {
+    const authToken = token || password;
+    setLoadingInbox(true);
+    setInboxError("");
+    try {
+      const res = await fetch("/api/inbox", {
+        headers: {
+          "x-admin-token": authToken.trim(),
+        },
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setInboxError(data.error || "Failed to authenticate with inbox API.");
+        setInboxEmails([]);
+      } else if (data.emails) {
         setInboxEmails(data.emails);
       }
-    } catch (err) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Network error loading inbox";
+      setInboxError(msg);
       console.error("Failed to load inbox:", err);
     } finally {
       setLoadingInbox(false);
     }
   };
 
-  const { orders, customProducts, updateOrderStatus, addProduct, deleteProduct } =
+  const { orders: localOrders, customProducts, updateOrderStatus: updateLocalOrderStatus, addProduct, deleteProduct } =
     useOrderStore();
 
+  const orders = serverOrders !== null ? serverOrders : localOrders;
   const allProducts = [...customProducts, ...INITIAL_PRODUCTS];
-  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
+  const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const averageOrderValue = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
+
+  const handleUpdateStatus = async (orderId: string, status: OrderStatus) => {
+    updateLocalOrderStatus(orderId, status);
+    if (serverOrders) {
+      setServerOrders(
+        serverOrders.map((o) => (o.id === orderId ? { ...o, status } : o))
+      );
+    }
+
+    try {
+      await fetch("/api/orders", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-token": password.trim(),
+        },
+        body: JSON.stringify({ orderId, status }),
+      });
+    } catch (err) {
+      console.error("Failed to update status on server:", err);
+    }
+  };
 
   // New product form state
   const [newProduct, setNewProduct] = useState({
@@ -88,13 +154,38 @@ export default function AdminDashboard() {
     projection: "Strong (8-10 Hours)",
   });
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_DEMO_PASSWORD) {
-      setIsAuthenticated(true);
-      setAuthError("");
-    } else {
-      setAuthError(`Invalid demo password. Please use "${ADMIN_DEMO_PASSWORD}"`);
+    if (!password.trim()) {
+      setAuthError("Please enter your admin credentials.");
+      return;
+    }
+    setIsLoggingIn(true);
+    setAuthError("");
+    try {
+      const res = await fetch("/api/inbox", {
+        headers: {
+          "x-admin-token": password.trim(),
+        },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        setAuthError("");
+        if (data.emails) {
+          setInboxEmails(data.emails);
+        }
+        // Immediately fetch live server orders
+        fetchOrders(password.trim());
+      } else {
+        setAuthError(
+          data.error || "Authentication failed. Please verify your admin credentials."
+        );
+      }
+    } catch (err: unknown) {
+      setAuthError(err instanceof Error ? err.message : "Network error authenticating admin");
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -145,48 +236,62 @@ export default function AdminDashboard() {
               Admin Portal
             </h1>
             <p className="text-xs text-zinc-500">
-              Authorized university project reviewers &amp; store managers only.
+              Authorized store administrators &amp; managers only.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
-                Admin Password
+              <label htmlFor="admin-secret-input" className="block text-xs font-bold uppercase tracking-wider text-zinc-700 mb-1.5">
+                Admin Secret Key
               </label>
               <div className="relative">
                 <input
+                  id="admin-secret-input"
                   type="password"
-                  placeholder="Enter demo password..."
+                  placeholder="Enter production admin secret..."
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value);
                     if (authError) setAuthError("");
                   }}
-                  className="w-full text-sm bg-white border border-zinc-300 rounded-xl p-3 pr-10 focus:outline-hidden focus:border-[#d4af37] text-zinc-900"
+                  className="w-full text-sm bg-white border border-zinc-300 rounded-xl p-3 pr-10 focus:outline-hidden focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/20 text-zinc-900"
                   autoFocus
+                  required
+                  aria-describedby={authError ? "admin-auth-error" : "admin-auth-hint"}
                 />
                 <KeyRound className="w-4 h-4 text-zinc-400 absolute right-3 top-3.5" />
               </div>
+              <p id="admin-auth-hint" className="text-[11px] text-zinc-400 mt-1">
+                Transmitted exclusively via secure headers. Fails closed if ADMIN_SECRET is unset.
+              </p>
               {authError && (
-                <p className="text-xs text-red-600 mt-1.5 font-medium">{authError}</p>
+                <p id="admin-auth-error" role="alert" aria-live="assertive" className="text-xs text-red-600 mt-1.5 font-medium">
+                  {authError}
+                </p>
               )}
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 bg-zinc-950 text-[#fef08a] font-bold text-sm rounded-xl hover:bg-zinc-800 transition-all shadow-md"
+              disabled={isLoggingIn}
+              className="w-full py-3 bg-zinc-950 text-[#fef08a] font-bold text-sm rounded-xl hover:bg-zinc-800 disabled:opacity-60 transition-all shadow-md flex items-center justify-center gap-2"
             >
-              Sign In to Dashboard
+              {isLoggingIn ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Verifying Credentials...</span>
+                </>
+              ) : (
+                <span>Sign In to Dashboard</span>
+              )}
             </button>
           </form>
 
-          {/* Demo Hint */}
-          <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-xs text-amber-900 text-center">
-            <span>Demo Password: </span>
-            <code className="bg-amber-200/60 px-2 py-0.5 rounded font-mono font-bold">
-              {ADMIN_DEMO_PASSWORD}
-            </code>
+          {/* Security Information */}
+          <div className="p-3 bg-zinc-50 rounded-xl border border-zinc-200/80 text-[11px] text-zinc-600 text-center leading-relaxed">
+            <span className="font-semibold text-zinc-800">Security Notice: </span>
+            Authentication requires a verified server-configured secret (<code className="font-mono font-semibold text-zinc-700">ADMIN_SECRET</code>). URL query parameter tokens and demo passwords are strictly disabled.
           </div>
         </div>
       </div>
@@ -315,22 +420,55 @@ export default function AdminDashboard() {
 
       {/* Orders Tab */}
       {activeTab === "orders" && (
-        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-50 border-b border-zinc-200 uppercase font-semibold text-zinc-500 text-[11px]">
-                <tr>
-                  <th className="p-4">Order ID</th>
-                  <th className="p-4">Customer</th>
-                  <th className="p-4">City / Address</th>
-                  <th className="p-4">Items</th>
-                  <th className="p-4">Total (PKR)</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-200">
-                {orders.map((order) => (
+        <div className="space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-zinc-50 border border-zinc-200/80 px-4 py-2.5 rounded-xl text-xs">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-zinc-700">Storage Backend:</span>
+              <span
+                className={`px-2 py-0.5 rounded-md font-mono text-[11px] ${
+                  isDurableStorage
+                    ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                    : "bg-amber-100 text-amber-800 border border-amber-300"
+                }`}
+              >
+                {storageProvider || "Local File Storage (Dev)"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => fetchOrders()}
+                disabled={loadingOrders}
+                className="px-3 py-1 bg-white border border-zinc-300 hover:bg-zinc-100 rounded-lg text-zinc-700 font-medium text-xs flex items-center gap-1.5 transition-colors disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingOrders ? "animate-spin" : ""}`} />
+                {loadingOrders ? "Refreshing..." : "Refresh Server Orders"}
+              </button>
+            </div>
+          </div>
+
+          {ordersError && (
+            <div className="p-3 bg-red-50 border border-red-200 text-red-800 text-xs rounded-xl">
+              {ordersError}
+            </div>
+          )}
+
+          <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-xs">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-50 border-b border-zinc-200 uppercase font-semibold text-zinc-500 text-[11px]">
+                  <tr>
+                    <th className="p-4">Order ID</th>
+                    <th className="p-4">Customer</th>
+                    <th className="p-4">City / Address</th>
+                    <th className="p-4">Items</th>
+                    <th className="p-4">Total (PKR)</th>
+                    <th className="p-4">Status</th>
+                    <th className="p-4">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-200">
+                  {orders.map((order) => (
                   <tr key={order.id} className="hover:bg-zinc-50/80 transition-colors">
                     <td className="p-4 font-mono font-bold text-zinc-900">
                       <Link
@@ -362,9 +500,9 @@ export default function AdminDashboard() {
                     </td>
                     <td className="p-4">
                       <div className="space-y-0.5 max-w-xs">
-                        {order.items.map((item, idx) => (
+                        {order.items.map((item: { quantity: number; product?: { name?: string }; size?: { ml?: number } }, idx: number) => (
                           <div key={idx} className="text-zinc-700">
-                            {item.quantity}x {item.product.name} ({item.size.ml}ml)
+                            {item.quantity}x {item.product?.name || "Fragrance"} ({item.size?.ml || 50}ml)
                           </div>
                         ))}
                       </div>
@@ -395,7 +533,7 @@ export default function AdminDashboard() {
                       <select
                         value={order.status}
                         onChange={(e) =>
-                          updateOrderStatus(order.id, e.target.value as OrderStatus)
+                          handleUpdateStatus(order.id, e.target.value as OrderStatus)
                         }
                         className="bg-white border border-zinc-300 rounded-md py-1 px-2 text-xs font-medium text-zinc-800 focus:outline-hidden focus:border-[#d4af37]"
                       >
@@ -409,6 +547,7 @@ export default function AdminDashboard() {
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       )}
 
@@ -504,7 +643,7 @@ export default function AdminDashboard() {
               <p className="text-xs text-zinc-500">Live emails received via Resend Inbound Webhook (<code className="bg-zinc-100 px-1.5 py-0.5 rounded text-[11px] font-mono text-zinc-800">/api/resend/webhook</code>)</p>
             </div>
             <button
-              onClick={fetchInbox}
+              onClick={() => fetchInbox()}
               disabled={loadingInbox}
               className="px-4 py-2 bg-zinc-900 text-white rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-black transition-colors disabled:opacity-50 cursor-pointer self-start sm:self-auto"
             >
@@ -512,6 +651,13 @@ export default function AdminDashboard() {
               {loadingInbox ? "Refreshing..." : "Refresh Inbox"}
             </button>
           </div>
+
+          {inboxError && (
+            <div className="p-3.5 bg-red-50 border border-red-200 text-red-800 rounded-xl text-xs flex items-center justify-between">
+              <span>{inboxError}</span>
+              <span className="text-[10px] font-mono bg-red-100 px-2 py-0.5 rounded">Fails Closed</span>
+            </div>
+          )}
 
           {inboxEmails.length === 0 ? (
             <div className="py-12 text-center text-zinc-500 space-y-2">

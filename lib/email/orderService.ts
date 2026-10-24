@@ -51,16 +51,17 @@ export async function sendOrderEmails(order: Order): Promise<OrderEmailResult> {
   const fromEmail = getSenderEmail();
   const storeEmail = getStoreNotificationEmail();
 
-  // If Resend is not yet configured, simulate gracefully
+  // If Resend is not configured, fail safely rather than claiming email was sent
   if (!resend) {
     console.warn(
-      `[OrderEmailService] RESEND_API_KEY is not configured. Simulating order dispatch for #${order.id}.`
+      `[OrderEmailService] RESEND_API_KEY is not configured. Email dispatch cannot be performed for order #${order.id}.`
     );
     return {
-      success: true,
+      success: false,
       simulated: true,
-      adminEmailSent: true,
-      customerEmailSent: Boolean(order.customer.email),
+      adminEmailSent: false,
+      customerEmailSent: false,
+      error: "Email service unconfigured: RESEND_API_KEY environment variable is missing on server.",
     };
   }
 
@@ -146,8 +147,8 @@ export async function sendOrderStatusUpdate(
 
   const resend = getResendClient();
   if (!resend) {
-    console.warn(`[OrderEmailService] RESEND_API_KEY missing. Status email simulated for #${order.id}.`);
-    return true;
+    console.warn(`[OrderEmailService] RESEND_API_KEY is not configured. Status email not sent for #${order.id}.`);
+    return false;
   }
 
   try {
