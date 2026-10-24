@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
   const showDisclaimer = STORE_CONFIG.showProjectDisclaimer;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 w-full">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16 w-full">
       <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
 
       <div className="space-y-8">

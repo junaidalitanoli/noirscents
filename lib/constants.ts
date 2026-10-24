@@ -53,7 +53,7 @@ export const CATEGORIES = [
   },
   {
     slug: "deals",
-    label: "Crazy Deals",
+    label: "Perfume Bundles & Deals",
     description: "Curated multi-bottle bundles, duo pairings, and special promotional offers at exceptional value.",
   },
 ] as const;

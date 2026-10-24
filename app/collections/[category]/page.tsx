@@ -63,7 +63,7 @@ const COLLECTION_METADATA: Record<
     image: SITE_IMAGES.categories.testers.src,
   },
   deals: {
-    title: "Perfume Bundles & Deals in Pakistan",
+    title: "Perfume Bundles & Deals",
     description:
       "Curated fragrance bundles, duo packs, and clearance specials at exceptional value. Free delivery across Pakistan over Rs. 3,000.",
     intro:

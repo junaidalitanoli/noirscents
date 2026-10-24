@@ -33,7 +33,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "A poetic, soulful harmony of royal oriental tradition and contemporary olfactory finesse, inspired by the nocturnal literary symposiums of old Lahore and Delhi. Ghalib unfolds with an aromatic prelude of freshly crushed green cardamom, sun-warmed coriander seeds, and dark cypress leaves that immediately evoke historic courtyard gardens. The heart yields an intoxicating romance between smoldering vintage Cambodian oud and velvety crimson Damascus roses, balanced with resinous cistus incanus. Grounding this majestic journey is a decadent base of glove-soft Tuscan leather, creamy Mysore sandalwood, rich benzoin tears, and aged ambergris. Formulated as a non-alcoholic Extrait de Parfum, Ghalib radiates a regal presence for 8–12+ hours, making it the definitive choice for formal cultural celebrations, festive wedding receptions, and momentous evenings where enduring elegance is non-negotiable.",
-    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
+    images: ["/images/ghalib-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3450 },
     ],
@@ -58,7 +58,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "An exhilarating plunge into the crashing azure waves along the Arabian Sea coastline, Aqua Mist delivers vibrant freshness specifically formulated to triumph over soaring subcontinental heat. The fragrance explodes with sparkling ruby grapefruit, crisp Italian mandarin, and an invigorating sea salt mineral spray that instantly cools the senses. As the marine breeze unfurls, aromatic coastal rosemary, delicate sea kelp accord, and bitter neroli petals introduce sophisticated complexity rarely found in aquatic perfumes. The finish rests upon sun-bleached coastal driftwood, clean white musk, and radiant solar amber that cling tenaciously to skin and fabrics alike. Unlike transient European colognes, this concentrated extrait boasts a 35% oil concentration, providing 8–12+ hours of breezy, clean, and energizing projection across bustling city streets and humid coastal afternoons.",
-    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
+    images: ["/images/aqua-mist-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2450 },
     ],
@@ -82,7 +82,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "A brooding, enigmatic Extrait de Parfum conceived for true connoisseurs of pure oriental perfumery. Noir Oud opens with a dark whisper of rare Iranian saffron threads, bitter Valencian almonds, and freshly grated nutmeg, sparking immediate fascination. The scent swiftly plunges into a nocturnal heart dominated by wild Cambodian agarwood and smoldering birch tar, sweetened ever so delicately with dark roasted praline. As hours progress, the drydown emerges with earthy Indonesian patchouli, rich bourbon vanilla bean, and an opulent smoky amberwood accord that clings with hypnotic tenacity. Formulated without denatured alcohol, Noir Oud interacts intimately with your skin's natural warmth, releasing velvety ribbons of deep agarwood that project with authoritative poise for 8–12+ hours during winter gatherings, black-tie galas, and intimate celebratory dinners.",
-    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
+    images: ["/images/noir-oud-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3850 },
     ],
@@ -106,7 +106,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "Liquid golden sophistication captured in an artisanal flacon, Royal Amber is a decadent gourmand-amber Extrait de Parfum crafted for those who embrace uninhibited luxury. The fragrance introduces itself with succulent golden pear nectar, sparkling bergamot zest, and delicate pink pepper beads that shimmer with effervescent charm. The heart blossoms into an opulent bouquet of night-blooming white jasmine, creamy cashmeran, and roasted tonka bean that feels like liquid velvet draped over the skin. Finally, a lush foundation of rare Baltic amber resin, aged Madagascar vanilla caviar, and creamy sandalwood anchors the composition with irresistible warmth and seductive longevity. Non-alcoholic and concentrated at 35% fragrance oils, Royal Amber leaves a mesmerizing 8–12+ hour sillage that garners compliments at festive family reunions and milestone celebrations.",
-    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
+    images: ["/images/royal-amber-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3250 },
     ],
@@ -131,7 +131,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "Inspired by the regal architecture and dignified pageantry of subcontinental royal courts, Sultan is an authoritative woody-spicy extrait created for leaders who command effortless respect. The opening radiates nobility through crisp blood orange, aromatic juniper berries, and crushed cardamom seeds. The composition deepens into a sacred heart of smoldering Omani frankincense, fiery pimento pepper, and wild geranium petals, delivering complex warmth and distinguished character. A stately foundation of Virginia cedarwood, damp oakmoss, and rich green patchouli leaves completes the drydown with profound grounding strength. Formulated with zero denatured alcohol, Sultan provides a dignified 8–12+ hour aura that thrives in professional boardroom presentations, executive negotiations, and evening banquets where poise, heritage, and distinction define your personal signature.",
-    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
+    images: ["/images/sultan-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3200 },
     ],
@@ -155,7 +155,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "men",
     description:
       "The pinnacle of understated luxury and bespoke tailoring, Imperial Leather translates the timeless tactile pleasure of handcrafted black suede into an unforgettable olfactory experience. The opening combines aromatic wild mountain thyme with ripe wild raspberries and spicy Persian saffron, creating an intriguing sweet-savory duality. The scent transitions gracefully into a refined heart of powdery Florentine iris, balsamic olibanum tears, and subtle night jasmine that softens the leather core. The drydown delivers a rich harmony of supple black suede, smoky birch leather, and warm amberwood that feels like slipping into a custom tailored leather jacket. Designed with 35% oil concentration, this non-alcoholic masterpiece maintains a sophisticated, smooth 8–12+ hour presence ideal for private club gatherings and evening receptions.",
-    images: ["/images/urban-legend-bottle.jpg", "/images/noir-box.jpg"],
+    images: ["/images/imperial-leather-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3600 },
     ],
@@ -203,7 +203,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "Meaning pure clarity and refined serenity, Safwa is a crystalline white floral Extrait de Parfum embodying timeless grace and effortless elegance. The fragrance awakens with crisp Williams pear slices, sparkling green mandarin flower, and aquatic lotus blossom that glisten like early morning dew. The composition gently blossoms into an immaculate white floral bouquet featuring sun-drenched Tunisian orange blossom, delicate lily of the valley, and creamy gardenia petals. Grounding the airy florals is a velvety bed of cashmere woods, translucent white musk, and soft solar amber that lingers intimately against warm skin. Non-alcoholic and gentle for daily wear, Safwa offers 8–12+ hours of peaceful, clean projection perfect for office professionals, university wear, and tranquil daytime gatherings.",
-    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
+    images: ["/images/safwa-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 2800 },
     ],
@@ -227,7 +227,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: "women",
     description:
       "An enchanting, mysterious tribute to the bustling cultural spirit, vibrant culinary aromas, and midnight revelry of Lahore's historic walled city. Lahore Nights opens with an invigorating clash of roasted espresso coffee beans, bitter Mediterranean almond, and bright bergamot zest. The heart soon unveils a narcotic floral intensity powered by intoxicating tuberose absolute, night-blooming sambac jasmine, and sweet orange blossom. The drydown is deeply gourmand and seductive, weaving rich dark cocoa powder, caramelized roasted tonka beans, nutty praline, and earthy honeyed patchouli into an addictive trail. Engineered with high-concentration extrait oils, Lahore Nights endures for 8–12+ hours, making it the premier choice for nocturnal gatherings, winter festivities, and glamorous wedding after-parties.",
-    images: ["/images/noir-women.jpg", "/images/noir-box.jpg"],
+    images: ["/images/lahore-nights-bottle.jpg", "/images/noir-box.jpg"],
     sizes: [
       { ml: 50, price: 3500 },
     ],

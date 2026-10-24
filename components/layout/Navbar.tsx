@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Menu, X } from "lucide-react";
+import { Search, Menu, X, User } from "lucide-react";
 import CartBadge from "@/components/cart/CartBadge";
 
 export default function Navbar() {
@@ -55,7 +55,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right: Search & Cart Icons */}
+          {/* Right: Search, Customer Account & Cart Icons */}
           <div className="flex items-center space-x-1">
             <button
               type="button"
@@ -65,6 +65,14 @@ export default function Navbar() {
             >
               <Search className="w-5 h-5" />
             </button>
+            <Link
+              href="/account"
+              className="p-2 text-zinc-900 hover:text-black transition-colors"
+              aria-label="Customer Account"
+              title="Customer Account"
+            >
+              <User className="w-5 h-5" />
+            </Link>
             <CartBadge />
           </div>
         </div>
@@ -96,13 +104,21 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Desktop Right: Single Contact Link & Cart */}
+            {/* Desktop Right: Single Contact Link, Customer Account & Cart */}
             <div className="flex items-center space-x-4">
               <Link
                 href="/pages/contact"
                 className="text-xs uppercase tracking-[0.12em] font-medium text-zinc-600 hover:text-black transition-colors"
               >
                 Contact
+              </Link>
+              <Link
+                href="/account"
+                className="p-1.5 text-zinc-700 hover:text-black transition-colors flex items-center justify-center"
+                aria-label="Customer Account"
+                title="Customer Account"
+              >
+                <User className="w-5 h-5" />
               </Link>
               <CartBadge />
             </div>
@@ -271,6 +287,13 @@ export default function Navbar() {
                   Customer Care
                 </p>
                 <div className="space-y-2 text-sm text-zinc-600">
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block font-medium text-black hover:underline"
+                  >
+                    Customer Account / Login
+                  </Link>
                   <Link
                     href="/pages/about"
                     onClick={() => setMobileMenuOpen(false)}
