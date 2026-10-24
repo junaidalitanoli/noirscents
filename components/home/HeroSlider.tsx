@@ -131,30 +131,39 @@ const SLIDES: SlideData[] = [
   },
 ];
 
-const SLIDE_DURATION = 5500; // 5.5 seconds per slide
+// Automatically rotates every 6 seconds (5 to 8 second target range)
+const SLIDE_DURATION = 6000;
 
 export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [timerKey, setTimerKey] = useState(0);
   const touchStartX = useRef<number | null>(null);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    setTimerKey((k) => k + 1); // Resets full 6s timer for the newly picked slide
+  };
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    setTimerKey((k) => k + 1);
   }, []);
 
   const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
+    setTimerKey((k) => k + 1);
   }, []);
 
-  // Auto-slide effect
+  // Continuous auto-rotation every 6 seconds:
+  // Runs continuously without getting stuck or paused indefinitely on mouse hover.
   useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      nextSlide();
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+      setTimerKey((k) => k + 1);
     }, SLIDE_DURATION);
 
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
+    return () => clearInterval(interval);
+  }, [timerKey]);
 
   // Touch swipe support for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -176,18 +185,19 @@ export default function HeroSlider() {
     touchStartX.current = null;
   };
 
+  const activeSlide = SLIDES[currentSlide];
+  const IconComponent = activeSlide.eyebrowIcon;
+
   return (
     <section
       className="relative w-full overflow-hidden bg-[#faf8f5] select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       aria-roledescription="carousel"
       aria-label="Noir Scents Featured Campaigns"
     >
       <div className="relative w-full min-h-[540px] sm:min-h-[620px] lg:min-h-[690px] flex items-center">
-        {/* Render Background Slides */}
+        {/* Render Background Slides (Cross-Fade Effect) */}
         {SLIDES.map((slide, index) => {
           const isActive = index === currentSlide;
           return (
@@ -222,77 +232,66 @@ export default function HeroSlider() {
           );
         })}
 
-        {/* Content Overlay */}
+        {/* Content Overlay (Animated on slide change with key={currentSlide}) */}
         <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
           <div className="max-w-[620px]">
-            {SLIDES.map((slide, index) => {
-              const isActive = index === currentSlide;
-              const IconComponent = slide.eyebrowIcon;
+            <div
+              key={currentSlide}
+              className="space-y-4 sm:space-y-6 text-left animate-fade-in"
+            >
+              {/* Eyebrow Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/90 border border-stone-200/90 text-stone-800 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-md shadow-xs rounded-full">
+                <IconComponent
+                  className="w-3.5 h-3.5"
+                  style={{ color: activeSlide.themeAccent }}
+                />
+                <span>{activeSlide.eyebrow}</span>
+              </div>
 
-              return (
-                <div
-                  key={slide.id}
-                  className={`space-y-4 sm:space-y-6 text-left transition-all duration-700 ${
-                    isActive
-                      ? "opacity-100 translate-y-0 block"
-                      : "opacity-0 translate-y-4 hidden"
-                  }`}
+              {/* Headline & Taglines */}
+              <div className="space-y-2">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-stone-950 font-heading">
+                  {activeSlide.headlineLead} <br />
+                  <span
+                    className={`text-transparent bg-clip-text bg-gradient-to-r ${activeSlide.headlineGradient}`}
+                  >
+                    {activeSlide.headlineHighlight}
+                  </span>
+                </h1>
+                <p
+                  className="text-sm sm:text-base font-semibold tracking-[0.16em] uppercase"
+                  style={{ color: activeSlide.themeAccent }}
                 >
-                  {/* Eyebrow Badge */}
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/90 border border-stone-200/90 text-stone-800 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-md shadow-xs rounded-full">
-                    <IconComponent
-                      className="w-3.5 h-3.5"
-                      style={{ color: slide.themeAccent }}
-                    />
-                    <span>{slide.eyebrow}</span>
-                  </div>
+                  {activeSlide.tagline}
+                </p>
+                <p className="text-[11px] sm:text-xs font-medium tracking-[0.12em] text-stone-600 uppercase">
+                  {activeSlide.subText}
+                </p>
+              </div>
 
-                  {/* Headline & Taglines */}
-                  <div className="space-y-2">
-                    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-stone-950 font-heading">
-                      {slide.headlineLead} <br />
-                      <span
-                        className={`text-transparent bg-clip-text bg-gradient-to-r ${slide.headlineGradient}`}
-                      >
-                        {slide.headlineHighlight}
-                      </span>
-                    </h1>
-                    <p
-                      className="text-sm sm:text-base font-semibold tracking-[0.16em] uppercase"
-                      style={{ color: slide.themeAccent }}
-                    >
-                      {slide.tagline}
-                    </p>
-                    <p className="text-[11px] sm:text-xs font-medium tracking-[0.12em] text-stone-600 uppercase">
-                      {slide.subText}
-                    </p>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-3 pt-2">
-                    <a
-                      href={slide.primaryButton.href}
-                      className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95"
-                      style={{ backgroundColor: "#1c1917" }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = slide.themeAccent;
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.backgroundColor = "#1c1917";
-                      }}
-                    >
-                      {slide.primaryButton.label}
-                    </a>
-                    <Link
-                      href={slide.secondaryButton.href}
-                      className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 bg-white/95 border border-stone-300 text-stone-900 font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95"
-                    >
-                      {slide.secondaryButton.label}
-                    </Link>
-                  </div>
-                </div>
-              );
-            })}
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-2">
+                <a
+                  href={activeSlide.primaryButton.href}
+                  className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95"
+                  style={{ backgroundColor: "#1c1917" }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = activeSlide.themeAccent;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = "#1c1917";
+                  }}
+                >
+                  {activeSlide.primaryButton.label}
+                </a>
+                <Link
+                  href={activeSlide.secondaryButton.href}
+                  className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 bg-white/95 border border-stone-300 text-stone-900 font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95"
+                >
+                  {activeSlide.secondaryButton.label}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -316,7 +315,7 @@ export default function HeroSlider() {
           </button>
         </div>
 
-        {/* Bottom Interactive Navigation Tabs / Progress Dots */}
+        {/* Bottom Interactive Navigation Tabs & Animated Countdown Progress */}
         <div className="absolute bottom-5 inset-x-0 z-20 flex flex-col items-center gap-2 pointer-events-auto">
           {/* Slide Switcher Pill Bar */}
           <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white/85 backdrop-blur-md rounded-full border border-stone-200/80 shadow-sm">
@@ -326,8 +325,8 @@ export default function HeroSlider() {
                 <button
                   key={slide.id}
                   type="button"
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`relative px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wider rounded-full transition-all flex items-center gap-1.5 ${
+                  onClick={() => goToSlide(idx)}
+                  className={`relative overflow-hidden px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wider rounded-full transition-all flex items-center gap-1.5 ${
                     isActive
                       ? "bg-stone-950 text-white shadow-xs"
                       : "text-stone-600 hover:text-stone-950 hover:bg-stone-100/70"
@@ -342,12 +341,14 @@ export default function HeroSlider() {
                   />
                   <span>{slide.tabLabel}</span>
 
-                  {/* Progress indicator when active and not paused */}
-                  {isActive && !isPaused && (
+                  {/* 6-Second Visual Countdown Progress Line on the Active Tab */}
+                  {isActive && (
                     <span
-                      className="absolute bottom-0 left-0 h-[2px] bg-amber-400 rounded-full animate-progress"
+                      key={`${idx}-${timerKey}`}
+                      className="absolute bottom-0 left-0 h-[2.5px] rounded-full"
                       style={{
-                        animation: `progress ${SLIDE_DURATION}ms linear infinite`,
+                        backgroundColor: slide.themeAccent,
+                        animation: `progress ${SLIDE_DURATION}ms linear forwards`,
                       }}
                     />
                   )}
