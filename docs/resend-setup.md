@@ -140,6 +140,28 @@ In **Resend Dashboard** -> **Emails** -> **Receiving**:
 
 ---
 
+## 5. Security Architecture & Threat Mitigation
+
+1. **Webhook Signature Verification (Svix)**:
+   - In production, incoming POST requests to `/api/resend/webhook` must provide valid `svix-id`, `svix-timestamp`, and `svix-signature` headers matching `RESEND_WEBHOOK_SECRET`.
+   - If unverified or tampered with, requests are rejected immediately with HTTP 401.
+   - If `RESEND_WEBHOOK_SECRET` is not configured on production, inbound requests are rejected to prevent unauthenticated spoofing.
+2. **Payload Size Guard**:
+   - Webhook payloads are restricted to a maximum of 512 KB to eliminate memory exhaustion and denial-of-service vulnerabilities.
+3. **Admin Inbox Protection**:
+   - `/api/inbox` is guarded by authentication. Requests must pass an `x-admin-token` header matching the admin secret. Unauthenticated requests are rejected with HTTP 401.
+4. **Public API Rate Limiting**:
+   - Contact inquiries (`/api/contact`): Limited to 5 submissions per 10 minutes per IP address.
+   - Order dispatches (`/api/send-order`): Limited to 10 dispatches per 10 minutes per IP address.
+   - Excessive requests return HTTP 429 with standard `Retry-After` headers.
+5. **Bot Honeypot Defense**:
+   - Contact form includes an invisible `website` honeypot field. Automated bots filling all fields are silently discarded with a simulated 200 response without triggering Resend API calls.
+6. **XSS & HTML Injection Protection**:
+   - All dynamic customer fields (name, address, city, message, items) are strictly sanitized via `escapeHtml()` before insertion into email templates.
+   - Admin inbox renders message previews as safe text nodes without `dangerouslySetInnerHTML`.
+
+---
+
 ## 6. How to Configure Resend Webhook in Dashboard
 
 1. Navigate to [https://resend.com/webhooks](https://resend.com/webhooks).
@@ -155,11 +177,11 @@ In **Resend Dashboard** -> **Emails** -> **Receiving**:
 ## 7. Testing Procedures
 
 ### Local Automated Test Suite
-Run the automated test runner locally to verify template generation, HTML sanitization, Svix signatures, and idempotency:
+Run the automated test runner locally to verify template generation, HTML sanitization, Svix signatures, rate limiting, and idempotency:
 ```bash
 npx tsx scratch/test_resend_integration.mjs
 ```
-Expected output: `10 PASSED, 0 FAILED`.
+Expected output: `13 PASSED, 0 FAILED`.
 
 ### Live Inbound Webhook Health Check
 Verify that your deployed Netlify webhook endpoint is active and listening:

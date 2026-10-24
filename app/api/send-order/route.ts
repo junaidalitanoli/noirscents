@@ -2,9 +2,26 @@ import { NextResponse } from "next/server";
 import { isValidPakistaniPhone } from "@/lib/formatters";
 import { Order } from "@/types";
 import { sendOrderEmails } from "@/lib/email/orderService";
+import { checkRateLimit, getClientIp } from "@/lib/email/rateLimiter";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+
+    // Rate Limiting: Max 10 order email dispatches per 10 minutes per IP
+    const rateCheck = checkRateLimit(`order_${ip}`, 10, 10 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: "Too many order requests. Please wait a few minutes." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateCheck.retryAfterSec || 60),
+          },
+        }
+      );
+    }
+
     const body = await req.json();
     const order: Order = body.order;
 

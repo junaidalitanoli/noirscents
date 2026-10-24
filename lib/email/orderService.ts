@@ -1,5 +1,5 @@
 import { Order, OrderStatus } from "@/types";
-import { getResendClient, getSenderEmail, getStoreNotificationEmail, isResendConfigured } from "./resend";
+import { getResendClient, getSenderEmail, getStoreNotificationEmail } from "./resend";
 import { generateOrderAdminEmail, generateOrderCustomerEmail, generateOrderStatusEmail } from "./templates";
 
 // In-memory idempotency cache to prevent duplicate sends on retried checkout events

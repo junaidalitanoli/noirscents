@@ -11,6 +11,7 @@ export default function ContactFormClient() {
     phone: "",
     subject: "",
     message: "",
+    website: "", // Honeypot trap for bots
   });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -111,7 +112,7 @@ export default function ContactFormClient() {
             <button
               onClick={() => {
                 setSubmitted(false);
-                setForm({ name: "", phone: "", subject: "", message: "" });
+                setForm({ name: "", phone: "", subject: "", message: "", website: "" });
               }}
               className="mt-4 px-6 py-2 bg-zinc-900 text-white rounded-xl text-xs font-semibold cursor-pointer"
             >
@@ -120,6 +121,18 @@ export default function ContactFormClient() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            {/* Honeypot field for bot mitigation */}
+            <input
+              type="text"
+              name="website"
+              value={form.website}
+              onChange={(e) => setForm({ ...form, website: e.target.value })}
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ display: "none" }}
+              aria-hidden="true"
+            />
+
             <h2 className="font-heading text-xl font-bold text-zinc-950 mb-2">
               Send Us a Message
             </h2>

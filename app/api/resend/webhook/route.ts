@@ -21,6 +21,16 @@ export async function POST(req: Request) {
   try {
     const rawPayload = await req.text();
 
+    // Security: Payload size ceiling (512 KB max) to prevent DoS / memory exhaustion
+    const MAX_PAYLOAD_BYTES = 512 * 1024;
+    if (rawPayload.length > MAX_PAYLOAD_BYTES) {
+      console.warn(`[ResendWebhook] Payload exceeds limit: ${rawPayload.length} bytes`);
+      return NextResponse.json(
+        { error: "Payload exceeds 512KB limit" },
+        { status: 413 }
+      );
+    }
+
     const svixId = req.headers.get("svix-id");
     const svixTimestamp = req.headers.get("svix-timestamp");
     const svixSignature = req.headers.get("svix-signature");
@@ -59,10 +69,14 @@ export async function POST(req: Request) {
         );
       }
     } else {
-      // In production, reject unverified calls if secret is expected
+      // In production, reject unverified calls if secret is not configured to prevent webhook spoofing
       if (process.env.NODE_ENV === "production") {
-        console.warn(
-          "[ResendWebhook] RESEND_WEBHOOK_SECRET is not configured in Netlify environment variables. Webhook processed with signature check bypassed."
+        console.error(
+          "[ResendWebhook] RESEND_WEBHOOK_SECRET is not configured on server. Rejecting inbound webhook to prevent spoofing."
+        );
+        return NextResponse.json(
+          { error: "Webhook secret not configured on server" },
+          { status: 401 }
         );
       } else {
         console.log("[ResendWebhook] Development mode: RESEND_WEBHOOK_SECRET unconfigured, skipping signature verification.");

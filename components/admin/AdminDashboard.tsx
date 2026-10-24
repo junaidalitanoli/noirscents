@@ -51,7 +51,11 @@ export default function AdminDashboard() {
   const fetchInbox = async () => {
     setLoadingInbox(true);
     try {
-      const res = await fetch("/api/inbox");
+      const res = await fetch("/api/inbox", {
+        headers: {
+          "x-admin-token": password,
+        },
+      });
       const data = await res.json();
       if (data.emails) {
         setInboxEmails(data.emails);

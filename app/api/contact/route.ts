@@ -2,32 +2,67 @@ import { NextResponse } from "next/server";
 import { getResendClient, getSenderEmail, getStoreNotificationEmail } from "@/lib/email/resend";
 import { generateContactNotificationEmail } from "@/lib/email/templates";
 import { isValidPakistaniPhone } from "@/lib/formatters";
+import { checkRateLimit, getClientIp } from "@/lib/email/rateLimiter";
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+
+    // Rate Limiting: Max 5 inquiries per 10 minutes per IP
+    const rateCheck = checkRateLimit(`contact_${ip}`, 5, 10 * 60 * 1000);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: "Too many messages sent. Please wait before submitting another inquiry." },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateCheck.retryAfterSec || 60),
+          },
+        }
+      );
+    }
+
     const body = await req.json();
+
+    // Honeypot bot protection: if hidden field is filled, silently discard
+    if (body.website || body.hp_company) {
+      console.log(`[ContactAPI] Bot detected via honeypot from IP ${ip}`);
+      return NextResponse.json({
+        success: true,
+        messageId: "hp_discarded",
+        message: "Your message has been received.",
+      });
+    }
+
     const { name, phone, email, subject, message } = body;
 
-    if (!name || name.trim().length < 2) {
+    if (!name || typeof name !== "string" || name.trim().length < 2) {
       return NextResponse.json(
         { error: "Please enter your name (at least 2 characters)." },
         { status: 400 }
       );
     }
 
-    if (!phone || !isValidPakistaniPhone(phone)) {
+    if (!phone || typeof phone !== "string" || !isValidPakistaniPhone(phone)) {
       return NextResponse.json(
         { error: "Please enter a valid Pakistani contact number (03XX-XXXXXXX)." },
         { status: 400 }
       );
     }
 
-    if (!message || message.trim().length < 5) {
+    if (!message || typeof message !== "string" || message.trim().length < 5) {
       return NextResponse.json(
         { error: "Message must be at least 5 characters long." },
         { status: 400 }
       );
     }
+
+    // Sanitize length
+    const sanitizedName = name.trim().slice(0, 100);
+    const sanitizedPhone = phone.trim().slice(0, 20);
+    const sanitizedEmail = email && typeof email === "string" ? email.trim().slice(0, 100) : undefined;
+    const sanitizedSubject = subject && typeof subject === "string" ? subject.trim().slice(0, 150) : undefined;
+    const sanitizedMessage = message.trim().slice(0, 4000);
 
     const resend = getResendClient();
     const fromEmail = getSenderEmail();
@@ -43,11 +78,11 @@ export async function POST(req: Request) {
     }
 
     const template = generateContactNotificationEmail({
-      name: name.trim(),
-      phone: phone.trim(),
-      email: email ? email.trim() : undefined,
-      subject: subject ? subject.trim() : undefined,
-      message: message.trim(),
+      name: sanitizedName,
+      phone: sanitizedPhone,
+      email: sanitizedEmail,
+      subject: sanitizedSubject,
+      message: sanitizedMessage,
     });
 
     const { data, error } = await resend.emails.send({
