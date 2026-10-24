@@ -234,8 +234,6 @@ export default function HeroSlider() {
     touchDeltaX.current = 0;
   };
 
-  const activeSlide = SLIDES[realIndex];
-
   return (
     <section
       className="relative w-full overflow-hidden bg-[#faf8f5] select-none"
@@ -245,8 +243,10 @@ export default function HeroSlider() {
       aria-roledescription="carousel"
       aria-label="Noir Scents Featured Campaigns"
     >
-      {/* Sliding Track Viewport */}
-      <div className="relative w-full min-h-[560px] sm:min-h-[640px] lg:min-h-[700px] flex overflow-hidden">
+      {/* Sliding Track Viewport:
+          Calibrated viewport height that fits perfectly on all display resolutions (laptops, desktops, mobile)
+          without pushing CTA buttons or bottom tabs below the screen fold. */}
+      <div className="relative w-full h-[470px] sm:h-[500px] md:h-[530px] lg:h-[560px] xl:h-[580px] max-h-[calc(100vh-115px)] flex overflow-hidden">
         <div
           className="flex h-full w-full"
           style={{
@@ -264,41 +264,46 @@ export default function HeroSlider() {
             return (
               <div
                 key={`${slide.uniqueKey}-${index}`}
-                className="w-full shrink-0 relative min-h-[560px] sm:min-h-[640px] lg:min-h-[700px] flex items-center overflow-hidden"
+                className="w-full shrink-0 relative h-full flex items-center overflow-hidden"
                 aria-hidden={!isCurrent}
               >
-                {/* Background Image with Cinematic Ken Burns Breathe */}
+                {/* Background Image:
+                    Focal position calibrated to 80% horizontal and center-bottom so the entire bottle,
+                    flacon cap, and marble base stay 100% visible across all desktop and mobile viewports. */}
                 <div className="absolute inset-0 overflow-hidden">
                   <Image
                     src={slide.imageSrc}
                     alt={slide.imageAlt}
                     fill
                     priority={index === 1}
-                    sizes="100vw"
-                    className={`object-cover object-[78%_center] sm:object-right md:object-center brightness-[1.02] contrast-[1.02] transition-transform duration-[6500ms] ease-out ${
-                      isCurrent ? "scale-100" : "scale-108"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                    className={`object-cover object-[82%_center] sm:object-[80%_center] md:object-[78%_center] lg:object-[80%_center] brightness-[1.01] contrast-[1.01] transition-transform duration-[6500ms] ease-out ${
+                      isCurrent ? "scale-100" : "scale-[1.02]"
                     }`}
                   />
                 </div>
 
-                {/* Tailored Luxury Vignettes */}
+                {/* Refined Luxury Vignettes - leaves bottle crisp on the right while ensuring text readability on the left */}
                 <div
-                  className={`hidden lg:block absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} w-[62%] pointer-events-none`}
+                  className={`hidden lg:block absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} w-[58%] pointer-events-none`}
                 />
                 <div
-                  className={`lg:hidden absolute inset-0 bg-gradient-to-t ${slide.vignetteMobile} pointer-events-none`}
+                  className={`hidden sm:block lg:hidden absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} w-[65%] pointer-events-none`}
                 />
-                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#faf8f5]/90 to-transparent pointer-events-none" />
+                <div
+                  className={`sm:hidden absolute inset-0 bg-gradient-to-t ${slide.vignetteMobile} pointer-events-none`}
+                />
+                <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#faf8f5]/80 to-transparent pointer-events-none" />
 
                 {/* Content Overlay with Staggered Slide-In Transitions */}
-                <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-                  <div className="max-w-[620px] space-y-4 sm:space-y-6 text-left">
+                <div className="relative z-10 w-full max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-10 flex items-center h-full">
+                  <div className="max-w-[560px] space-y-2.5 sm:space-y-4 lg:space-y-5 text-left">
                     {/* Eyebrow Badge */}
                     <div
-                      className={`inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/90 border border-stone-200/90 text-stone-800 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] backdrop-blur-md shadow-xs rounded-full transition-all duration-600 ease-out delay-150 ${
+                      className={`inline-flex items-center gap-2 px-3 py-1 bg-white/90 border border-stone-200/90 text-stone-800 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur-md shadow-xs rounded-full transition-all duration-600 ease-out delay-150 ${
                         isCurrent
                           ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-4"
+                          : "opacity-0 translate-y-3"
                       }`}
                     >
                       <IconComponent
@@ -310,13 +315,13 @@ export default function HeroSlider() {
 
                     {/* Headline & Taglines */}
                     <div
-                      className={`space-y-2 transition-all duration-700 ease-out delay-250 ${
+                      className={`space-y-1 sm:space-y-2 transition-all duration-700 ease-out delay-250 ${
                         isCurrent
                           ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-6"
+                          : "opacity-0 translate-y-4"
                       }`}
                     >
-                      <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase leading-[1.08] text-stone-950 font-heading">
+                      <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.1] text-stone-950 font-heading">
                         {slide.headlineLead} <br />
                         <span
                           className={`text-transparent bg-clip-text bg-gradient-to-r ${slide.headlineGradient}`}
@@ -325,27 +330,27 @@ export default function HeroSlider() {
                         </span>
                       </h1>
                       <p
-                        className="text-sm sm:text-base font-semibold tracking-[0.16em] uppercase"
+                        className="text-xs sm:text-sm lg:text-base font-semibold tracking-[0.14em] uppercase"
                         style={{ color: slide.themeAccent }}
                       >
                         {slide.tagline}
                       </p>
-                      <p className="text-[11px] sm:text-xs font-medium tracking-[0.12em] text-stone-600 uppercase">
+                      <p className="text-[10px] sm:text-xs font-medium tracking-[0.1em] text-stone-600 uppercase">
                         {slide.subText}
                       </p>
                     </div>
 
                     {/* Action Buttons */}
                     <div
-                      className={`flex items-center gap-3 pt-2 transition-all duration-700 ease-out delay-400 ${
+                      className={`flex items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2 transition-all duration-700 ease-out delay-400 ${
                         isCurrent
                           ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-4"
+                          : "opacity-0 translate-y-3"
                       }`}
                     >
                       <a
                         href={slide.primaryButton.href}
-                        className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 text-white font-semibold text-[11px] sm:text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95"
+                        className="flex-1 sm:flex-initial px-5 sm:px-7 py-2.5 sm:py-3 text-white font-semibold text-[10px] sm:text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95 rounded-xs"
                         style={{ backgroundColor: "#1c1917" }}
                         onMouseEnter={(e) => {
                           (e.currentTarget as HTMLElement).style.backgroundColor =
@@ -360,7 +365,7 @@ export default function HeroSlider() {
                       </a>
                       <Link
                         href={slide.secondaryButton.href}
-                        className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 bg-white/95 border border-stone-300 text-stone-900 font-semibold text-[11px] sm:text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95"
+                        className="flex-1 sm:flex-initial px-5 sm:px-7 py-2.5 sm:py-3 bg-white/95 border border-stone-300 text-stone-900 font-semibold text-[10px] sm:text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95 rounded-xs"
                       >
                         {slide.secondaryButton.label}
                       </Link>
@@ -373,7 +378,7 @@ export default function HeroSlider() {
         </div>
 
         {/* Top-Right Editorial Slide Counter */}
-        <div className="hidden sm:flex absolute top-6 right-6 lg:right-10 z-20 items-center gap-2 px-3.5 py-1.5 bg-white/80 backdrop-blur-md rounded-full border border-stone-200/80 shadow-xs text-xs font-mono tracking-widest text-stone-700 pointer-events-none">
+        <div className="hidden sm:flex absolute top-5 right-6 lg:right-10 z-20 items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-md rounded-full border border-stone-200/80 shadow-xs text-xs font-mono tracking-widest text-stone-700 pointer-events-none">
           <span className="font-bold text-stone-950">0{realIndex + 1}</span>
           <span className="text-stone-300">/</span>
           <span className="text-stone-400">0{SLIDES.length}</span>
@@ -386,24 +391,24 @@ export default function HeroSlider() {
             onClick={prevSlide}
             disabled={isTransitioning}
             aria-label="Previous Slide"
-            className="pointer-events-auto p-3.5 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+            className="pointer-events-auto p-3 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             type="button"
             onClick={nextSlide}
             disabled={isTransitioning}
             aria-label="Next Slide"
-            className="pointer-events-auto p-3.5 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+            className="pointer-events-auto p-3 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Bottom Interactive Navigation Tabs & Real-time Progress Countdown */}
-        <div className="absolute bottom-5 inset-x-0 z-20 flex flex-col items-center gap-2 pointer-events-auto">
-          <div className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 bg-white/85 backdrop-blur-md rounded-full border border-stone-200/80 shadow-sm max-w-[94vw] overflow-x-auto scrollbar-none">
+        <div className="absolute bottom-3.5 sm:bottom-4 inset-x-0 z-20 flex flex-col items-center gap-2 pointer-events-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 bg-white/85 backdrop-blur-md rounded-full border border-stone-200/80 shadow-sm max-w-[94vw] overflow-x-auto scrollbar-none">
             {SLIDES.map((slide, idx) => {
               const isActive = idx === realIndex;
               return (
@@ -411,7 +416,7 @@ export default function HeroSlider() {
                   key={slide.id}
                   type="button"
                   onClick={() => goToSlide(idx)}
-                  className={`relative overflow-hidden px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wider rounded-full transition-all shrink-0 flex items-center gap-1.5 ${
+                  className={`relative overflow-hidden px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[9px] sm:text-xs font-semibold uppercase tracking-wider rounded-full transition-all shrink-0 flex items-center gap-1.5 ${
                     isActive
                       ? "bg-stone-950 text-white shadow-xs"
                       : "text-stone-600 hover:text-stone-950 hover:bg-stone-100/70"
