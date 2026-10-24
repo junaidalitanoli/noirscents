@@ -48,3 +48,7 @@ scratch/
 noirscents/
 
 .netlify/
+
+data/*.json
+!data/.gitkeep
+

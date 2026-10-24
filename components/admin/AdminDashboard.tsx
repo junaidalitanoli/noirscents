@@ -17,6 +17,8 @@ import {
   Truck,
   Sparkles,
   KeyRound,
+  Mail,
+  RefreshCw,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
 import { INITIAL_PRODUCTS } from "@/lib/data";
@@ -29,8 +31,37 @@ export default function AdminDashboard() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState<"orders" | "products">("orders");
+  const [activeTab, setActiveTab] = useState<"orders" | "products" | "inbox">("orders");
   const [showAddProductModal, setShowAddProductModal] = useState(false);
+
+  // Inbound Resend emails state
+  const [inboxEmails, setInboxEmails] = useState<Array<{
+    id: string;
+    emailId: string;
+    from: string;
+    to: string[];
+    subject: string;
+    receivedAt: string;
+    text?: string;
+    snippet?: string;
+  }>>([]);
+  const [loadingInbox, setLoadingInbox] = useState(false);
+  const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
+
+  const fetchInbox = async () => {
+    setLoadingInbox(true);
+    try {
+      const res = await fetch("/api/inbox");
+      const data = await res.json();
+      if (data.emails) {
+        setInboxEmails(data.emails);
+      }
+    } catch (err) {
+      console.error("Failed to load inbox:", err);
+    } finally {
+      setLoadingInbox(false);
+    }
+  };
 
   const { orders, customProducts, updateOrderStatus, addProduct, deleteProduct } =
     useOrderStore();
@@ -262,6 +293,20 @@ export default function AdminDashboard() {
           <Package className="w-4 h-4" />
           Perfume Catalog ({allProducts.length})
         </button>
+        <button
+          onClick={() => {
+            setActiveTab("inbox");
+            fetchInbox();
+          }}
+          className={`pb-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
+            activeTab === "inbox"
+              ? "border-[#d4af37] text-zinc-950"
+              : "border-transparent text-zinc-500 hover:text-zinc-800"
+          }`}
+        >
+          <Mail className="w-4 h-4" />
+          Received Emails ({inboxEmails.length})
+        </button>
       </div>
 
       {/* Orders Tab */}
@@ -443,6 +488,69 @@ export default function AdminDashboard() {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+
+      {/* Inbound Messages / Emails Tab */}
+      {activeTab === "inbox" && (
+        <div className="bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-xs p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-200">
+            <div>
+              <h3 className="font-heading text-lg font-bold text-zinc-950">Inbound Customer Emails (Resend)</h3>
+              <p className="text-xs text-zinc-500">Live emails received via Resend Inbound Webhook (<code className="bg-zinc-100 px-1.5 py-0.5 rounded text-[11px] font-mono text-zinc-800">/api/resend/webhook</code>)</p>
+            </div>
+            <button
+              onClick={fetchInbox}
+              disabled={loadingInbox}
+              className="px-4 py-2 bg-zinc-900 text-white rounded-xl text-xs font-semibold flex items-center gap-2 hover:bg-black transition-colors disabled:opacity-50 cursor-pointer self-start sm:self-auto"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loadingInbox ? "animate-spin" : ""}`} />
+              {loadingInbox ? "Refreshing..." : "Refresh Inbox"}
+            </button>
+          </div>
+
+          {inboxEmails.length === 0 ? (
+            <div className="py-12 text-center text-zinc-500 space-y-2">
+              <Mail className="w-10 h-10 text-zinc-300 mx-auto" />
+              <p className="font-semibold text-zinc-700">No Inbound Emails Received Yet</p>
+              <p className="text-xs text-zinc-400 max-w-md mx-auto">
+                Once customer inquiries or test emails arrive via Resend, they will be captured and displayed here in real time.
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-zinc-100">
+              {inboxEmails.map((msg) => (
+                <div key={msg.id} className="py-4 space-y-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-zinc-900">{msg.from}</span>
+                      <span className="text-zinc-400">&bull;</span>
+                      <span className="font-semibold text-[#b48325]">{msg.subject}</span>
+                    </div>
+                    <span className="text-zinc-400 text-[11px] font-mono">
+                      {new Date(msg.receivedAt).toLocaleString("en-PK", { timeZone: "Asia/Karachi" })}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-600 line-clamp-2">
+                    {msg.snippet || msg.text || "No preview available"}
+                  </p>
+                  {msg.text && (
+                    <button
+                      onClick={() => setSelectedEmail(selectedEmail === msg.id ? null : msg.id)}
+                      className="text-[11px] text-zinc-800 font-semibold underline hover:text-[#b48325] cursor-pointer block"
+                    >
+                      {selectedEmail === msg.id ? "Hide Full Message" : "View Full Message"}
+                    </button>
+                  )}
+                  {selectedEmail === msg.id && msg.text && (
+                    <div className="p-3 bg-zinc-50 rounded-lg text-xs font-mono text-zinc-800 whitespace-pre-wrap border border-zinc-200">
+                      {msg.text}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
