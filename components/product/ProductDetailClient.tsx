@@ -28,6 +28,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [selectedSizeIndex, setSelectedSizeIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [isNavigatingCOD, setIsNavigatingCOD] = useState(false);
   const { addItem, openCart } = useCartStore();
 
   const selectedSize = product.sizes[selectedSizeIndex] || product.sizes[0];
@@ -54,8 +55,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   };
 
   const handleBuyNowCOD = () => {
+    setIsNavigatingCOD(true);
     addItem(product, selectedSize, quantity);
-    router.push("/checkout");
+    setTimeout(() => {
+      router.push("/checkout");
+    }, 280);
   };
 
   // Build WhatsApp quick order URL
@@ -199,11 +203,23 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         <button
           type="button"
           onClick={handleBuyNowCOD}
+          disabled={isNavigatingCOD}
           id="product-buy-now-cod-btn"
-          className="w-full py-4 px-6 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all active:scale-[0.99] shadow-md border border-black dark:border-[#d4af37] group"
+          className={`w-full py-4 px-6 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all duration-300 active:scale-[0.98] shadow-md border border-black dark:border-[#d4af37] group ${
+            isNavigatingCOD ? "opacity-90 scale-[0.99] ring-2 ring-[#d4af37]" : ""
+          }`}
         >
-          <Zap className="w-4 h-4 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b] group-hover:scale-110 transition-transform" />
-          <span>Order with Cash on Delivery &bull; {formatPrice(totalPrice)}</span>
+          {isNavigatingCOD ? (
+            <span className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 border-2 border-white dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
+              <span>Securing Your Flacon...</span>
+            </span>
+          ) : (
+            <>
+              <Zap className="w-4 h-4 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b] group-hover:scale-110 transition-transform" />
+              <span>Order with Cash on Delivery &bull; {formatPrice(totalPrice)}</span>
+            </>
+          )}
         </button>
 
         {/* Secondary CTA: ADD TO BAG */}

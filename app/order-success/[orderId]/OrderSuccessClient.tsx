@@ -126,7 +126,7 @@ export default function OrderSuccessClient({ orderId }: OrderSuccessClientProps)
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 w-full animate-in fade-in duration-600 ease-out">
       {/* Success Badge */}
       <div className="text-center space-y-3 mb-10">
         <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-transparent dark:border-emerald-700/50 flex items-center justify-center mx-auto shadow-md">

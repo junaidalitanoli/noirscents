@@ -37,15 +37,21 @@ export default function CartDrawer() {
     };
   }, [isOpen]);
 
-  if (!isHydrated || !isOpen) {
+  if (!isHydrated) {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop Overlay */}
+    <div
+      className={`fixed inset-0 z-50 overflow-hidden transition-all duration-500 ${
+        isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
+      }`}
+    >
+      {/* Backdrop Overlay with smooth blur and fade */}
       <div
-        className="absolute inset-0 bg-black/50 transition-opacity"
+        className={`absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
         onClick={() => setDrawerOpen(false)}
         aria-hidden="true"
       />
@@ -53,7 +59,9 @@ export default function CartDrawer() {
       <div className="fixed inset-y-0 right-0 max-w-full flex">
         <aside
           aria-label="Your Cart"
-          className="w-screen max-w-[420px] bg-white dark:bg-[#0c0c0f] text-zinc-900 dark:text-zinc-100 shadow-2xl flex flex-col animate-slide-over border-l border-transparent dark:border-white/10"
+          className={`w-screen max-w-[420px] bg-white dark:bg-[#0c0c0f] text-zinc-900 dark:text-zinc-100 shadow-2xl flex flex-col border-l border-black/10 dark:border-white/10 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-black/8 dark:border-white/10 flex items-center justify-between bg-white dark:bg-[#0c0c0f]">

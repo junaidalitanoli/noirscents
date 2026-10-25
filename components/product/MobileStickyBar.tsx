@@ -16,6 +16,7 @@ interface MobileStickyBarProps {
 export default function MobileStickyBar({ product }: MobileStickyBarProps) {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const { addItem } = useCartStore();
 
   const primarySize = product.sizes[0];
@@ -36,14 +37,17 @@ export default function MobileStickyBar({ product }: MobileStickyBarProps) {
   }, []);
 
   const handleInstantBuy = () => {
+    setIsNavigating(true);
     addItem(product, primarySize, 1);
-    router.push("/checkout");
+    setTimeout(() => {
+      router.push("/checkout");
+    }, 280);
   };
 
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#0c0c0f]/95 backdrop-blur-md border-t border-black/10 dark:border-white/10 p-3 sm:hidden shadow-lg animate-in slide-in-from-bottom duration-200">
+    <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#0c0c0f]/95 backdrop-blur-md border-t border-black/10 dark:border-white/10 p-3 sm:hidden shadow-lg transition-transform duration-500 ease-out animate-in slide-in-from-bottom">
       <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="relative w-11 h-11 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shrink-0 overflow-hidden">
@@ -75,11 +79,16 @@ export default function MobileStickyBar({ product }: MobileStickyBarProps) {
         <button
           type="button"
           onClick={handleInstantBuy}
+          disabled={isNavigating}
           id="mobile-sticky-order-cod-btn"
-          className="px-4 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md active:scale-95 transition-all"
+          className="px-4 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md active:scale-95 transition-all duration-300 disabled:opacity-80"
         >
-          <Zap className="w-3.5 h-3.5 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b]" />
-          <span>Order COD</span>
+          {isNavigating ? (
+            <span className="w-3.5 h-3.5 border-2 border-white dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Zap className="w-3.5 h-3.5 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b]" />
+          )}
+          <span>{isNavigating ? "Securing..." : "Order COD"}</span>
         </button>
       </div>
     </div>
