@@ -94,13 +94,13 @@ export async function generateMetadata({
       title: meta.title,
       description: meta.description,
       url: `/collections/${category}`,
-      siteName: "Noir Scents",
+      siteName: "Noir Scent",
       images: [
         {
           url: meta.image,
           width: 1024,
           height: 1024,
-          alt: `${meta.title} by Noir Scents`,
+          alt: `${meta.title} by Noir Scent`,
         },
       ],
       locale: "en_PK",

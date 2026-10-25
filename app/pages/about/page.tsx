@@ -6,24 +6,24 @@ import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Our Heritage & Artisanal Philosophy | Noir Scents",
+  title: "Our Heritage & Artisanal Philosophy | Noir Scent",
   description:
-    "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
+    "Discover the story of Noir Scent: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
   alternates: {
     canonical: "/pages/about",
   },
   openGraph: {
-    title: "Our Heritage & Artisanal Philosophy | Noir Scents",
+    title: "Our Heritage & Artisanal Philosophy | Noir Scent",
     description:
-      "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
+      "Discover the story of Noir Scent: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
     url: "/pages/about",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Artisanal Heritage Story",
+        alt: "Noir Scent Artisanal Heritage Story",
       },
     ],
     locale: "en_PK",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Our Heritage & Artisanal Philosophy | Noir Scents",
+    title: "Our Heritage & Artisanal Philosophy | Noir Scent",
     description:
-      "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
+      "Discover the story of Noir Scent: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
@@ -87,7 +87,7 @@ export default function AboutPage() {
               <span className="block font-heading font-bold text-white text-base sm:text-lg">
                 The Master Perfumers &amp; Founders
               </span>
-              <span className="text-xs text-zinc-400">Noir Scents Artisanal Studio &bull; Karachi &amp; Lahore</span>
+              <span className="text-xs text-zinc-400">Noir Scent Artisanal Studio &bull; Karachi &amp; Lahore</span>
             </div>
             <div className="w-12 h-12 rounded-full border border-[#d4af37]/40 flex items-center justify-center text-[#d4af37] font-mono text-xs font-bold">
               NS
@@ -101,7 +101,7 @@ export default function AboutPage() {
         <div className="text-center space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">Our Uncompromising Standards</span>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950">
-            Why Discerning Clients Choose Noir Scents
+            Why Discerning Clients Choose Noir Scent
           </h2>
         </div>
 

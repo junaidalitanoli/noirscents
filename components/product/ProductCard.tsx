@@ -35,7 +35,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
   const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
   const displaySize = product.sizeLabel || `${selectedSize.ml}ml`;
-  const imageAlt = `${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scents`;
+  const imageAlt = `${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scent`;
 
   return (
     <div

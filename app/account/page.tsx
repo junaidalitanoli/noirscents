@@ -563,7 +563,7 @@ export default function AccountPage() {
             <div className="bg-zinc-50 border border-zinc-200 p-6 rounded-xl space-y-4 text-xs">
               <div className="flex items-center gap-2 text-zinc-900 font-bold text-sm">
                 <Sparkles className="w-4 h-4 text-[#d4af37]" />
-                Noir Scents VIP Privileges
+                Noir Scent VIP Privileges
               </div>
               <ul className="space-y-3 text-zinc-600">
                 <li className="flex items-start gap-2">

@@ -60,7 +60,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   // Build WhatsApp quick order URL
   const whatsappText = encodeURIComponent(
-    `Hello Noir Scents! I want to order "${product.name}" (${selectedSize.ml}ml - ${formatPrice(selectedSize.price * quantity)}, Qty: ${quantity}) via Cash on Delivery. Please confirm my order.`
+    `Hello Noir Scent! I want to order "${product.name}" (${selectedSize.ml}ml - ${formatPrice(selectedSize.price * quantity)}, Qty: ${quantity}) via Cash on Delivery. Please confirm my order.`
   );
   const whatsappUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${whatsappText}`;
 

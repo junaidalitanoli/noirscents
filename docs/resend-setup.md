@@ -1,6 +1,6 @@
-# Resend Email Integration Guide: Sending & Receiving for Noir Scents
+# Resend Email Integration Guide: Sending & Receiving for Noir Scent
 
-This document details the complete Resend outbound sending and inbound receiving architecture for the **Noir Scents** e-commerce store (Next.js App Router hosted on Netlify).
+This document details the complete Resend outbound sending and inbound receiving architecture for the **Noir Scent** e-commerce store (Next.js App Router hosted on Netlify).
 
 ---
 
@@ -49,7 +49,7 @@ Configure these variables securely in your environment. **Never commit real API 
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 
 # Verified Sender Email (use onboarding sender for testing, or your custom domain once verified)
-RESEND_FROM_EMAIL="Noir Scents <onboarding@resend.dev>"
+RESEND_FROM_EMAIL="Noir Scent <onboarding@resend.dev>"
 
 # Store Concierge Notification Email (receives order alerts and customer inquiries)
 MY_RECEIVING_EMAIL=noirscents01@gmail.com
@@ -62,7 +62,7 @@ RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 1. Go to **Netlify Dashboard** -> **Site configuration** -> **Environment variables**.
 2. Add the following variables:
    - `RESEND_API_KEY` = your live Resend API key (`re_...`)
-   - `RESEND_FROM_EMAIL` = `Noir Scents <orders@yourdomain.com>` (or `onboarding@resend.dev` during testing)
+   - `RESEND_FROM_EMAIL` = `Noir Scent <orders@yourdomain.com>` (or `onboarding@resend.dev` during testing)
    - `MY_RECEIVING_EMAIL` = `noirscents01@gmail.com`
    - `RESEND_WEBHOOK_SECRET` = your live Resend Webhook signing secret (`whsec_...`)
 3. Trigger a redeploy on Netlify to apply the new environment variables to serverless functions.

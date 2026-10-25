@@ -362,7 +362,7 @@ export default function CheckoutForm() {
         </button>
 
         <p className="text-[11px] text-center text-zinc-500">
-          By placing your order, you agree to Noir Scents shipping and return policies.
+          By placing your order, you agree to Noir Scent shipping and return policies.
         </p>
       </div>
     </form>

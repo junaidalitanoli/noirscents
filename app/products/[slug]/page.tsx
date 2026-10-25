@@ -48,7 +48,7 @@ export async function generateMetadata({
   }
 
   const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
-  const pageTitle = `${product.name} Extrait de Parfum | Noir Scents Pakistan`;
+  const pageTitle = `${product.name} Extrait de Parfum | Noir Scent Pakistan`;
   const pageDescription = product.subtitle
     ? `${product.name} — ${product.subtitle}. Handcrafted artisanal Extrait de Parfum with 12+ hours sillage. Cash on Delivery across Pakistan.`
     : `Experience ${product.name} Extrait de Parfum in Pakistan. Artisanal luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
@@ -63,13 +63,13 @@ export async function generateMetadata({
       title: pageTitle,
       description: pageDescription,
       url: `/products/${product.slug}`,
-      siteName: "Noir Scents",
+      siteName: "Noir Scent",
       images: [
         {
           url: primaryImage,
           width: 1024,
           height: 1024,
-          alt: `${product.name} Extrait de Parfum bottle by Noir Scents`,
+          alt: `${product.name} Extrait de Parfum bottle by Noir Scent`,
         },
       ],
       locale: "en_PK",
@@ -119,7 +119,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
     image: getAbsoluteUrl(product.images?.[0] || DEFAULT_PRODUCT_IMAGE),
     brand: {
       "@type": "Brand",
-      name: "Noir Scents",
+      name: "Noir Scent",
     },
     sku: product.slug,
     offers: {
@@ -130,7 +130,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       url: getAbsoluteUrl(`/products/${product.slug}`),
       seller: {
         "@type": "Organization",
-        name: "Noir Scents",
+        name: "Noir Scent",
       },
     },
     aggregateRating: {
@@ -180,7 +180,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#b48325] font-bold">
-                Noir Scents Atelier &bull; {categoryLabel}
+                Noir Scent Atelier &bull; {categoryLabel}
               </span>
               <span className="w-1 h-1 rounded-full bg-zinc-300" />
               <span className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-zinc-500 font-medium">

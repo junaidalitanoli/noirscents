@@ -10,7 +10,7 @@ import HeroSlider from "@/components/home/HeroSlider";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
+    absolute: "Noir Scent | Artisanal Extrait Perfumes in Pakistan",
   },
   description:
     "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
@@ -18,17 +18,17 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
+    title: "Noir Scent | Artisanal Extrait Perfumes in Pakistan",
     description:
       "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
     url: "/",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Artisanal Perfumes Showcase",
+        alt: "Noir Scent Artisanal Perfumes Showcase",
       },
     ],
     locale: "en_PK",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
+    title: "Noir Scent | Artisanal Extrait Perfumes in Pakistan",
     description:
       "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],

@@ -36,7 +36,7 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
             <div className="relative w-14 h-14 bg-zinc-950 rounded-lg overflow-hidden shrink-0 border border-zinc-200">
               <Image
                 src={item.product.images?.[0] || DEFAULT_PRODUCT_IMAGE}
-                alt={`${item.product.name} Extrait de Parfum by Noir Scents`}
+                alt={`${item.product.name} Extrait de Parfum by Noir Scent`}
                 fill
                 sizes="56px"
                 className="object-cover"

@@ -54,7 +54,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
             <div className="relative aspect-square w-full bg-[#f4f4f5] overflow-hidden border border-black/6">
               <Image
                 src={currentImage}
-                alt={`${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scents`}
+                alt={`${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scent`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover transition-all duration-300"
@@ -82,7 +82,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
                   >
                     <Image
                       src={img}
-                      alt={`${product.name} Extrait de Parfum thumbnail ${idx + 1} by Noir Scents`}
+                      alt={`${product.name} Extrait de Parfum thumbnail ${idx + 1} by Noir Scent`}
                       fill
                       sizes="80px"
                       className="object-cover"
@@ -97,7 +97,7 @@ export default function FeaturedProductSection({ product }: FeaturedProductSecti
           <div className="lg:col-span-6 space-y-5">
             <div>
               <p className="text-xs uppercase tracking-[0.14em] text-zinc-500 font-semibold mb-1">
-                Noir Scents
+                Noir Scent
               </p>
               <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-[#121212]">
                 {product.name}

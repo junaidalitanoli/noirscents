@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     title: "Privacy Policy",
     description: `Customer data protection and privacy standards at ${BRAND_NAME}. We operate exclusively on Cash on Delivery with zero card data storage.`,
     url: "/policies/privacy",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Privacy Policy",
+        alt: "Noir Scent Privacy Policy",
       },
     ],
     locale: "en_PK",

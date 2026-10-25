@@ -41,7 +41,7 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
               >
                 <Image
                   src={img}
-                  alt={`${productName} Extrait de Parfum bottle thumbnail ${idx + 1} by Noir Scents`}
+                  alt={`${productName} Extrait de Parfum bottle thumbnail ${idx + 1} by Noir Scent`}
                   fill
                   sizes="80px"
                   className="object-cover"
@@ -55,7 +55,7 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
         <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] border border-black/8 overflow-hidden rounded-xs group">
           <Image
             src={currentImage}
-            alt={`${productName} Extrait de Parfum bottle by Noir Scents`}
+            alt={`${productName} Extrait de Parfum bottle by Noir Scent`}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 50vw"

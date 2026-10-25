@@ -34,13 +34,13 @@ export async function generateMetadata({
       title: pageTitle,
       description: pageDescription,
       url: canonicalUrl,
-      siteName: "Noir Scents",
+      siteName: "Noir Scent",
       images: [
         {
           url: DEFAULT_PRODUCT_IMAGE,
           width: 1024,
           height: 1024,
-          alt: "Noir Scents Search Directory",
+          alt: "Noir Scent Search Directory",
         },
       ],
       locale: "en_PK",

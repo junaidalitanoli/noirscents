@@ -51,7 +51,7 @@ export default function Navbar() {
               href="/"
               className="text-base sm:text-lg font-bold tracking-[0.16em] uppercase text-stone-950 hover:opacity-80 transition-opacity whitespace-nowrap block font-serif"
             >
-              Noir Scents
+              Noir Scent
             </Link>
           </div>
 
@@ -92,7 +92,7 @@ export default function Navbar() {
                 href="/"
                 className="text-2xl sm:text-3xl font-extrabold tracking-[0.24em] uppercase text-[#121212] hover:opacity-85 transition-opacity block"
               >
-                Noir Scents
+                Noir Scent
               </Link>
             </div>
 
@@ -151,7 +151,7 @@ export default function Navbar() {
             </button>
 
             <h3 className="text-xs uppercase tracking-widest font-semibold text-zinc-400 mb-4">
-              Search Noir Scents
+              Search Noir Scent
             </h3>
 
             <form onSubmit={handleSearchSubmit} className="relative">
@@ -230,7 +230,7 @@ export default function Navbar() {
             <div className="space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-zinc-200">
                 <span className="text-base font-bold tracking-[0.14em] uppercase text-black">
-                  Noir Scents
+                  Noir Scent
                 </span>
                 <button
                   type="button"

@@ -15,8 +15,8 @@ export const SITE_CONFIG = {
   businessHours: STORE_CONFIG.businessHours,
 } as const;
 
-export const DEFAULT_WHATSAPP_MESSAGE = "Assalam o Alaikum, I have a question about Noir Scents.";
+export const DEFAULT_WHATSAPP_MESSAGE = "Assalam o Alaikum, I have a question about Noir Scent.";
 
 export function getWhatsAppProductMessage(productName: string, productUrl: string): string {
-  return `Assalam o Alaikum, I have a question about Noir Scents regarding ${productName}: ${productUrl}`;
+  return `Assalam o Alaikum, I have a question about Noir Scent regarding ${productName}: ${productUrl}`;
 }

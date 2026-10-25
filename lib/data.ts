@@ -546,7 +546,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     name: "Grand Discovery Set",
     category: "testers",
     subtitle: "5 x 10ml Deluxe Atomizers Flight of Signature Extraits",
-    inspiration: "The ultimate introduction to Noir Scents' artisanal craftsmanship.",
+    inspiration: "The ultimate introduction to Noir Scent's artisanal craftsmanship.",
     accords: ["Bergamot", "Cardamom", "Smoked Oud", "Damascus Rose", "Amber"],
     gender: "Unisex",
     season: "All Seasons",

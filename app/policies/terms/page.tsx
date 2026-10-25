@@ -15,13 +15,13 @@ export const metadata: Metadata = {
     title: "Terms and Conditions",
     description: `Terms and conditions for ordering from ${BRAND_NAME} in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.`,
     url: "/policies/terms",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Terms and Conditions",
+        alt: "Noir Scent Terms and Conditions",
       },
     ],
     locale: "en_PK",
@@ -134,7 +134,7 @@ export default function TermsPage() {
               6. Authentic Artisanal Guarantee
             </h2>
             <p className="bg-zinc-50 p-4 rounded-xl border border-zinc-200 text-xs sm:text-sm text-zinc-600">
-              All Noir Scents flacons and discovery sets are original artisanal fragrance compositions handcrafted and packaged with high-grade perfume oils and botanical carriers. Every order dispatched via Cash on Delivery is backed by our customer concierge support.
+              All Noir Scent flacons and discovery sets are original artisanal fragrance compositions handcrafted and packaged with high-grade perfume oils and botanical carriers. Every order dispatched via Cash on Delivery is backed by our customer concierge support.
             </p>
           </div>
         </div>

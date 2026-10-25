@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     title: "Returns & Exchanges Policy",
     description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
     url: "/policies/returns",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Returns & Exchanges Policy",
+        alt: "Noir Scent Returns & Exchanges Policy",
       },
     ],
     locale: "en_PK",

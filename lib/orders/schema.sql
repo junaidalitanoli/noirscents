@@ -1,8 +1,8 @@
 -- =============================================================================
--- NOIR SCENTS — DURABLE ORDER STORAGE SCHEMA (SUPABASE POSTGRESQL)
+-- NOIR SCENT — DURABLE ORDER STORAGE SCHEMA (SUPABASE POSTGRESQL)
 -- =============================================================================
 -- Execute this script in the Supabase SQL Editor (https://supabase.com/dashboard)
--- to provision durable, server-side order storage for Noir Scents.
+-- to provision durable, server-side order storage for Noir Scent.
 
 CREATE TABLE IF NOT EXISTS public.orders (
     id TEXT PRIMARY KEY,

@@ -63,13 +63,13 @@ export function generateOrderAdminEmail(order: Order): {
     <html>
       <head>
         <meta charset="utf-8">
-        <title>New Order #${escapeHtml(order.id)} - Noir Scents</title>
+        <title>New Order #${escapeHtml(order.id)} - Noir Scent</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f9fafb; margin: 0; padding: 24px; color: #1f2937;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
           <!-- Header -->
           <div style="background-color: #09090b; padding: 24px; text-align: center; border-bottom: 3px solid #c59a3f;">
-            <h1 style="color: #c59a3f; font-size: 24px; margin: 0; letter-spacing: 3px; font-weight: bold;">NOIR SCENTS</h1>
+            <h1 style="color: #c59a3f; font-size: 24px; margin: 0; letter-spacing: 3px; font-weight: bold;">NOIR SCENT</h1>
             <p style="color: #a1a1aa; font-size: 11px; margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">Store Management Notification</p>
           </div>
 
@@ -170,7 +170,7 @@ export function generateOrderAdminEmail(order: Order): {
             </div>
 
             <p style="font-size: 12px; color: #9ca3af; text-align: center; margin: 24px 0 0 0;">
-              Noir Scents &bull; Automated notification via Resend &bull; Cash On Delivery
+              Noir Scent &bull; Automated notification via Resend &bull; Cash On Delivery
             </p>
           </div>
         </div>
@@ -179,7 +179,7 @@ export function generateOrderAdminEmail(order: Order): {
   `;
 
   const text = `
-NOIR SCENTS - NEW ORDER RECEIVED #${order.id}
+NOIR SCENT - NEW ORDER RECEIVED #${order.id}
 Placed: ${karachiTime} (PKT)
 
 CUSTOMER & SHIPPING:
@@ -241,13 +241,13 @@ export function generateOrderCustomerEmail(order: Order): {
     <html>
       <head>
         <meta charset="utf-8">
-        <title>Order Confirmation #${escapeHtml(order.id)} - Noir Scents</title>
+        <title>Order Confirmation #${escapeHtml(order.id)} - Noir Scent</title>
       </head>
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #faf8f5; margin: 0; padding: 24px; color: #1c1917;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e7e2d8; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
           <!-- Luxury Header -->
           <div style="background-color: #121212; padding: 32px 24px; text-align: center; border-bottom: 3px solid #c59a3f;">
-            <h1 style="color: #c59a3f; font-size: 26px; margin: 0; letter-spacing: 4px; font-weight: bold;">NOIR SCENTS</h1>
+            <h1 style="color: #c59a3f; font-size: 26px; margin: 0; letter-spacing: 4px; font-weight: bold;">NOIR SCENT</h1>
             <p style="color: #d4d4d8; font-size: 11px; margin: 6px 0 0 0; text-transform: uppercase; letter-spacing: 2.5px;">Haute Parfumerie &bull; Pure Artisan Extraits</p>
           </div>
 
@@ -326,7 +326,7 @@ export function generateOrderCustomerEmail(order: Order): {
             </div>
 
             <p style="font-size: 12px; color: #a8a29e; text-align: center; margin: 28px 0 0 0;">
-              Noir Scents &bull; Karachi &bull; Lahore &bull; Islamabad &bull; Nationwide TCS Delivery
+              Noir Scent &bull; Karachi &bull; Lahore &bull; Islamabad &bull; Nationwide TCS Delivery
             </p>
           </div>
         </div>
@@ -335,7 +335,7 @@ export function generateOrderCustomerEmail(order: Order): {
   `;
 
   const text = `
-NOIR SCENTS - ORDER CONFIRMATION #${order.id}
+NOIR SCENT - ORDER CONFIRMATION #${order.id}
 
 Thank you, ${order.customer.fullName.split(" ")[0]}!
 We have received your order #${order.id} placed at ${karachiTime} (PKT).
@@ -359,7 +359,7 @@ If the notes do not match your skin chemistry, WhatsApp us at +92 332 2224331 fo
   `.trim();
 
   return {
-    subject: `Order Confirmed #${order.id} - Noir Scents`,
+    subject: `Order Confirmed #${order.id} - Noir Scent`,
     html,
     text,
   };
@@ -396,7 +396,7 @@ export function generateOrderStatusEmail(
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #faf8f5; margin: 0; padding: 24px; color: #1c1917;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e7e2d8; overflow: hidden;">
           <div style="background-color: #121212; padding: 28px 24px; text-align: center; border-bottom: 3px solid #c59a3f;">
-            <h1 style="color: #c59a3f; font-size: 24px; margin: 0; letter-spacing: 3px;">NOIR SCENTS</h1>
+            <h1 style="color: #c59a3f; font-size: 24px; margin: 0; letter-spacing: 3px;">NOIR SCENT</h1>
             <p style="color: #d4d4d8; font-size: 11px; margin: 4px 0 0 0; text-transform: uppercase; letter-spacing: 2px;">Order Status Update</p>
           </div>
           <div style="padding: 24px;">
@@ -422,7 +422,7 @@ export function generateOrderStatusEmail(
   `;
 
   const text = `
-NOIR SCENTS - ORDER STATUS UPDATE: #${order.id}
+NOIR SCENT - ORDER STATUS UPDATE: #${order.id}
 
 Status: ${newStatus}
 ${description}
@@ -431,7 +431,7 @@ Need help? Contact WhatsApp: +92 332 2224331
   `.trim();
 
   return {
-    subject: `Order #${order.id} Update: ${newStatus} - Noir Scents`,
+    subject: `Order #${order.id} Update: ${newStatus} - Noir Scent`,
     html,
     text,
   };
@@ -466,7 +466,7 @@ export function generateContactNotificationEmail(data: {
       <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f9fafb; margin: 0; padding: 24px; color: #1f2937;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden;">
           <div style="background-color: #09090b; padding: 24px; text-align: center; border-bottom: 3px solid #c59a3f;">
-            <h1 style="color: #c59a3f; font-size: 22px; margin: 0; letter-spacing: 2px;">NOIR SCENTS</h1>
+            <h1 style="color: #c59a3f; font-size: 22px; margin: 0; letter-spacing: 2px;">NOIR SCENT</h1>
             <p style="color: #a1a1aa; font-size: 11px; margin: 4px 0 0 0; text-transform: uppercase;">Concierge Customer Inquiry</p>
           </div>
           <div style="padding: 24px;">
@@ -517,7 +517,7 @@ export function generateContactNotificationEmail(data: {
   `;
 
   const text = `
-NOIR SCENTS - CUSTOMER INQUIRY
+NOIR SCENT - CUSTOMER INQUIRY
 From: ${data.name}
 Phone: ${data.phone} (WhatsApp: ${waUrl})
 ${data.email ? `Email: ${data.email}\n` : ""}${data.subject ? `Subject: ${data.subject}\n` : ""}Received: ${karachiTime}

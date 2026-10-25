@@ -1,8 +1,8 @@
-# Noir Scents — Artisanal Pakistani Perfumery Storefront
+# Noir Scent — Artisanal Pakistani Perfumery Storefront
 
-A modern luxury e-commerce storefront for **Noir Scents**, engineered to match the layout, structure, and design architecture of high-end perfume storefronts (Shopify Dawn archetype as seen on `buyfunoon.com`).
+A modern luxury e-commerce storefront for **Noir Scent**, engineered to match the layout, structure, and design architecture of high-end perfume storefronts (Shopify Dawn archetype as seen on `buyfunoon.com`).
 
-- **Brand Name**: Noir Scents
+- **Brand Name**: Noir Scent
 - **Tagline**: *Artisanal Luxury Scents Crafted for Pakistan*
 - **Store Email**: `noirscents01@gmail.com`
 - **WhatsApp Concierge**: `+92 332 2224331` (`923322224331`)
@@ -21,10 +21,10 @@ All product photos currently default to `/images/noir-box.jpg` (the black and go
 
 | Filename | Recommended Resolution | Aspect Ratio | Where It Appears | Description / Usage |
 | :--- | :--- | :--- | :--- | :--- |
-| `noir-box.jpg` | **1024 &times; 1024 px** | 1 : 1 (Square) | All Product Cards, Galleries, Cart, Checkout, Social Preview | Universal Noir Scents Luxury Packaging Photo |
+| `noir-box.jpg` | **1024 &times; 1024 px** | 1 : 1 (Square) | All Product Cards, Galleries, Cart, Checkout, Social Preview | Universal Noir Scent Luxury Packaging Photo |
 | `hero-banner.svg` | **1920 &times; 800 px** | 2.4 : 1 (16:9) | Home Page Hero Banner | High-impact hero collection banner |
 | `promo-banner.svg` | **1440 &times; 600 px** | 2.4 : 1 | Promotional Sections | Limited Reserve & Bundle Promotion |
-| `logo.svg` | **300 &times; 80 px** | ~4 : 1 | Header Navigation & Footer | Simple Noir Scents text logo |
+| `logo.svg` | **300 &times; 80 px** | ~4 : 1 | Header Navigation & Footer | Simple Noir Scent text logo |
 | `category-men.svg` | **600 &times; 800 px** | 3 : 4 (Portrait) | Home &ldquo;Shop By Category&rdquo; | Men's Fragrances Category Tile |
 | `category-women.svg` | **600 &times; 800 px** | 3 : 4 (Portrait) | Home &ldquo;Shop By Category&rdquo; | Women's Fragrances Category Tile |
 | `category-deals.svg` | **600 &times; 800 px** | 3 : 4 (Portrait) | Home &ldquo;Shop By Category&rdquo; | Bundles & Deals Category Tile |
@@ -44,7 +44,7 @@ The storefront architecture matches the Shopify Dawn theme layout:
 
 1. **Header & Announcement Bar**:
    - Announcement bar sticky at top with free delivery threshold.
-   - Header with Montserrat typography, simple &ldquo;Noir Scents&rdquo; text logo, clean uppercase nav links with hover underline, search modal, account portal link, and live cart badge.
+   - Header with Montserrat typography, simple &ldquo;Noir Scent&rdquo; text logo, clean uppercase nav links with hover underline, search modal, account portal link, and live cart badge.
    - Mobile hamburger drawer with slide-in navigation.
 2. **Hero Banner (`image-banner`)**:
    - Full-width hero banner with `next/image` (`priority` loaded), text overlay with luxury subtitle, bold heading, and dual CTA buttons.

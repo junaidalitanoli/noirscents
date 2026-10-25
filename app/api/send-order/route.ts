@@ -203,7 +203,7 @@ export async function POST(req: Request) {
     const storageResult = await saveOrder(verifiedOrder, { idempotencyKey });
 
     if (!storageResult.success) {
-      console.error("[Noir Scents Server] Order persistence failed:", storageResult.error);
+      console.error("[Noir Scent Server] Order persistence failed:", storageResult.error);
       return NextResponse.json(
         {
           success: false,
@@ -241,7 +241,7 @@ export async function POST(req: Request) {
     } catch (dispatchErr) {
       emailStatus = "failed";
       emailError = dispatchErr instanceof Error ? dispatchErr.message : String(dispatchErr);
-      console.error("[Noir Scents Server] Downstream email dispatch exception:", emailError);
+      console.error("[Noir Scent Server] Downstream email dispatch exception:", emailError);
     }
 
     // Update stored order record with email status
@@ -262,7 +262,7 @@ export async function POST(req: Request) {
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error occurred";
-    console.error("[Noir Scents Server] Error in /api/send-order:", message);
+    console.error("[Noir Scent Server] Error in /api/send-order:", message);
     return NextResponse.json(
       {
         success: false,

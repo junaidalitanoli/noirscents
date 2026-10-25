@@ -16,13 +16,13 @@ export const metadata: Metadata = {
     title: "Shipping & Delivery Policy",
     description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Pakistan.`,
     url: "/policies/shipping",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Shipping & Delivery Policy",
+        alt: "Noir Scent Shipping & Delivery Policy",
       },
     ],
     locale: "en_PK",

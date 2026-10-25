@@ -50,7 +50,7 @@ function createProductSvg(title, subtitle, angle = 1) {
     <rect x="220" y="400" width="160" height="150" rx="2" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
     <line x1="235" y1="415" x2="365" y2="415" stroke="#18181B" stroke-width="0.8" opacity="0.4" />
     
-    <text x="300" y="445" font-family="Montserrat, -apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="3" fill="#18181B" text-anchor="middle">NOIR SCENTS</text>
+    <text x="300" y="445" font-family="Montserrat, -apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="3" fill="#18181B" text-anchor="middle">NOIR SCENT</text>
     <text x="300" y="468" font-family="Montserrat, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="1" fill="#18181B" text-anchor="middle">${title.toUpperCase()}</text>
     <text x="300" y="488" font-family="Montserrat, -apple-system, sans-serif" font-size="9" font-weight="500" letter-spacing="2" fill="#71717A" text-anchor="middle">EXTRAIT DE PARFUM</text>
     <text x="300" y="520" font-family="Montserrat, -apple-system, sans-serif" font-size="9" font-weight="400" letter-spacing="1.5" fill="#A1A1AA" text-anchor="middle">50ML - 1.7 FL. OZ.</text>
@@ -100,7 +100,7 @@ function createHeroBannerSvg() {
     <rect x="175" y="150" width="50" height="24" rx="2" fill="#D4AF37" opacity="0.8" />
     <rect x="90" y="174" width="220" height="340" rx="8" fill="#18181B" stroke="#52525B" stroke-width="2" />
     <rect x="120" y="260" width="160" height="160" rx="2" fill="#09090B" stroke="#3F3F46" stroke-width="1" />
-    <text x="200" y="310" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#D4AF37" text-anchor="middle">NOIR SCENTS</text>
+    <text x="200" y="310" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#D4AF37" text-anchor="middle">NOIR SCENT</text>
     <text x="200" y="345" font-family="Montserrat, sans-serif" font-size="16" font-weight="700" letter-spacing="2" fill="#FFFFFF" text-anchor="middle">HAUTE PARFUM</text>
     <text x="200" y="375" font-family="Montserrat, sans-serif" font-size="10" font-weight="500" letter-spacing="2" fill="#A1A1AA" text-anchor="middle">EXTRAIT DE PARFUM</text>
   </g>
@@ -132,7 +132,7 @@ function createCategorySvg(title, subtitle) {
     <rect x="115" y="150" width="50" height="24" rx="2" fill="#D4AF37" opacity="0.8" />
     <rect x="30" y="174" width="220" height="310" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" />
     <rect x="60" y="240" width="160" height="150" rx="2" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1" />
-    <text x="140" y="315" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="#18181B" text-anchor="middle">NOIR SCENTS</text>
+    <text x="140" y="315" font-family="Montserrat, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="#18181B" text-anchor="middle">NOIR SCENT</text>
     <text x="140" y="340" font-family="Montserrat, sans-serif" font-size="10" font-weight="500" letter-spacing="2" fill="#71717A" text-anchor="middle">${title.toUpperCase()}</text>
   </g>
 
@@ -162,7 +162,7 @@ function createPromoBannerSvg() {
 
 function createLogoSvg() {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="300" height="80">
-  <text x="150" y="42" font-family="Montserrat, -apple-system, sans-serif" font-size="24" font-weight="700" letter-spacing="4" fill="#18181B" text-anchor="middle">NOIR SCENTS</text>
+  <text x="150" y="42" font-family="Montserrat, -apple-system, sans-serif" font-size="24" font-weight="700" letter-spacing="4" fill="#18181B" text-anchor="middle">NOIR SCENT</text>
   <text x="150" y="62" font-family="Montserrat, -apple-system, sans-serif" font-size="8" font-weight="600" letter-spacing="3" fill="#71717A" text-anchor="middle">HAUTE PARFUMERIE</text>
 </svg>`;
 }

@@ -23,7 +23,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-const defaultTitle = "Noir Scents | Artisanal Extrait Perfumes in Pakistan";
+const defaultTitle = "Noir Scent | Artisanal Extrait Perfumes in Pakistan";
 const defaultDescription =
   "Handcrafted artisanal Extrait de Parfum in Pakistan with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery across Karachi, Lahore & Islamabad.";
 
@@ -31,10 +31,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: defaultTitle,
-    template: "%s | Noir Scents",
+    template: "%s | Noir Scent",
   },
   description: defaultDescription,
-  authors: [{ name: "Noir Scents Team" }],
+  authors: [{ name: "Noir Scent Team" }],
   alternates: {
     canonical: "/",
   },
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
     title: defaultTitle,
     description: defaultDescription,
     url: SITE_URL,
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Artisanal Perfume Packaging",
+        alt: "Noir Scent Artisanal Perfume Packaging",
       },
     ],
     locale: "en_PK",

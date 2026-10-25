@@ -8,7 +8,7 @@ import { Resend } from "resend";
  */
 
 // Fallback sender email: Resend free tier onboarding sender
-export const DEFAULT_FROM_EMAIL = "Noir Scents <onboarding@resend.dev>";
+export const DEFAULT_FROM_EMAIL = "Noir Scent <onboarding@resend.dev>";
 
 // Primary store concierge notification recipient
 export const DEFAULT_STORE_RECEIVER = "noirscents01@gmail.com";

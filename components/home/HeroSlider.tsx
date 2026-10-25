@@ -293,7 +293,7 @@ export default function HeroSlider() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-roledescription="carousel"
-      aria-label="Noir Scents Featured Campaigns"
+      aria-label="Noir Scent Featured Campaigns"
     >
       {/* Sliding Track Viewport:
           - Mobile: Dedicated 520px height with editorial split (flacon visual on top, clean card below)

@@ -7,22 +7,22 @@ import ContactFormClient from "./ContactFormClient";
 export const metadata: Metadata = {
   title: "Contact Concierge & Customer Care",
   description:
-    "Get in touch with Noir Scents for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
+    "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
   alternates: {
     canonical: "/pages/contact",
   },
   openGraph: {
     title: "Contact Concierge & Customer Care",
     description:
-      "Get in touch with Noir Scents for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
+      "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
     url: "/pages/contact",
-    siteName: "Noir Scents",
+    siteName: "Noir Scent",
     images: [
       {
         url: DEFAULT_PRODUCT_IMAGE,
         width: 1024,
         height: 1024,
-        alt: "Noir Scents Customer Care Concierge",
+        alt: "Noir Scent Customer Care Concierge",
       },
     ],
     locale: "en_PK",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact Concierge & Customer Care",
     description:
-      "Get in touch with Noir Scents for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
+      "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

@@ -2,8 +2,8 @@
  * Single source of truth for store configuration, policies, and brand standards.
  */
 export const STORE_CONFIG = {
-  name: "Noir Scents",
-  legalName: "Noir Scents Pakistan",
+  name: "Noir Scent",
+  legalName: "Noir Scent Pakistan",
   tagline: "Artisanal Luxury Scents Crafted for Pakistan",
   freeDeliveryThreshold: 3000,
   standardShippingFee: 250,
@@ -35,7 +35,7 @@ export const STORE_CONFIG = {
         "Orders are packed and dispatched within 24 hours. Estimated delivery time is 2–4 business days via registered couriers (TCS / Leopards Courier).",
     },
     {
-      question: "How long do Noir Scents fragrances last?",
+      question: "How long do Noir Scent fragrances last?",
       answer:
         "Our creations are formulated as concentrated Extrait de Parfum using high-grade perfume oils, engineered for enduring all-day sillage tailored for Pakistan's climate (longevity varies naturally based on skin chemistry and note profiles).",
     },

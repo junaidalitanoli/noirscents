@@ -130,7 +130,7 @@ export default function NotesPyramid({ notes, macerationDays = 45 }: NotesPyrami
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-[#b48325] shrink-0" />
           <p className="text-zinc-700 leading-relaxed font-light">
-            <strong className="text-zinc-950 font-semibold">{macerationDays}-Day Vault Maturation:</strong> All Noir Scents creations undergo temperature-controlled dark chamber maceration to seamlessly merge natural perfume oils and eliminate harshness.
+            <strong className="text-zinc-950 font-semibold">{macerationDays}-Day Vault Maturation:</strong> All Noir Scent creations undergo temperature-controlled dark chamber maceration to seamlessly merge natural perfume oils and eliminate harshness.
           </p>
         </div>
         <span className="text-[11px] font-bold text-[#b48325] uppercase tracking-wider shrink-0 bg-white px-3 py-1 border border-[#e8dfcf]">
