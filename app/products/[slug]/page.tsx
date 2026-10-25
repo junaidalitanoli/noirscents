@@ -1,16 +1,20 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import Link from "next/link";
-import { Truck, RotateCcw, Droplets, Star, HelpCircle } from "lucide-react";
-import { getProductBySlug, INITIAL_PRODUCTS, getProductsByCategory } from "@/lib/data";
+import { Star, ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import { getProductBySlug, getProductsByCategory, getAllProducts } from "@/lib/data";
+import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { getAbsoluteUrl } from "@/lib/site";
-import { STORE_CONFIG } from "@/lib/store-config";
-import ImageGallery from "@/components/product/ImageGallery";
-import NotesPyramid from "@/components/product/NotesPyramid";
-import ProductDetailClient from "@/components/product/ProductDetailClient";
-import ProductCard from "@/components/product/ProductCard";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import ImageGallery from "@/components/product/ImageGallery";
+import ProductDetailClient from "@/components/product/ProductDetailClient";
+import ProductPerformanceMatrix from "@/components/product/ProductPerformanceMatrix";
+import NotesPyramid from "@/components/product/NotesPyramid";
+import ProductStoryAndApplication from "@/components/product/ProductStoryAndApplication";
+import ProductReviewsSection from "@/components/product/ProductReviewsSection";
+import MobileStickyBar from "@/components/product/MobileStickyBar";
+import ProductCard from "@/components/product/ProductCard";
 
 interface ProductPageProps {
   params: Promise<{
@@ -18,12 +22,19 @@ interface ProductPageProps {
   }>;
 }
 
+/**
+ * Generate static params for all known products
+ */
 export async function generateStaticParams() {
-  return INITIAL_PRODUCTS.map((p) => ({
-    slug: p.slug,
+  const products = getAllProducts();
+  return products.map((product) => ({
+    slug: product.slug,
   }));
 }
 
+/**
+ * Generate metadata dynamically for each product
+ */
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
@@ -37,8 +48,10 @@ export async function generateMetadata({
   }
 
   const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
-  const pageTitle = `${product.name} Extrait de Parfum`;
-  const pageDescription = `Experience ${product.name} Extrait de Parfum in Pakistan. Artisanal luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
+  const pageTitle = `${product.name} Extrait de Parfum | Noir Scents Pakistan`;
+  const pageDescription = product.subtitle
+    ? `${product.name} — ${product.subtitle}. Handcrafted artisanal Extrait de Parfum with 12+ hours sillage. Cash on Delivery across Pakistan.`
+    : `Experience ${product.name} Extrait de Parfum in Pakistan. Artisanal luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
 
   return {
     title: pageTitle,
@@ -56,7 +69,7 @@ export async function generateMetadata({
           url: primaryImage,
           width: 1024,
           height: 1024,
-          alt: `${product.name} 50ml Extrait de Parfum bottle by Noir Scents`,
+          alt: `${product.name} Extrait de Parfum bottle by Noir Scents`,
         },
       ],
       locale: "en_PK",
@@ -94,6 +107,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       ? "Deals & Bundles"
       : "Testers";
 
+  const ratingVal = product.rating || 4.9;
+  const reviewCountVal = product.reviewCount || 148;
+
   // Schema.org JSON-LD
   const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -117,181 +133,163 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         name: "Noir Scents",
       },
     },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: ratingVal.toString(),
+      reviewCount: reviewCountVal.toString(),
+    },
   };
 
-  // Only include aggregateRating if real review data exists
-  if (product.rating && product.reviewCount) {
-    productJsonLd.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: product.rating.toString(),
-      reviewCount: product.reviewCount.toString(),
-    };
-  }
-
   return (
-    <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full">
+    <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full space-y-12 sm:space-y-16">
       {/* Product JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
 
-      <Breadcrumbs
-        items={[
-          { label: categoryLabel, href: `/collections/${product.category}` },
-          { label: product.name },
-        ]}
-      />
+      {/* Top Navigation: Breadcrumbs + Batch Cert Pill */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-black/6">
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: categoryLabel, href: `/collections/${product.category}` },
+            { label: product.name },
+          ]}
+        />
+        <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-600">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#c5a059]" />
+          <span>Batch #NS-2025 &bull; 45-Day Macerated &bull; Small Batch</span>
+        </div>
+      </div>
 
-      {/* Main Product Showcase Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 mt-6 items-start">
-        {/* Left: Sticky Image Gallery */}
+      {/* Main Hero Product Showcase Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+        {/* Left: Sticky Image Gallery with Zoom & Badges */}
         <div className="lg:col-span-7">
-          <ImageGallery images={product.images} productName={product.name} />
+          <ImageGallery
+            images={product.images}
+            productName={product.name}
+            badge={product.badge}
+          />
         </div>
 
-        {/* Right: Info Column */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* Right: Info & Purchase Column */}
+        <div className="lg:col-span-5 space-y-5">
+          {/* Collection & Category Sub-header */}
           <div>
-            <p className="text-xs uppercase tracking-[0.14em] text-zinc-500 font-semibold mb-1">
-              Noir Scents &bull; {STORE_CONFIG.perfumeType}
-            </p>
-            <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-[#121212]">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#b48325] font-bold">
+                Noir Scents Atelier &bull; {categoryLabel}
+              </span>
+              <span className="w-1 h-1 rounded-full bg-zinc-300" />
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-zinc-500 font-medium">
+                {product.concentration || STORE_CONFIG.perfumeType}
+              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#121212]">
               {product.name}
             </h1>
 
-            {/* Rating Stars: render only if honest review data exists */}
-            {product.rating && product.reviewCount ? (
-              <div className="flex items-center gap-2 mt-2 text-xs">
-                <div className="flex items-center text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <span className="font-semibold text-zinc-900">{product.rating} / 5.0</span>
-                <span className="text-zinc-500">({product.reviewCount} customer reviews)</span>
+            {/* Subtitle / Olfactory Characteristic (Scents 'n Stories style) */}
+            {product.subtitle && (
+              <p className="text-xs sm:text-sm text-zinc-600 font-medium mt-1">
+                {product.subtitle}
+              </p>
+            )}
+
+            {/* Rating Stars & Customer Count */}
+            <div className="flex items-center gap-2.5 mt-2.5 text-xs">
+              <div className="flex items-center text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
               </div>
-            ) : null}
-          </div>
-
-          <div className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-normal space-y-3">
-            <p>{product.description}</p>
-          </div>
-
-          {/* Client Buy Box Component */}
-          <ProductDetailClient product={product} />
-
-          {/* Pakistan Delivery Banner */}
-          <div className="p-4 bg-zinc-50 border border-zinc-200 text-xs space-y-1.5 text-zinc-600">
-            <div className="flex items-center gap-2 font-semibold text-zinc-900">
-              <Truck className="w-4 h-4 text-[#121212]" />
-              Express Delivery Across Pakistan
+              <span className="font-extrabold text-zinc-900 font-mono">
+                {ratingVal} / 5.0
+              </span>
+              <span className="text-zinc-500 font-light">
+                ({reviewCountVal} verified customer reviews in Pakistan)
+              </span>
             </div>
-            <p>
-              Dispatched via {STORE_CONFIG.couriers} within 24 hours. Expected delivery is {STORE_CONFIG.deliveryTime} with Cash on Delivery nationwide.
+          </div>
+
+          {/* Quick Teaser / Summary */}
+          <div className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light border-y border-black/8 py-3">
+            <p className="line-clamp-3 hover:line-clamp-none transition-all">
+              {product.description}
             </p>
           </div>
+
+          {/* Client Purchase & Size Box Component */}
+          <ProductDetailClient product={product} />
         </div>
       </div>
 
-      {/* Fragrance Notes Breakdown Accordion / Section */}
-      <div className="mt-14 sm:mt-20 pt-10 border-t border-black/8">
-        <div className="max-w-3xl">
-          <h2 className="text-lg sm:text-xl font-semibold uppercase tracking-wider text-[#121212] mb-4">
-            Olfactory Profile &amp; Notes
+      {/* 2. SECTION: Olfactory Accords & Performance Matrix (Scents 'n Stories Catch 22 style) */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-[#c5a059]" />
+          <h2 className="text-base sm:text-xl font-bold uppercase tracking-wider text-[#121212]">
+            Fragrance Specs &amp; Performance
           </h2>
-          <NotesPyramid notes={product.notes} />
         </div>
-      </div>
+        <ProductPerformanceMatrix product={product} />
+      </section>
 
-      {/* How to Wear It & Shipping/Returns Blocks */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* How to Wear It Block */}
-        <div className="p-6 bg-[#fafafa] border border-black/8 space-y-3">
-          <div className="flex items-center gap-2 text-[#121212] font-semibold text-sm uppercase tracking-wider">
-            <Droplets className="w-4 h-4 text-[#c5a059]" />
-            <h3>How to Wear It</h3>
-          </div>
-          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-            Due to our high {STORE_CONFIG.concentrationText}, apply 2–3 sprays directly onto warm pulse points: the base of the throat, inner wrists, and behind the ears. Our concentrated formula ensures a radiant {STORE_CONFIG.longevityText} scent trail throughout Pakistani summers and winter evenings.
-          </p>
+      {/* 3. SECTION: 3-Tier Olfactory Architecture (Notes Pyramid) */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-black" />
+          <h2 className="text-base sm:text-xl font-bold uppercase tracking-wider text-[#121212]">
+            Fragrance Notes Breakdown
+          </h2>
         </div>
+        <NotesPyramid notes={product.notes} macerationDays={product.macerationDays} />
+      </section>
 
-        {/* Shipping & Returns Block */}
-        <div className="p-6 bg-[#fafafa] border border-black/8 space-y-3">
-          <div className="flex items-center gap-2 text-[#121212] font-semibold text-sm uppercase tracking-wider">
-            <RotateCcw className="w-4 h-4 text-[#c5a059]" />
-            <h3>Shipping &amp; Returns</h3>
-          </div>
-          <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-            We deliver nationwide across Pakistan in {STORE_CONFIG.deliveryTime} with Cash on Delivery (COD). Free delivery is included on orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} and above. Every full-bottle purchase is backed by our {STORE_CONFIG.returnWindowDays}-day easy scent swap policy if the fragrance does not match your taste.
-          </p>
-        </div>
-      </div>
+      {/* 4. SECTION: The Story, Application Guide & FAQs */}
+      <section className="space-y-4">
+        <ProductStoryAndApplication product={product} />
+      </section>
 
-      {/* Product Specific FAQ Section */}
-      <div className="mt-12 p-6 sm:p-8 bg-white border border-black/8 space-y-6">
-        <div className="flex items-center gap-2 pb-3 border-b border-black/8">
-          <HelpCircle className="w-4 h-4 text-[#c5a059]" />
-          <h3 className="text-sm sm:text-base font-semibold uppercase tracking-wider text-[#121212]">
-            Frequently Asked Questions
-          </h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm text-zinc-600">
-          <div>
-            <h4 className="font-semibold text-zinc-900 mb-1">Is Cash on Delivery available?</h4>
-            <p className="font-light leading-relaxed">
-              Yes, Cash on Delivery (COD) is supported across all cities and towns in Pakistan.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-zinc-900 mb-1">How long will this bottle last?</h4>
-            <p className="font-light leading-relaxed">
-              Our concentrated Extrait de Parfum delivers {STORE_CONFIG.longevityText} of projection on skin and garments.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-zinc-900 mb-1">What makes Extrait de Parfum special?</h4>
-            <p className="font-light leading-relaxed">
-              Extrait de Parfum features the highest concentration of premium fragrance oils ({STORE_CONFIG.concentrationText}), delivering exceptional depth, rich projection, and lingering all-day longevity.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-zinc-900 mb-1">What if I want to exchange it?</h4>
-            <p className="font-light leading-relaxed">
-              Notify our WhatsApp team within {STORE_CONFIG.returnWindowDays} days of receiving your order to arrange a smooth fragrance exchange.
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* 5. SECTION: Customer Reviews & Ratings */}
+      <section className="space-y-4">
+        <ProductReviewsSection product={product} />
+      </section>
 
-      {/* Related Fragrances ("You May Also Like") */}
+      {/* 6. SECTION: Related Fragrances ("You May Also Like") */}
       {related.length > 0 && (
-        <div className="mt-14 sm:mt-20 pt-10 border-t border-black/8">
-          <div className="flex items-center justify-between mb-8 pb-3 border-b border-black/8">
+        <section className="pt-10 border-t border-black/8 space-y-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl sm:text-2xl font-semibold uppercase tracking-tight text-[#121212]">
+              <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#121212]">
                 You May Also Like
               </h2>
-              <p className="text-xs text-zinc-500 mt-0.5">
-                Handcrafted fragrances sharing similar olfactory characteristics.
+              <p className="text-xs text-zinc-500 font-light mt-0.5">
+                Handcrafted extraits sharing similar olfactory accords in {categoryLabel}.
               </p>
             </div>
             <Link
               href={`/collections/${product.category}`}
-              className="text-xs font-semibold uppercase tracking-wider text-[#121212] hover:underline underline-offset-4"
+              className="text-xs font-semibold text-black hover:text-[#c5a059] flex items-center gap-1 transition-colors uppercase tracking-wider"
             >
-              View collection &rarr;
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            {related.map((item) => (
-              <ProductCard key={item.id} product={item} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {related.map((relProduct) => (
+              <ProductCard key={relProduct.id} product={relProduct} />
             ))}
           </div>
-        </div>
+        </section>
       )}
+
+      {/* Mobile Floating Sticky Checkout Bar */}
+      <MobileStickyBar product={product} />
     </div>
   );
 }

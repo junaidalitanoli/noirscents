@@ -11,6 +11,21 @@ export interface FragranceNotes {
   base: string[];
 }
 
+export interface MajorIngredient {
+  name: string;
+  percentage: string;
+}
+
+export interface ProductReview {
+  author: string;
+  city: string;
+  rating: number;
+  title: string;
+  comment: string;
+  date: string;
+  verified: boolean;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -30,6 +45,18 @@ export interface Product {
   rating?: number;
   reviewCount?: number;
   createdAt: string;
+
+  // Rich luxury olfactory & performance fields
+  subtitle?: string;
+  inspiration?: string;
+  accords?: string[];
+  gender?: "Men" | "Women" | "Unisex";
+  season?: string;
+  occasion?: string;
+  concentration?: string;
+  macerationDays?: number;
+  majorIngredients?: MajorIngredient[];
+  reviews?: ProductReview[];
 }
 
 export interface CartItem {
