@@ -131,10 +131,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 key={size.ml}
                 type="button"
                 onClick={() => setSelectedSizeIndex(idx)}
-                className={`p-3.5 border text-left transition-all relative rounded-xs flex flex-col justify-between ${
+                className={`p-3.5 border text-left transition-all relative rounded-xl flex flex-col justify-between ${
                   isSelected
                     ? "border-black dark:border-[#d4af37] bg-[#121212] dark:bg-[#18181d] text-white shadow-xs"
-                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121216] text-zinc-800 dark:text-zinc-200 hover:border-zinc-400 dark:hover:border-zinc-700 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40"
+                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121216] text-zinc-800 dark:text-zinc-200 hover:border-[#c5a059] dark:hover:border-[#d4af37] hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40"
                 }`}
               >
                 {is100ml && (
@@ -174,7 +174,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         <label className="text-xs font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
           Quantity:
         </label>
-        <div className="flex items-center border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-[#121216] shadow-2xs">
+        <div className="flex items-center border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-[#121216] rounded-xl overflow-hidden shadow-2xs">
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -205,7 +205,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           onClick={handleBuyNowCOD}
           disabled={isNavigatingCOD}
           id="product-buy-now-cod-btn"
-          className={`w-full py-4 px-6 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all duration-300 active:scale-[0.98] shadow-md border border-black dark:border-[#d4af37] group ${
+          className={`w-full py-4 px-6 rounded-xl bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2.5 transition-all duration-300 active:scale-[0.98] shadow-md border border-black dark:border-[#d4af37] group ${
             isNavigatingCOD ? "opacity-90 scale-[0.99] ring-2 ring-[#d4af37]" : ""
           }`}
         >
@@ -227,10 +227,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           type="button"
           onClick={handleAddToCart}
           id="product-add-to-cart-btn"
-          className={`w-full py-3.5 px-6 font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all border ${
+          className={`w-full py-3.5 px-6 rounded-xl font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 border shadow-xs hover:shadow-md ${
             isAdded
               ? "bg-emerald-700 text-white border-emerald-700"
-              : "bg-white hover:bg-zinc-50 dark:bg-[#121216] dark:hover:bg-[#1c1c22] text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-700 active:scale-[0.99]"
+              : "bg-white hover:bg-zinc-50 dark:bg-[#121216] dark:hover:bg-[#1c1c22] text-zinc-900 dark:text-zinc-100 border-zinc-300 dark:border-zinc-700 hover:border-black dark:hover:border-[#d4af37] active:scale-[0.99]"
           }`}
         >
           {isAdded ? (

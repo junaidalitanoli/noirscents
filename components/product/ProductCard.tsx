@@ -39,7 +39,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
   return (
     <div
-      className="group relative flex flex-col bg-white dark:bg-[#111115] border border-zinc-200/90 dark:border-zinc-800/90 hover:border-black/30 dark:hover:border-[#d4af37]/60 hover:shadow-xs transition-all duration-300"
+      className="group relative flex flex-col bg-white dark:bg-[#111115] border border-zinc-200/90 dark:border-zinc-800/90 rounded-2xl overflow-hidden hover:border-[#c5a059] dark:hover:border-[#d4af37] hover:shadow-lg transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -77,7 +77,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         <div className="space-y-1.5">
 
           {/* Product Name */}
-          <h3 className="text-[13px] sm:text-[15px] font-semibold text-[#121212] dark:text-[#f4f4f5] group-hover:underline underline-offset-4 line-clamp-1">
+          <h3 className="text-[13px] sm:text-[15px] font-semibold text-[#121212] dark:text-[#f4f4f5] group-hover:text-[#c5a059] dark:group-hover:text-[#d4af37] transition-colors line-clamp-1 font-serif">
             <Link href={`/products/${product.slug}`}>{product.name}</Link>
           </h3>
 
@@ -104,10 +104,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           <button
             type="button"
             onClick={handleQuickAdd}
-            className={`w-full py-2 sm:py-2.5 px-2 sm:px-3 text-[11px] sm:text-xs font-semibold tracking-wide uppercase flex items-center justify-center gap-1 sm:gap-1.5 transition-all border whitespace-nowrap ${
+            className={`w-full py-2.5 px-3 text-[11px] sm:text-xs font-semibold tracking-wide uppercase flex items-center justify-center gap-1.5 transition-all duration-200 rounded-xl border whitespace-nowrap shadow-xs hover:shadow-md ${
               isAdded
                 ? "bg-emerald-700 text-white border-emerald-700"
-                : "bg-white dark:bg-[#18181d] text-[#121212] dark:text-zinc-100 border-[#121212] dark:border-zinc-700 hover:bg-[#121212] hover:text-white dark:hover:bg-[#d4af37] dark:hover:text-[#09090b] dark:hover:border-[#d4af37] active:scale-[0.98]"
+                : "bg-white dark:bg-[#18181d] text-[#121212] dark:text-zinc-100 border-zinc-300 dark:border-zinc-700 hover:border-[#121212] dark:hover:border-[#d4af37] hover:bg-[#121212] hover:text-white dark:hover:bg-[#d4af37] dark:hover:text-[#09090b] active:scale-[0.98]"
             }`}
             aria-label={`Add ${product.name} to cart`}
           >

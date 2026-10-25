@@ -32,9 +32,9 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
                 key={idx}
                 type="button"
                 onClick={() => setSelectedIndex(idx)}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-[#f4f4f5] dark:bg-[#121216] border transition-all shrink-0 rounded-xs overflow-hidden ${
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-[#f4f4f5] dark:bg-[#121216] border transition-all shrink-0 rounded-xl overflow-hidden hover:border-[#c5a059] dark:hover:border-[#d4af37] ${
                   selectedIndex === idx
-                    ? "border-black dark:border-[#d4af37] ring-2 ring-[#c5a059] dark:ring-[#d4af37] opacity-100 scale-102"
+                    ? "border-black dark:border-[#d4af37] ring-2 ring-[#c5a059] dark:ring-[#d4af37] opacity-100 scale-102 shadow-xs"
                     : "border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100"
                 }`}
                 aria-label={`View image thumbnail ${idx + 1} of ${productName}`}
@@ -51,8 +51,8 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
           </div>
         )}
 
-        {/* Main Large Image */}
-        <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 overflow-hidden rounded-xs group">
+        {/* Main Large Image with curved luxury border & hover highlight */}
+        <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 hover:border-[#c5a059]/70 dark:hover:border-[#d4af37] overflow-hidden rounded-2xl group shadow-sm hover:shadow-md transition-all duration-300">
           <Image
             src={currentImage}
             alt={`${productName} Extrait de Parfum bottle by Noir Scent`}
@@ -65,18 +65,18 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
           {/* Luxury Badge Overlay */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
             {badge && (
-              <span className="inline-flex items-center gap-1 bg-[#121212] dark:bg-[#181820] text-white border dark:border-white/10 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 shadow-md">
+              <span className="inline-flex items-center gap-1 bg-[#121212] dark:bg-[#181820] text-white border dark:border-white/10 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
                 <Sparkles className="w-3 h-3 text-[#c5a059] dark:text-[#d4af37]" />
                 {badge}
               </span>
             )}
-            <span className="inline-flex items-center gap-1 bg-white/90 dark:bg-[#16161b]/90 backdrop-blur-xs text-zinc-900 dark:text-zinc-100 border border-black/10 dark:border-white/10 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 shadow-2xs">
+            <span className="inline-flex items-center gap-1 bg-white/90 dark:bg-[#16161b]/90 backdrop-blur-xs text-zinc-900 dark:text-zinc-100 border border-black/10 dark:border-white/10 text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-2xs">
               35% Extrait Concentration
             </span>
           </div>
 
           {hasMultipleImages && (
-            <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-xs text-white text-[10px] font-mono font-medium px-2.5 py-1 rounded-xs">
+            <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-xs text-white text-[10px] font-mono font-medium px-2.5 py-1 rounded-full">
               {selectedIndex + 1} / {displayImages.length}
             </div>
           )}

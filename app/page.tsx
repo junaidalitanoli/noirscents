@@ -236,7 +236,7 @@ export default function HomePage() {
             <Link
               key={cat.slug}
               href={`/collections/${cat.slug}`}
-              className="group block relative bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 overflow-hidden transition-all duration-300 hover:border-black/20 dark:hover:border-[#d4af37]/40 shadow-xs"
+              className="group block relative bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#c5a059] dark:hover:border-[#d4af37] shadow-sm hover:shadow-md"
             >
               <div className="relative aspect-square w-full overflow-hidden bg-zinc-950">
                 <Image
