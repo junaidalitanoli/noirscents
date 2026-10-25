@@ -20,8 +20,8 @@ export async function generateMetadata({
   const query = (q || "").trim();
   const pageTitle = query ? `Search: "${query}"` : "Search Fragrances";
   const pageDescription = query
-    ? `Discover handcrafted non-alcoholic perfumes matching "${query}" at ${BRAND_NAME} with Cash on Delivery across Pakistan.`
-    : `Search our catalogue of handcrafted non-alcoholic Extrait de Parfum creations in Pakistan from ${BRAND_NAME}.`;
+    ? `Discover handcrafted artisanal perfumes matching "${query}" at ${BRAND_NAME} with Cash on Delivery across Pakistan.`
+    : `Search our catalogue of handcrafted artisanal Extrait de Parfum creations in Pakistan from ${BRAND_NAME}.`;
   const canonicalUrl = query ? `/search?q=${encodeURIComponent(query)}` : "/search";
 
   return {

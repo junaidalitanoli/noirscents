@@ -236,7 +236,7 @@ export default function Footer() {
               About
             </h3>
             <p className="text-xs leading-relaxed text-zinc-600 font-light">
-              Handcrafted non-alcoholic Extrait de Parfum formulated for enduring sillage in Pakistan&apos;s climate. Enjoy direct-to-consumer luxury at accessible prices.
+              Handcrafted artisanal Extrait de Parfum formulated for enduring sillage in Pakistan&apos;s climate. Enjoy direct-to-consumer luxury at accessible prices.
             </p>
             <div>
               <Link

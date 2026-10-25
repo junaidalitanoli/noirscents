@@ -10,17 +10,17 @@ import HeroSlider from "@/components/home/HeroSlider";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+    absolute: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
   },
   description:
-    "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+    "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+    title: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
     description:
-      "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+      "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
     url: "/",
     siteName: "Noir Scents",
     images: [
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Noir Scents | Non-Alcoholic Extrait Perfumes in Pakistan",
+    title: "Noir Scents | Artisanal Extrait Perfumes in Pakistan",
     description:
-      "Discover handcrafted, alcohol-free Extrait de Parfum with enduring all-day sillage. Premium artisanal scents with nationwide Cash on Delivery in Pakistan.",
+      "Discover handcrafted, artisanal Extrait de Parfum with enduring all-day sillage. Premium fragrance creations with nationwide Cash on Delivery in Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
@@ -329,12 +329,12 @@ export default function HomePage() {
                 Extrait Concentration &amp; Longevity
               </h3>
               <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-                Handcrafted as artisanal Extrait de Parfum in alcohol-free bases, formulated specifically to deliver enduring {STORE_CONFIG.longevityText} in Pakistan&apos;s climate.
+                Handcrafted as artisanal Extrait de Parfum with high fragrance oil concentrations, formulated specifically to deliver enduring {STORE_CONFIG.longevityText} in Pakistan&apos;s climate.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
               <span className="font-semibold text-zinc-900">Pure Extrait Formulation</span>
-              <span className="text-zinc-500">Non-Drying Base</span>
+              <span className="text-zinc-500">Rich Oil Essence</span>
             </div>
           </div>
 
@@ -395,7 +395,7 @@ export default function HomePage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xs text-zinc-500 mt-1">
-              Everything you need to know about our non-alcoholic extraits, Cash on Delivery, and delivery timelines.
+              Everything you need to know about our artisanal extraits, Cash on Delivery, and delivery timelines.
             </p>
           </div>
 

@@ -40,9 +40,9 @@ export const STORE_CONFIG = {
         "Our creations are formulated as concentrated Extrait de Parfum using high-grade perfume oils, engineered for enduring all-day sillage tailored for Pakistan's climate (longevity varies naturally based on skin chemistry and note profiles).",
     },
     {
-      question: "Are your perfumes non-alcoholic?",
+      question: "What concentration are your perfumes?",
       answer:
-        "Yes, our formulations are alcohol-free oil extrait creations, making them suitable for daily wear and non-drying on skin. We always advise a standard 24-hour patch test for sensitive skin.",
+        "Our creations are formulated as high-concentration Extrait de Parfum using premium fragrance oils and fine perfumer's craft. This ensures optimal diffusion, noble projection, and enduring longevity tailored for Pakistan's climate.",
     },
     {
       question: "What is your return & exchange policy?",

@@ -33,9 +33,9 @@ const COLLECTION_METADATA: Record<
   all: {
     title: "All Handcrafted Extrait Perfumes",
     description:
-      "Explore our entire catalogue of handcrafted non-alcoholic Extrait de Parfum, sample sets, and bundles with Cash on Delivery in Pakistan.",
+      "Explore our entire catalogue of handcrafted artisanal Extrait de Parfum, sample sets, and bundles with Cash on Delivery in Pakistan.",
     intro:
-      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated as a concentrated alcohol-free oil extrait engineered for enduring sillage across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders of Rs. 3,000 and above.",
+      "Explore our full catalogue of handcrafted artisanal extraits. Each fragrance is formulated as a concentrated Extrait de Parfum engineered for enduring sillage across Pakistan. Enjoy convenient nationwide Cash on Delivery with free delivery on orders of Rs. 3,000 and above.",
     image: DEFAULT_PRODUCT_IMAGE,
   },
   men: {
@@ -49,9 +49,9 @@ const COLLECTION_METADATA: Record<
   women: {
     title: "Women's Perfumes in Pakistan",
     description:
-      "Discover enchanting floral, amber, and gourmand extrait perfumes for women in Pakistan. Alcohol-free oil bases with graceful projection.",
+      "Discover enchanting floral, amber, and gourmand extrait perfumes for women in Pakistan. High fragrance oil concentration with graceful projection.",
     intro:
-      "Envelop yourself in velvet floral bouquets, warm Madagascar ambers, and decadent gourmand trails crafted exclusively for women. Each alcohol-free extrait melts into the skin for graceful, enduring projection. Dispatched nationwide with 2–4 business days delivery and a 7-day scent exchange guarantee.",
+      "Envelop yourself in velvet floral bouquets, warm Madagascar ambers, and decadent gourmand trails crafted exclusively for women. Each artisanal extrait melts into the skin for graceful, enduring projection. Dispatched nationwide with 2–4 business days delivery and a 7-day scent exchange guarantee.",
     image: SITE_IMAGES.categories.women.src,
   },
   testers: {

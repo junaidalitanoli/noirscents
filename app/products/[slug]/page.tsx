@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
   const pageTitle = `${product.name} Extrait de Parfum`;
-  const pageDescription = `Experience ${product.name} Extrait de Parfum in Pakistan. Non-alcoholic luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
+  const pageDescription = `Experience ${product.name} Extrait de Parfum in Pakistan. Artisanal luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
 
   return {
     title: pageTitle,
@@ -213,7 +213,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             <h3>How to Wear It</h3>
           </div>
           <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-            Due to our high {STORE_CONFIG.concentrationText}, apply 2–3 sprays directly onto warm pulse points: the base of the throat, inner wrists, and behind the ears. Since our formula is 100% non-alcoholic and oil-rich, spritzing collarbones or fabric also ensures a radiant {STORE_CONFIG.longevityText} scent trail throughout Pakistani summers and winter evenings.
+            Due to our high {STORE_CONFIG.concentrationText}, apply 2–3 sprays directly onto warm pulse points: the base of the throat, inner wrists, and behind the ears. Our concentrated formula ensures a radiant {STORE_CONFIG.longevityText} scent trail throughout Pakistani summers and winter evenings.
           </p>
         </div>
 
@@ -251,9 +251,9 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </p>
           </div>
           <div>
-            <h4 className="font-semibold text-zinc-900 mb-1">Is this scent non-alcoholic?</h4>
+            <h4 className="font-semibold text-zinc-900 mb-1">What makes Extrait de Parfum special?</h4>
             <p className="font-light leading-relaxed">
-              Yes, formulated with non-alcoholic perfume oil bases, making it suitable for daily prayer and non-drying on skin. We recommend a patch test before regular use if you have sensitive skin.
+              Extrait de Parfum features the highest concentration of premium fragrance oils ({STORE_CONFIG.concentrationText}), delivering exceptional depth, rich projection, and lingering all-day longevity.
             </p>
           </div>
           <div>

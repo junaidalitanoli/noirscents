@@ -8,14 +8,14 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 export const metadata: Metadata = {
   title: "Our Heritage & Artisanal Philosophy | Noir Scents",
   description:
-    "Discover the story of Noir Scents: artisanal, alcohol-free Extrait de Parfum handcrafted to deliver enduring luxury and prayer-safe sillage across Pakistan.",
+    "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
   alternates: {
     canonical: "/pages/about",
   },
   openGraph: {
     title: "Our Heritage & Artisanal Philosophy | Noir Scents",
     description:
-      "Discover the story of Noir Scents: artisanal, alcohol-free Extrait de Parfum handcrafted to deliver enduring luxury and prayer-safe sillage across Pakistan.",
+      "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
     url: "/pages/about",
     siteName: "Noir Scents",
     images: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Our Heritage & Artisanal Philosophy | Noir Scents",
     description:
-      "Discover the story of Noir Scents: artisanal, alcohol-free Extrait de Parfum handcrafted to deliver enduring luxury and prayer-safe sillage across Pakistan.",
+      "Discover the story of Noir Scents: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };
@@ -54,7 +54,7 @@ export default function AboutPage() {
         </h1>
 
         <p className="text-base sm:text-xl text-zinc-600 font-light leading-relaxed">
-          Born out of a deep reverence for heritage perfumery and modern luxury. We craft rich, alcohol-free Extrait de Parfum formulations that bloom with your body heat and command presence.
+          Born out of a deep reverence for heritage perfumery and modern luxury. We craft rich, high-concentration Extrait de Parfum formulations that bloom with your body heat and command presence.
         </p>
       </div>
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
               We resolved to build an artisanal fragrance house from the ground up: one that marries the timeless richness of oriental perfumery — warm agarwood, sun-drenched Taif roses, earthy saffron, and radiant amber — with contemporary olfactory artistry.
             </p>
             <p>
-              Every flacon is formulated without harsh denatured ethyl alcohol. By blending pure, potent perfume oils with nourishing botanical carriers, our fragrances sit close to the skin, project with subtle nobility, and evolve gracefully across hours rather than minutes.
+              Every flacon is formulated as an artisanal, high-concentration Extrait de Parfum. By marrying high-grade perfume essences with master perfumer craftsmanship, our fragrances diffuse effortlessly, project with noble warmth, and evolve gracefully across hours rather than fading in minutes.
             </p>
           </div>
 
@@ -111,10 +111,10 @@ export default function AboutPage() {
               <Droplet className="w-6 h-6" />
             </div>
             <h3 className="font-heading text-xl font-bold text-zinc-950">
-              Artisanal Extrait de Parfum Base
+              Artisanal Extrait de Parfum Formulation
             </h3>
             <p className="text-sm text-zinc-600 leading-relaxed">
-              Formulated with generous oil concentrations and non-drying carriers. Unlike typical commercial sprays composed of 80% alcohol, our fragrances do not dissipate rapidly; they anchor to skin fibers and project an intimate, all-day sillage.
+              Formulated with generous fragrance oil concentrations engineered for the warm Pakistani climate. Our compositions ensure that vibrant top notes diffuse cleanly while deep base resins anchor to skin and fabrics for remarkable endurance.
             </p>
           </div>
 
@@ -123,10 +123,10 @@ export default function AboutPage() {
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="font-heading text-xl font-bold text-zinc-950">
-              Prayer-Safe &amp; Skin-Gentle
+              Radiant Sillage &amp; Smooth Diffusion
             </h3>
             <p className="text-sm text-zinc-600 leading-relaxed">
-              Crafted without harsh denatured ethyl alcohol, making our perfumes completely prayer-safe and halal for daily devotional use, Friday prayers, and formal gatherings without causing stinging, dryness, or skin irritation.
+              Carefully balanced for exceptional projection and skin compatibility. The fragrance develops across complex aromatic layers—crisp openings, opulent floral or spicy hearts, and magnetic woods that linger pleasantly throughout your day.
             </p>
           </div>
 
