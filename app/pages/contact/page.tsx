@@ -43,13 +43,13 @@ export default function ContactPage() {
       <Breadcrumbs items={[{ label: "Contact Us" }]} />
 
       <div className="text-center max-w-xl mx-auto mb-12 space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325]">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325] dark:text-[#d4af37]">
           Direct Customer Care
         </span>
-        <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950">
+        <h1 className="font-serif text-3xl sm:text-5xl font-normal text-zinc-950 dark:text-white">
           Get in Touch with {BRAND_NAME}
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-500">
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
           Have questions regarding fragrance notes, order delivery, or bulk wedding orders? Our concierge team is here to assist.
         </p>
       </div>

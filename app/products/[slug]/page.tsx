@@ -141,7 +141,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       />
 
       {/* Top Navigation: Breadcrumbs + Batch Cert Pill */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-black/6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-black/6 dark:border-white/10">
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
@@ -149,8 +149,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             { label: product.name },
           ]}
         />
-        <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-600">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#c5a059]" />
+        <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#c5a059] dark:text-[#d4af37]" />
           <span>Batch #NS-2025 &bull; 45-Day Macerated &bull; Small Batch</span>
         </div>
       </div>
@@ -171,36 +171,36 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
           {/* Collection & Category Sub-header */}
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#b48325] font-bold">
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#b48325] dark:text-[#d4af37] font-bold">
                 Noir Scent Atelier &bull; {categoryLabel}
               </span>
-              <span className="w-1 h-1 rounded-full bg-zinc-300" />
-              <span className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-zinc-500 font-medium">
+              <span className="w-1 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+              <span className="text-[10px] sm:text-xs uppercase tracking-[0.14em] text-zinc-500 dark:text-zinc-400 font-medium">
                 {product.concentration || STORE_CONFIG.perfumeType}
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#121212]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-medium tracking-tight text-[#121212] dark:text-[#f4f4f5]">
               {product.name}
             </h1>
 
             {/* Subtitle / Olfactory Characteristic (Scents 'n Stories style) */}
             {product.subtitle && (
-              <p className="text-xs sm:text-sm text-zinc-600 font-medium mt-1">
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-medium mt-1">
                 {product.subtitle}
               </p>
             )}
 
             {/* Reviews Status */}
             <div className="flex items-center gap-2 mt-2 text-xs">
-              <span className="text-[11px] uppercase tracking-wider text-zinc-400 font-medium">
+              <span className="text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-medium">
                 Reviews launch ke baad
               </span>
             </div>
           </div>
 
           {/* Quick Teaser / Summary */}
-          <div className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light border-y border-black/8 py-3">
+          <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-light border-y border-black/8 dark:border-white/10 py-3">
             <p className="line-clamp-3 hover:line-clamp-none transition-all">
               {product.description}
             </p>
@@ -214,8 +214,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       {/* 2. SECTION: Olfactory Accords & Performance Matrix (Scents 'n Stories Catch 22 style) */}
       <section className="space-y-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#c5a059]" />
-          <h2 className="text-base sm:text-xl font-bold uppercase tracking-wider text-[#121212]">
+          <Sparkles className="w-4 h-4 text-[#c5a059] dark:text-[#d4af37]" />
+          <h2 className="text-base sm:text-xl font-serif font-medium uppercase tracking-wider text-[#121212] dark:text-[#f4f4f5]">
             Fragrance Specs &amp; Performance
           </h2>
         </div>
@@ -225,8 +225,8 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       {/* 3. SECTION: 3-Tier Olfactory Architecture (Notes Pyramid) */}
       <section className="space-y-4">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-black" />
-          <h2 className="text-base sm:text-xl font-bold uppercase tracking-wider text-[#121212]">
+          <span className="w-2 h-2 rounded-full bg-black dark:bg-[#d4af37]" />
+          <h2 className="text-base sm:text-xl font-serif font-medium uppercase tracking-wider text-[#121212] dark:text-[#f4f4f5]">
             Fragrance Notes Breakdown
           </h2>
         </div>
@@ -245,19 +245,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
 
       {/* 6. SECTION: Related Fragrances ("You May Also Like") */}
       {related.length > 0 && (
-        <section className="pt-10 border-t border-black/8 space-y-6">
+        <section className="pt-10 border-t border-black/8 dark:border-white/10 space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#121212]">
+              <h2 className="text-xl sm:text-2xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
                 You May Also Like
               </h2>
-              <p className="text-xs text-zinc-500 font-light mt-0.5">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-light mt-0.5">
                 Handcrafted extraits sharing similar olfactory accords in {categoryLabel}.
               </p>
             </div>
             <Link
               href={`/collections/${product.category}`}
-              className="text-xs font-semibold text-black hover:text-[#c5a059] flex items-center gap-1 transition-colors uppercase tracking-wider"
+              className="text-xs font-semibold text-black dark:text-[#d4af37] hover:text-[#c5a059] dark:hover:text-[#f5e7b2] flex items-center gap-1 transition-colors uppercase tracking-wider"
             >
               <span>View All</span>
               <ArrowRight className="w-3.5 h-3.5" />

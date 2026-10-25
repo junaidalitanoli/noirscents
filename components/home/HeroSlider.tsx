@@ -288,7 +288,7 @@ export default function HeroSlider() {
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-[#faf8f5] select-none"
+      className="relative w-full overflow-hidden bg-[#faf8f5] dark:bg-[#09090b] select-none"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -323,9 +323,9 @@ export default function HeroSlider() {
                     1. MOBILE LUXURY EDITORIAL SPLIT VIEW (< md)
                     Unobstructed bottle showcase on top + refined card below
                    ======================================================== */}
-                <div className="md:hidden flex flex-col h-full w-full bg-[#faf8f5]">
+                <div className="md:hidden flex flex-col h-full w-full bg-[#faf8f5] dark:bg-[#0d0d10]">
                   {/* Top: 100% Clear Bottle Visual (No text collision) */}
-                  <div className="relative w-full h-[52%] overflow-hidden bg-stone-100">
+                  <div className="relative w-full h-[52%] overflow-hidden bg-stone-100 dark:bg-stone-900">
                     <Image
                       src={slide.imageSrc}
                       alt={slide.imageAlt}
@@ -337,19 +337,19 @@ export default function HeroSlider() {
                       }`}
                     />
                     {/* Delicate gradient transition into card */}
-                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#faf8f5] to-transparent pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#faf8f5] dark:from-[#0d0d10] to-transparent pointer-events-none" />
 
                     {/* Floating Eyebrow Pill on Top Left */}
-                    <div className="absolute top-3 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1 bg-white/95 backdrop-blur-md border border-stone-200/90 rounded-full shadow-xs text-[9.5px] font-semibold uppercase tracking-[0.16em] text-stone-900">
+                    <div className="absolute top-3 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1 bg-white/95 dark:bg-[#16161b]/95 backdrop-blur-md border border-stone-200/90 dark:border-white/10 rounded-full shadow-xs text-[9.5px] font-semibold uppercase tracking-[0.16em] text-stone-900 dark:text-stone-100">
                       <IconComponent className="w-3 h-3" style={{ color: slide.themeAccent }} />
                       <span>{slide.eyebrow}</span>
                     </div>
                   </div>
 
                   {/* Bottom: Refined Typography & Action Card */}
-                  <div className="relative flex-1 w-full bg-[#faf8f5] px-4 pt-2.5 pb-12 flex flex-col justify-between text-left">
+                  <div className="relative flex-1 w-full bg-[#faf8f5] dark:bg-[#0d0d10] px-4 pt-2.5 pb-12 flex flex-col justify-between text-left">
                     <div className="space-y-1">
-                      <h1 className="text-xl font-bold tracking-tight uppercase leading-[1.12] text-stone-950 font-heading">
+                      <h1 className="text-xl font-serif font-semibold tracking-tight uppercase leading-[1.12] text-stone-950 dark:text-stone-100">
                         {slide.headlineLead}{" "}
                         <span className={`text-transparent bg-clip-text bg-gradient-to-r ${slide.headlineGradient}`}>
                           {slide.headlineHighlight}
@@ -358,7 +358,7 @@ export default function HeroSlider() {
                       <p className="text-[11.5px] font-semibold tracking-wider uppercase" style={{ color: slide.themeAccent }}>
                         {slide.tagline}
                       </p>
-                      <p className="text-[9.5px] text-stone-600 tracking-wide uppercase font-medium">
+                      <p className="text-[9.5px] text-stone-600 dark:text-stone-400 tracking-wide uppercase font-medium">
                         {slide.subText}
                       </p>
                     </div>
@@ -367,14 +367,13 @@ export default function HeroSlider() {
                     <div className="flex items-center gap-2 pt-1.5">
                       <a
                         href={slide.primaryButton.href}
-                        className="flex-1 py-2.5 px-3 text-white text-center font-semibold text-[11px] uppercase tracking-wider rounded-xs shadow-xs active:scale-95 transition-all"
-                        style={{ backgroundColor: "#1c1917" }}
+                        className="flex-1 py-2.5 px-3 text-white dark:text-[#09090b] text-center font-semibold text-[11px] uppercase tracking-wider rounded-xs shadow-xs active:scale-95 transition-all bg-[#1c1917] dark:bg-[#d4af37]"
                       >
                         {slide.primaryButton.label}
                       </a>
                       <Link
                         href={slide.secondaryButton.href}
-                        className="flex-1 py-2.5 px-3 bg-white border border-stone-300 text-stone-900 text-center font-semibold text-[11px] uppercase tracking-wider rounded-xs shadow-xs active:scale-95 transition-all"
+                        className="flex-1 py-2.5 px-3 bg-white dark:bg-[#18181d] border border-stone-300 dark:border-zinc-700 text-stone-900 dark:text-stone-200 text-center font-semibold text-[11px] uppercase tracking-wider rounded-xs shadow-xs active:scale-95 transition-all"
                       >
                         {slide.secondaryButton.label}
                       </Link>
@@ -401,17 +400,22 @@ export default function HeroSlider() {
                     />
                   </div>
 
-                  {/* Refined Luxury Vignettes */}
-                  <div className={`hidden lg:block absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} w-[58%] pointer-events-none`} />
-                  <div className={`hidden sm:block lg:hidden absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} w-[65%] pointer-events-none`} />
-                  <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#faf8f5]/80 to-transparent pointer-events-none" />
+                  {/* Refined Luxury Vignettes (Light Mode) */}
+                  <div className={`hidden lg:block absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} dark:hidden w-[58%] pointer-events-none`} />
+                  <div className={`hidden sm:block lg:hidden absolute inset-0 bg-gradient-to-r ${slide.vignetteDesktop} dark:hidden w-[65%] pointer-events-none`} />
+                  <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#faf8f5]/80 dark:hidden to-transparent pointer-events-none" />
+
+                  {/* Dark Mode Luxury Obsidian Vignette */}
+                  <div className="hidden lg:dark:block absolute inset-0 bg-gradient-to-r from-[#09090b]/95 via-[#09090b]/80 to-transparent w-[58%] pointer-events-none" />
+                  <div className="hidden sm:dark:block lg:hidden absolute inset-0 bg-gradient-to-r from-[#09090b]/95 via-[#09090b]/80 to-transparent w-[65%] pointer-events-none" />
+                  <div className="hidden dark:block absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-[#09090b] to-transparent pointer-events-none" />
 
                   {/* Desktop Content Overlay */}
                   <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 lg:px-8 py-8 lg:py-10 flex items-center h-full">
                     <div className="max-w-[560px] space-y-4 lg:space-y-5 text-left">
                       {/* Eyebrow Badge */}
                       <div
-                        className={`inline-flex items-center gap-2 px-3.5 py-1 bg-white/90 border border-stone-200/90 text-stone-800 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur-md shadow-xs rounded-full transition-all duration-600 ease-out delay-150 ${
+                        className={`inline-flex items-center gap-2 px-3.5 py-1 bg-white/90 dark:bg-[#16161b]/90 border border-stone-200/90 dark:border-white/10 text-stone-800 dark:text-stone-200 text-xs font-semibold uppercase tracking-[0.18em] backdrop-blur-md shadow-xs rounded-full transition-all duration-600 ease-out delay-150 ${
                           isCurrent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
                         }`}
                       >
@@ -425,7 +429,7 @@ export default function HeroSlider() {
                           isCurrent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                         }`}
                       >
-                        <h1 className="text-3xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.1] text-stone-950 font-heading">
+                        <h1 className="text-3xl lg:text-5xl font-serif font-semibold tracking-tight uppercase leading-[1.1] text-stone-950 dark:text-stone-100">
                           {slide.headlineLead} <br />
                           <span className={`text-transparent bg-clip-text bg-gradient-to-r ${slide.headlineGradient}`}>
                             {slide.headlineHighlight}
@@ -434,7 +438,7 @@ export default function HeroSlider() {
                         <p className="text-sm lg:text-base font-semibold tracking-[0.14em] uppercase" style={{ color: slide.themeAccent }}>
                           {slide.tagline}
                         </p>
-                        <p className="text-xs font-medium tracking-[0.1em] text-stone-600 uppercase">
+                        <p className="text-xs font-medium tracking-[0.1em] text-stone-600 dark:text-stone-400 uppercase">
                           {slide.subText}
                         </p>
                       </div>
@@ -447,20 +451,13 @@ export default function HeroSlider() {
                       >
                         <a
                           href={slide.primaryButton.href}
-                          className="px-7 py-3 text-white font-semibold text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95 rounded-xs"
-                          style={{ backgroundColor: "#1c1917" }}
-                          onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLElement).style.backgroundColor = slide.themeAccent;
-                          }}
-                          onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLElement).style.backgroundColor = "#1c1917";
-                          }}
+                          className="px-7 py-3 text-white dark:text-[#09090b] bg-[#1c1917] dark:bg-[#d4af37] font-semibold text-xs uppercase tracking-widest transition-all text-center shadow-md hover:shadow-lg active:scale-95 rounded-xs hover:opacity-90"
                         >
                           {slide.primaryButton.label}
                         </a>
                         <Link
                           href={slide.secondaryButton.href}
-                          className="px-7 py-3 bg-white/95 border border-stone-300 text-stone-900 font-semibold text-xs uppercase tracking-widest hover:bg-stone-100 hover:border-stone-900 transition-all text-center backdrop-blur-xs shadow-xs active:scale-95 rounded-xs"
+                          className="px-7 py-3 bg-white/95 dark:bg-[#16161b]/95 border border-stone-300 dark:border-zinc-700 text-stone-900 dark:text-stone-100 font-semibold text-xs uppercase tracking-widest hover:bg-stone-100 dark:hover:bg-[#22222a] hover:border-stone-900 dark:hover:border-[#d4af37] transition-all text-center backdrop-blur-xs shadow-xs active:scale-95 rounded-xs"
                         >
                           {slide.secondaryButton.label}
                         </Link>
@@ -480,7 +477,7 @@ export default function HeroSlider() {
             onClick={prevSlide}
             disabled={isTransitioning}
             aria-label="Previous Slide"
-            className="pointer-events-auto p-3 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+            className="pointer-events-auto p-3 rounded-full bg-white/85 dark:bg-[#16161b]/85 hover:bg-white dark:hover:bg-[#22222a] text-stone-800 dark:text-stone-200 border border-stone-200/90 dark:border-white/10 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -489,7 +486,7 @@ export default function HeroSlider() {
             onClick={nextSlide}
             disabled={isTransitioning}
             aria-label="Next Slide"
-            className="pointer-events-auto p-3 rounded-full bg-white/85 hover:bg-white text-stone-800 border border-stone-200/90 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
+            className="pointer-events-auto p-3 rounded-full bg-white/85 dark:bg-[#16161b]/85 hover:bg-white dark:hover:bg-[#22222a] text-stone-800 dark:text-stone-200 border border-stone-200/90 dark:border-white/10 shadow-md backdrop-blur-md transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -497,7 +494,7 @@ export default function HeroSlider() {
 
         {/* Bottom Interactive Navigation Tabs & Real-time Progress Countdown */}
         <div className="absolute bottom-2 sm:bottom-4 inset-x-0 z-20 flex flex-col items-center gap-1.5 pointer-events-auto px-2">
-          <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/90 backdrop-blur-md rounded-full border border-stone-200/80 shadow-xs max-w-full overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/90 dark:bg-[#16161b]/90 backdrop-blur-md rounded-full border border-stone-200/80 dark:border-white/10 shadow-xs max-w-full overflow-x-auto scrollbar-none">
             {SLIDES.map((slide, idx) => {
               const isActive = idx === realIndex;
               return (
@@ -507,8 +504,8 @@ export default function HeroSlider() {
                   onClick={() => goToSlide(idx)}
                   className={`relative overflow-hidden px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-[9.5px] sm:text-xs font-semibold uppercase tracking-wider rounded-full transition-all shrink-0 flex items-center gap-1.5 ${
                     isActive
-                      ? "bg-stone-950 text-white shadow-xs"
-                      : "text-stone-600 hover:text-stone-950 hover:bg-stone-100/70"
+                      ? "bg-stone-950 dark:bg-stone-100 text-white dark:text-stone-950 shadow-xs"
+                      : "text-stone-600 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white hover:bg-stone-100/70 dark:hover:bg-zinc-800/70"
                   }`}
                   aria-label={`Go to slide ${idx + 1}: ${slide.tabLabel}`}
                 >

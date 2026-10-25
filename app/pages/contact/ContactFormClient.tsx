@@ -52,54 +52,54 @@ export default function ContactFormClient() {
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 items-start">
       {/* Contact info cards */}
       <div className="md:col-span-5 space-y-6">
-        <div className="bg-zinc-50 rounded-2xl border border-zinc-200 p-6 space-y-6">
+        <div className="bg-zinc-50 dark:bg-[#111115] rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 space-y-6">
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-[#f5e7b2] flex items-center justify-center shrink-0">
               <Phone className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-zinc-900">WhatsApp &amp; Helpline</h2>
+              <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">WhatsApp &amp; Helpline</h2>
               <a
                 href={`https://wa.me/${STORE_CONFIG.whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-zinc-800 font-semibold hover:text-[#d4af37] transition-colors block mt-1"
+                className="text-xs text-zinc-800 dark:text-zinc-300 font-semibold hover:text-[#d4af37] transition-colors block mt-1"
               >
                 {STORE_CONFIG.whatsappDisplay}
               </a>
-              <p className="text-[11px] text-zinc-400">{STORE_CONFIG.businessHours}</p>
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500">{STORE_CONFIG.businessHours}</p>
             </div>
           </div>
 
           <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-[#f5e7b2] flex items-center justify-center shrink-0">
               <Mail className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-zinc-900">Email Inquiries</h2>
+              <h2 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">Email Inquiries</h2>
               <a
                 href={`mailto:${STORE_CONFIG.contactEmail}`}
-                className="text-xs text-zinc-800 font-semibold hover:text-[#d4af37] transition-colors block mt-1"
+                className="text-xs text-zinc-800 dark:text-zinc-300 font-semibold hover:text-[#d4af37] transition-colors block mt-1"
               >
                 {STORE_CONFIG.contactEmail}
               </a>
-              <p className="text-[11px] text-zinc-400">Response within 24 business hours</p>
+              <p className="text-[11px] text-zinc-400 dark:text-zinc-500">Response within 24 business hours</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-zinc-950 text-white p-6 rounded-2xl border border-zinc-800 text-xs space-y-2">
+        <div className="bg-zinc-950 dark:bg-[#15151c] text-white p-6 rounded-2xl border border-zinc-800 dark:border-zinc-700/60 text-xs space-y-2">
           <span className="text-[#d4af37] font-bold block uppercase tracking-wider">
             COD Nationwide Dispatch
           </span>
-          <p className="text-zinc-300 leading-relaxed font-light">
+          <p className="text-zinc-300 dark:text-zinc-400 leading-relaxed font-light">
             Orders placed before 3:00 PM are dispatched on the same working day via {STORE_CONFIG.couriers}.
           </p>
         </div>
       </div>
 
       {/* Contact Form */}
-      <div className="md:col-span-7 bg-white rounded-2xl border border-zinc-200/90 p-6 sm:p-8 shadow-xs">
+      <div className="md:col-span-7 bg-white dark:bg-[#111115] rounded-2xl border border-zinc-200/90 dark:border-zinc-800 p-6 sm:p-8 shadow-xs">
         {submitted ? (
           <div className="py-12 text-center space-y-4">
             <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
@@ -134,12 +134,12 @@ export default function ContactFormClient() {
               aria-hidden="true"
             />
 
-            <h2 className="font-heading text-xl font-bold text-zinc-950 mb-2">
+            <h2 className="font-serif text-2xl font-normal text-zinc-950 dark:text-white mb-2">
               Send Us a Message
             </h2>
 
             <div>
-              <label htmlFor="contact-name" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+              <label htmlFor="contact-name" className="block font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
                 Your Full Name <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <input
@@ -149,7 +149,7 @@ export default function ContactFormClient() {
                 placeholder="e.g. Ali Ahmed"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
+                className="w-full text-sm p-3 border border-zinc-300 dark:border-zinc-700 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 dark:text-zinc-100 bg-white dark:bg-[#18181d] transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
                 required
                 aria-required="true"
                 autoComplete="name"
@@ -157,7 +157,7 @@ export default function ContactFormClient() {
             </div>
 
             <div>
-              <label htmlFor="contact-phone" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+              <label htmlFor="contact-phone" className="block font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
                 Phone / WhatsApp <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <input
@@ -167,19 +167,19 @@ export default function ContactFormClient() {
                 placeholder="0300-1234567"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
+                className="w-full text-sm p-3 border border-zinc-300 dark:border-zinc-700 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 dark:text-zinc-100 bg-white dark:bg-[#18181d] transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
                 required
                 aria-required="true"
                 aria-describedby="contact-phone-hint"
                 autoComplete="tel"
               />
-              <span id="contact-phone-hint" className="text-[11px] text-zinc-500 block mt-1">
+              <span id="contact-phone-hint" className="text-[11px] text-zinc-500 dark:text-zinc-400 block mt-1">
                 Pakistani mobile format: 03XX-XXXXXXX or 03XXXXXXXXX
               </span>
             </div>
 
             <div>
-              <label htmlFor="contact-subject" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+              <label htmlFor="contact-subject" className="block font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
                 Inquiry Topic
               </label>
               <select
@@ -187,7 +187,7 @@ export default function ContactFormClient() {
                 name="subject"
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 font-medium bg-white transition-all cursor-pointer"
+                className="w-full text-sm p-3 border border-zinc-300 dark:border-zinc-700 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 dark:text-zinc-100 font-medium bg-white dark:bg-[#18181d] transition-all cursor-pointer"
               >
                 <option value="">Select Topic...</option>
                 <option value="recommendation">Scent Recommendation</option>
@@ -198,7 +198,7 @@ export default function ContactFormClient() {
             </div>
 
             <div>
-              <label htmlFor="contact-message" className="block font-bold uppercase tracking-wider text-zinc-700 mb-1">
+              <label htmlFor="contact-message" className="block font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1">
                 Your Message <span className="text-red-500" aria-hidden="true">*</span>
               </label>
               <textarea
@@ -208,7 +208,7 @@ export default function ContactFormClient() {
                 placeholder="How can we assist you with our artisanal fragrances?"
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
-                className="w-full text-sm p-3 border border-zinc-300 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 transition-all"
+                className="w-full text-sm p-3 border border-zinc-300 dark:border-zinc-700 rounded-xl focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 focus:outline-hidden text-zinc-900 dark:text-zinc-100 bg-white dark:bg-[#18181d] transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
                 required
                 aria-required="true"
                 aria-describedby={errorMsg ? "contact-error" : undefined}
@@ -220,7 +220,7 @@ export default function ContactFormClient() {
                 id="contact-error"
                 role="alert"
                 aria-live="assertive"
-                className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl flex items-center gap-2"
+                className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs rounded-xl flex items-center gap-2"
               >
                 <span>{errorMsg}</span>
               </div>
@@ -229,9 +229,9 @@ export default function ContactFormClient() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-zinc-950 text-[#fef08a] font-bold text-sm rounded-xl hover:bg-zinc-800 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:ring-zinc-950 focus:outline-hidden"
+              className="w-full py-3.5 bg-zinc-950 dark:bg-[#d4af37] text-[#fef08a] dark:text-zinc-950 font-bold text-sm rounded-xl hover:bg-zinc-800 dark:hover:bg-[#b59226] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 focus:ring-2 focus:ring-offset-2 focus:ring-zinc-950 focus:outline-hidden"
             >
-              <Send className="w-4 h-4 text-[#d4af37]" /> {loading ? "Sending Message..." : "Send Inquiry"}
+              <Send className="w-4 h-4 text-[#d4af37] dark:text-zinc-950" /> {loading ? "Sending Message..." : "Send Inquiry"}
             </button>
           </form>
         )}

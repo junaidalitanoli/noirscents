@@ -32,19 +32,19 @@ export default function ProductGrid({ products, title, subtitle }: ProductGridPr
   return (
     <div className="w-full">
       {/* Header bar with controls */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-black/8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-black/8 dark:border-white/10">
         <div>
-          {title && <h2 className="text-xl sm:text-2xl font-semibold uppercase tracking-tight text-[#121212]">{title}</h2>}
-          {subtitle && <p className="text-xs text-zinc-500 mt-0.5">{subtitle}</p>}
-          <span className="text-xs text-zinc-500 font-medium mt-1 block">
+          {title && <h2 className="text-xl sm:text-2xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">{title}</h2>}
+          {subtitle && <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{subtitle}</p>}
+          <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium mt-1 block">
             {sortedProducts.length} {sortedProducts.length === 1 ? "product" : "products"}
           </span>
         </div>
 
         {/* Sort Dropdown */}
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          <label htmlFor="sort-select" className="text-xs uppercase tracking-wider font-semibold text-zinc-600 flex items-center gap-1">
-            <ArrowUpDown className="w-3.5 h-3.5 text-zinc-400" />
+          <label htmlFor="sort-select" className="text-xs uppercase tracking-wider font-semibold text-zinc-600 dark:text-zinc-300 flex items-center gap-1">
+            <ArrowUpDown className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
             Sort by:
           </label>
           <select
@@ -53,7 +53,7 @@ export default function ProductGrid({ products, title, subtitle }: ProductGridPr
             onChange={(e) =>
               setSortBy(e.target.value as "featured" | "price-asc" | "price-desc" | "newest")
             }
-            className="text-xs bg-white border border-zinc-300 py-1.5 px-3 font-medium text-zinc-800 focus:outline-hidden focus:border-black"
+            className="text-xs bg-white dark:bg-[#16161c] border border-zinc-300 dark:border-zinc-700 py-1.5 px-3 font-medium text-zinc-800 dark:text-zinc-200 focus:outline-hidden focus:border-black dark:focus:border-[#d4af37] transition-colors"
           >
             <option value="featured">Featured</option>
             <option value="price-asc">Price: Low to High</option>
@@ -65,9 +65,9 @@ export default function ProductGrid({ products, title, subtitle }: ProductGridPr
 
       {/* Grid: 2 columns on mobile (390px), 3 on tablet (768px), 4 on desktop (1440px) */}
       {sortedProducts.length === 0 ? (
-        <div className="text-center py-16 bg-zinc-50 border border-zinc-200">
-          <p className="text-zinc-600 text-sm font-medium">No perfumes found in this selection.</p>
-          <p className="text-zinc-400 text-xs mt-1">Please try searching with other categories or keywords.</p>
+        <div className="text-center py-16 bg-zinc-50 dark:bg-[#121216] border border-zinc-200 dark:border-zinc-800">
+          <p className="text-zinc-600 dark:text-zinc-300 text-sm font-medium">No perfumes found in this selection.</p>
+          <p className="text-zinc-400 dark:text-zinc-500 text-xs mt-1">Please try searching with other categories or keywords.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">

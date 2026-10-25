@@ -22,13 +22,13 @@ export default function CheckoutPage() {
           ]}
         />
         <div className="mb-8">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#b48325]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#b48325] dark:text-[#d4af37]">
             Secure Cash On Delivery
           </span>
-          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950 mt-1">
+          <h1 className="font-serif text-3xl sm:text-4xl font-medium text-zinc-950 dark:text-[#f4f4f5] mt-1">
             Express Checkout
           </h1>
-          <p className="text-xs sm:text-sm text-zinc-500 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
             Loading your checkout session...
           </p>
         </div>
@@ -41,18 +41,18 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center">
-        <div className="w-16 h-16 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400 mx-auto mb-4">
-          <ShoppingBag className="w-8 h-8" />
+        <div className="w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 mx-auto mb-4">
+          <ShoppingBag className="w-8 h-8 text-zinc-500 dark:text-[#d4af37]" />
         </div>
-        <h1 className="font-heading text-2xl font-bold text-zinc-950">
+        <h1 className="font-serif text-2xl font-medium text-zinc-950 dark:text-[#f4f4f5]">
           Your Shopping Bag is Empty
         </h1>
-        <p className="text-sm text-zinc-500 mt-2 mb-6">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-2 mb-6">
           You need to add at least one fragrance to your bag before proceeding to checkout.
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded-xl font-semibold text-sm hover:bg-zinc-800 transition-colors shadow-md"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-[#d4af37] text-white dark:text-[#09090b] rounded-xl font-semibold text-sm hover:bg-zinc-800 dark:hover:bg-[#e5c158] transition-colors shadow-md"
         >
           <ArrowLeft className="w-4 h-4" /> Browse Fragrances
         </Link>
@@ -70,13 +70,13 @@ export default function CheckoutPage() {
       />
 
       <div className="mb-8">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325]">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325] dark:text-[#d4af37]">
           Secure Cash On Delivery
         </span>
-        <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950 mt-1">
+        <h1 className="font-serif text-3xl sm:text-4xl font-medium text-zinc-950 dark:text-[#f4f4f5] mt-1">
           Express Checkout
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-500 mt-1">
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
           Please confirm your Pakistani delivery address. No upfront payment required.
         </p>
       </div>

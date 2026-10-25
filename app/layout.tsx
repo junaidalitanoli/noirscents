@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import { ThemeProvider } from "@/components/theme/ThemeContext";
 import { SITE_URL, getAbsoluteUrl } from "@/lib/site";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
@@ -19,6 +20,13 @@ export const viewport: Viewport = {
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-serif",
   weight: ["400", "500", "600", "700"],
   display: "swap",
 });
@@ -107,20 +115,39 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html lang="en" suppressHydrationWarning className={`${montserrat.variable} ${cormorant.variable}`}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var saved = localStorage.getItem('noir_theme');
+                  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (saved === 'dark' || (!saved && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootJsonLd) }}
         />
       </head>
-      <body className="font-sans bg-white text-[#121212] antialiased flex flex-col min-h-screen">
-        <AnnouncementBar />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <CartDrawer />
-        <WhatsAppButton />
-        <Footer />
+      <body className="font-sans bg-white dark:bg-[#09090b] text-[#121212] dark:text-[#f4f4f5] antialiased flex flex-col min-h-screen transition-colors duration-200">
+        <ThemeProvider>
+          <AnnouncementBar />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <CartDrawer />
+          <WhatsAppButton />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

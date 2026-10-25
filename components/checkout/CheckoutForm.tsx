@@ -207,24 +207,24 @@ export default function CheckoutForm() {
           </div>
         </div>
       )}
-      <div className="bg-white border border-zinc-200/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs">
-        <div className="border-b border-zinc-200 pb-4 flex items-center justify-between">
+      <div className="bg-white dark:bg-[#111115] border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs transition-colors">
+        <div className="border-b border-zinc-200 dark:border-zinc-800 pb-4 flex items-center justify-between">
           <div>
-            <h2 className="font-heading text-xl font-bold text-zinc-950">
+            <h2 className="font-heading text-xl font-bold text-zinc-950 dark:text-[#f4f4f5]">
               Delivery Information
             </h2>
-            <p className="text-xs text-zinc-500 mt-0.5">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
               Enter your shipping details for doorstep courier delivery across Pakistan.
             </p>
           </div>
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full font-semibold">
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1 rounded-full font-semibold border border-transparent dark:border-emerald-700/40">
             <Lock className="w-3.5 h-3.5" /> 256-bit Encrypted
           </div>
         </div>
 
         {/* Full Name */}
         <div>
-          <label htmlFor="fullName" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+          <label htmlFor="fullName" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
             Full Name <span className="text-red-500">*</span>
           </label>
           <input
@@ -236,14 +236,14 @@ export default function CheckoutForm() {
               setFormData({ ...formData, fullName: e.target.value });
               if (errors.fullName) setErrors({ ...errors, fullName: "" });
             }}
-            className={`w-full text-sm bg-white border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 ${
+            className={`w-full text-sm bg-white dark:bg-[#18181f] border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 ${
               errors.fullName
                 ? "border-red-500 focus:ring-1 focus:ring-red-500 bg-red-50/20"
-                : "border-zinc-300 focus:border-[#d4af37]"
+                : "border-zinc-300 dark:border-zinc-700 focus:border-[#d4af37]"
             }`}
           />
           {errors.fullName && (
-            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1 font-medium">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.fullName}
             </p>
           )}
@@ -252,7 +252,7 @@ export default function CheckoutForm() {
         {/* Phone & Email Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+            <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
               Phone / WhatsApp <span className="text-red-500">*</span>
             </label>
             <input
@@ -264,25 +264,25 @@ export default function CheckoutForm() {
                 setFormData({ ...formData, phone: e.target.value });
                 if (errors.phone) setErrors({ ...errors, phone: "" });
               }}
-              className={`w-full text-sm bg-white border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 ${
+              className={`w-full text-sm bg-white dark:bg-[#18181f] border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 ${
                 errors.phone
                   ? "border-red-500 focus:ring-1 focus:ring-red-500 bg-red-50/20"
-                  : "border-zinc-300 focus:border-[#d4af37]"
+                  : "border-zinc-300 dark:border-zinc-700 focus:border-[#d4af37]"
               }`}
             />
             {errors.phone ? (
-              <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+              <p className="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1 font-medium">
                 <AlertCircle className="w-3.5 h-3.5" /> {errors.phone}
               </p>
             ) : (
-              <p className="text-[11px] text-zinc-500 mt-1">
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">
                 Courier rider calls this number before dispatch.
               </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+            <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
               Email Address <span className="text-zinc-400 font-normal">(Optional)</span>
             </label>
             <input
@@ -291,15 +291,15 @@ export default function CheckoutForm() {
               placeholder="name@example.com"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full text-sm bg-white border border-zinc-300 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900"
+              className="w-full text-sm bg-white dark:bg-[#18181f] border border-zinc-300 dark:border-zinc-700 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
             />
-            <p className="text-[11px] text-zinc-500 mt-1">For digital receipt and tracking alerts.</p>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">For digital receipt and tracking alerts.</p>
           </div>
         </div>
 
         {/* City Dropdown */}
         <div>
-          <label htmlFor="city" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+          <label htmlFor="city" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
             Destination City <span className="text-red-500">*</span>
           </label>
           <select
@@ -309,7 +309,7 @@ export default function CheckoutForm() {
               setFormData({ ...formData, city: e.target.value });
               if (errors.city) setErrors({ ...errors, city: "" });
             }}
-            className="w-full text-sm bg-white border border-zinc-300 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900 font-medium"
+            className="w-full text-sm bg-white dark:bg-[#18181f] border border-zinc-300 dark:border-zinc-700 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900 dark:text-zinc-100 font-medium"
           >
             {PAKISTANI_CITIES.map((c) => (
               <option key={c} value={c}>
@@ -318,7 +318,7 @@ export default function CheckoutForm() {
             ))}
           </select>
           {errors.city && (
-            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1 font-medium">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.city}
             </p>
           )}
@@ -326,7 +326,7 @@ export default function CheckoutForm() {
 
         {/* Address */}
         <div>
-          <label htmlFor="address" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+          <label htmlFor="address" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
             Complete Delivery Address <span className="text-red-500">*</span>
           </label>
           <textarea
@@ -338,14 +338,14 @@ export default function CheckoutForm() {
               setFormData({ ...formData, address: e.target.value });
               if (errors.address) setErrors({ ...errors, address: "" });
             }}
-            className={`w-full text-sm bg-white border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 ${
+            className={`w-full text-sm bg-white dark:bg-[#18181f] border rounded-xl p-3 focus:outline-hidden transition-all text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 ${
               errors.address
                 ? "border-red-500 focus:ring-1 focus:ring-red-500 bg-red-50/20"
-                : "border-zinc-300 focus:border-[#d4af37]"
+                : "border-zinc-300 dark:border-zinc-700 focus:border-[#d4af37]"
             }`}
           />
           {errors.address && (
-            <p className="text-xs text-red-600 mt-1 flex items-center gap-1 font-medium">
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1 font-medium">
               <AlertCircle className="w-3.5 h-3.5" /> {errors.address}
             </p>
           )}
@@ -353,7 +353,7 @@ export default function CheckoutForm() {
 
         {/* Special Instructions */}
         <div>
-          <label htmlFor="notes" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-1.5">
+          <label htmlFor="notes" className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-1.5">
             Order Notes / Landmark <span className="text-zinc-400 font-normal">(Optional)</span>
           </label>
           <input
@@ -362,34 +362,34 @@ export default function CheckoutForm() {
             placeholder="e.g. Near Shell pump / Deliver after 3 PM"
             value={formData.notes}
             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-            className="w-full text-sm bg-white border border-zinc-300 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900"
+            className="w-full text-sm bg-white dark:bg-[#18181f] border border-zinc-300 dark:border-zinc-700 rounded-xl p-3 focus:outline-hidden focus:border-[#d4af37] text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600"
           />
         </div>
 
         {/* Payment Method Selector */}
         <div className="pt-2">
-          <label className="block text-xs font-bold uppercase tracking-wider text-zinc-800 mb-2">
+          <label className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200 mb-2">
             Payment Method
           </label>
-          <div className="border-2 border-zinc-900 bg-zinc-50 rounded-xl p-4 flex items-start gap-3">
+          <div className="border-2 border-zinc-900 dark:border-[#d4af37] bg-zinc-50 dark:bg-[#16161c] rounded-xl p-4 flex items-start gap-3">
             <input
               type="radio"
               id="cod"
               name="paymentMethod"
               checked
               readOnly
-              className="mt-1 text-zinc-900 focus:ring-zinc-900"
+              className="mt-1 text-zinc-900 dark:text-[#d4af37] focus:ring-zinc-900 dark:focus:ring-[#d4af37]"
             />
             <div className="flex-1">
               <div className="flex items-center justify-between">
-                <label htmlFor="cod" className="text-sm font-bold text-zinc-900 cursor-pointer">
+                <label htmlFor="cod" className="text-sm font-bold text-zinc-900 dark:text-zinc-100 cursor-pointer">
                   Cash On Delivery (COD)
                 </label>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-transparent dark:border-emerald-700/50">
                   Most Popular
                 </span>
               </div>
-              <p className="text-xs text-zinc-600 mt-1">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1">
                 Pay in Pakistani Rupees (PKR) at your doorstep when the courier hands over the parcel. Zero online card risks.
               </p>
             </div>
@@ -400,22 +400,22 @@ export default function CheckoutForm() {
         <button
           type="submit"
           disabled={isSubmitting || items.length === 0}
-          className="w-full py-4 px-6 rounded-xl font-bold text-base bg-[#09090b] text-[#fef08a] hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl flex items-center justify-center gap-2"
+          className="w-full py-4 px-6 rounded-xl font-bold text-base bg-[#09090b] dark:bg-[#d4af37] text-[#fef08a] dark:text-[#09090b] hover:bg-zinc-800 dark:hover:bg-[#e5c158] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <span className="flex items-center gap-2">
-              <span className="w-4 h-4 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+              <span className="w-4 h-4 border-2 border-[#d4af37] dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
               Processing Order &amp; Notifying Dispatch...
             </span>
           ) : (
             <>
               Confirm Order &bull; {formatPrice(total)} (Cash On Delivery)
-              <ArrowRight className="w-5 h-5 text-[#d4af37]" />
+              <ArrowRight className="w-5 h-5 text-[#d4af37] dark:text-[#09090b]" />
             </>
           )}
         </button>
 
-        <p className="text-[11px] text-center text-zinc-500">
+        <p className="text-[11px] text-center text-zinc-500 dark:text-zinc-400">
           By placing your order, you agree to Noir Scent shipping and return policies.
         </p>
       </div>

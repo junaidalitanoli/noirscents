@@ -136,11 +136,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       <Breadcrumbs items={[{ label }]} />
 
       {/* Collection Banner with 2-3 sentence intro */}
-      <div className="py-6 sm:py-8 mb-6 border-b border-black/8 space-y-3">
-        <h1 className="text-2xl sm:text-4xl font-semibold uppercase tracking-tight text-[#121212]">
+      <div className="py-6 sm:py-8 mb-6 border-b border-black/8 dark:border-white/10 space-y-3">
+        <h1 className="text-2xl sm:text-4xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
           {meta.title}
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-600 max-w-3xl font-light leading-relaxed">
+        <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-3xl font-light leading-relaxed">
           {meta.intro}
         </p>
       </div>

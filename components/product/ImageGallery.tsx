@@ -32,10 +32,10 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
                 key={idx}
                 type="button"
                 onClick={() => setSelectedIndex(idx)}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-[#f4f4f5] border transition-all shrink-0 rounded-xs overflow-hidden ${
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-[#f4f4f5] dark:bg-[#121216] border transition-all shrink-0 rounded-xs overflow-hidden ${
                   selectedIndex === idx
-                    ? "border-black ring-2 ring-[#c5a059] opacity-100 scale-102"
-                    : "border-zinc-200 opacity-70 hover:opacity-100"
+                    ? "border-black dark:border-[#d4af37] ring-2 ring-[#c5a059] dark:ring-[#d4af37] opacity-100 scale-102"
+                    : "border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100"
                 }`}
                 aria-label={`View image thumbnail ${idx + 1} of ${productName}`}
               >
@@ -52,7 +52,7 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
         )}
 
         {/* Main Large Image */}
-        <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] border border-black/8 overflow-hidden rounded-xs group">
+        <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 overflow-hidden rounded-xs group">
           <Image
             src={currentImage}
             alt={`${productName} Extrait de Parfum bottle by Noir Scent`}
@@ -65,12 +65,12 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
           {/* Luxury Badge Overlay */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
             {badge && (
-              <span className="inline-flex items-center gap-1 bg-[#121212] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 shadow-md">
-                <Sparkles className="w-3 h-3 text-[#c5a059]" />
+              <span className="inline-flex items-center gap-1 bg-[#121212] dark:bg-[#181820] text-white border dark:border-white/10 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 shadow-md">
+                <Sparkles className="w-3 h-3 text-[#c5a059] dark:text-[#d4af37]" />
                 {badge}
               </span>
             )}
-            <span className="inline-flex items-center gap-1 bg-white/90 backdrop-blur-xs text-zinc-900 border border-black/10 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 shadow-2xs">
+            <span className="inline-flex items-center gap-1 bg-white/90 dark:bg-[#16161b]/90 backdrop-blur-xs text-zinc-900 dark:text-zinc-100 border border-black/10 dark:border-white/10 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 shadow-2xs">
               35% Extrait Concentration
             </span>
           </div>
@@ -84,17 +84,17 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
       </div>
 
       {/* 3 Confidence Badges under image */}
-      <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] text-zinc-600 font-medium">
-        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 border border-zinc-200/80 text-center">
-          <Shield className="w-3.5 h-3.5 text-[#c5a059] shrink-0" />
+      <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
+        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 dark:bg-[#111115] border border-zinc-200/80 dark:border-zinc-800 text-center transition-colors">
+          <Shield className="w-3.5 h-3.5 text-[#c5a059] dark:text-[#d4af37] shrink-0" />
           <span className="truncate">Pure Fragrance Oils</span>
         </div>
-        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 border border-zinc-200/80 text-center">
-          <Truck className="w-3.5 h-3.5 text-[#c5a059] shrink-0" />
+        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 dark:bg-[#111115] border border-zinc-200/80 dark:border-zinc-800 text-center transition-colors">
+          <Truck className="w-3.5 h-3.5 text-[#c5a059] dark:text-[#d4af37] shrink-0" />
           <span className="truncate">Nationwide COD</span>
         </div>
-        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 border border-zinc-200/80 text-center">
-          <Package className="w-3.5 h-3.5 text-[#c5a059] shrink-0" />
+        <div className="flex items-center justify-center gap-1.5 p-2 bg-zinc-50 dark:bg-[#111115] border border-zinc-200/80 dark:border-zinc-800 text-center transition-colors">
+          <Package className="w-3.5 h-3.5 text-[#c5a059] dark:text-[#d4af37] shrink-0" />
           <span className="truncate">Luxury Gift Box</span>
         </div>
       </div>

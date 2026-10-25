@@ -34,18 +34,18 @@ export default function Footer() {
   const whatsappUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}`;
 
   return (
-    <footer className="bg-[#f8f8f8] text-zinc-600 border-t border-black/8 text-xs tracking-wider">
+    <footer className="bg-[#f8f8f8] dark:bg-[#070709] text-zinc-600 dark:text-zinc-400 border-t border-black/8 dark:border-white/10 text-xs tracking-wider transition-colors duration-200">
       {/* Newsletter Subscription Section */}
-      <div className="border-b border-black/8 bg-white py-12 sm:py-16">
+      <div className="border-b border-black/8 dark:border-white/10 bg-white dark:bg-[#0c0c0f] py-12 sm:py-16">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center space-y-4">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#b48325]">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#b48325] dark:text-[#d4af37]">
               Private Olfactory Reserve &bull; Coming Soon
             </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold uppercase tracking-wide text-zinc-950">
+            <h2 className="font-heading font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-zinc-950 dark:text-zinc-100">
               Subscribe to Noir Scent
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
               VIP invitations, limited extrait reserve decanters, aur fragrance announcements. Online subscriptions jald launch hone wali hain (Coming Soon).
             </p>
 
@@ -62,12 +62,12 @@ export default function Footer() {
                   placeholder="Enter your email address..."
                   required
                   aria-label="Email address for newsletter"
-                  className="w-full sm:flex-1 px-4 py-3 text-xs bg-zinc-50 border border-zinc-300 focus:border-black focus:outline-hidden text-zinc-900 placeholder:text-zinc-400 transition-colors"
+                  className="w-full sm:flex-1 px-4 py-3 text-xs bg-zinc-50 dark:bg-[#15151a] border border-zinc-300 dark:border-zinc-700 focus:border-black dark:focus:border-[#d4af37] focus:outline-hidden text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={newsletterStatus === "loading"}
-                  className="w-full sm:w-auto px-6 py-3 bg-[#121212] text-white text-xs font-semibold uppercase tracking-wider hover:bg-black transition-colors flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#121212] dark:bg-[#d4af37] text-white dark:text-[#09090b] text-xs font-semibold uppercase tracking-wider hover:bg-black dark:hover:bg-[#e5c378] transition-colors flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50"
                 >
                   <span>{newsletterStatus === "loading" ? "Subscribing..." : "Subscribe"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -77,9 +77,9 @@ export default function Footer() {
               {newsletterStatus === "success" && (
                 <div
                   role="status"
-                  className="mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-md flex items-center justify-center gap-2 max-w-md mx-auto animate-fade-in"
+                  className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs rounded-md flex items-center justify-center gap-2 max-w-md mx-auto animate-fade-in"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>{feedbackMessage}</span>
                 </div>
               )}
@@ -87,17 +87,17 @@ export default function Footer() {
               {newsletterStatus === "error" && (
                 <div
                   role="alert"
-                  className="mt-4 p-3 bg-red-50 border border-red-200 text-red-800 text-xs rounded-md flex items-center justify-center gap-2 max-w-md mx-auto animate-fade-in"
+                  className="mt-4 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 text-xs rounded-md flex items-center justify-center gap-2 max-w-md mx-auto animate-fade-in"
                 >
-                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                  <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
                   <span>{feedbackMessage}</span>
                 </div>
               )}
             </form>
 
             {/* Social Icons row below newsletter */}
-            <div className="pt-4 flex items-center justify-center gap-4 text-zinc-500">
-              <span className="text-[11px] uppercase tracking-wider text-zinc-400 font-medium">Follow Noir Scent:</span>
+            <div className="pt-4 flex items-center justify-center gap-4 text-zinc-500 dark:text-zinc-400">
+              <span className="text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-medium">Follow Noir Scent:</span>
               <a
                 href={instagramUrl}
                 target="_blank"
@@ -334,24 +334,24 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar: Copyright & Payment Information */}
-      <div className="border-t border-black/8 py-8 bg-[#f4f4f5]">
+      <div className="border-t border-black/8 dark:border-white/10 py-8 bg-[#f4f4f5] dark:bg-[#050507]">
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3.5">
-          <p className="text-xs text-zinc-600">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
             &copy; {new Date().getFullYear()},{" "}
             <Link
               href="/"
-              className="font-semibold text-black uppercase tracking-wider hover:underline underline-offset-4"
+              className="font-semibold text-black dark:text-[#f4f4f5] uppercase tracking-wider hover:underline underline-offset-4"
             >
               {BRAND_NAME}
             </Link>
-            <span className="mx-2 text-zinc-400">&bull;</span>
+            <span className="mx-2 text-zinc-400 dark:text-zinc-600">&bull;</span>
             <span>Handcrafted in Pakistan</span>
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-2.5 text-zinc-600">
-            <span className="bg-white border border-zinc-200 px-2.5 py-1 text-[10px] font-medium tracking-wider">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 text-zinc-600 dark:text-zinc-400">
+            <span className="bg-white dark:bg-[#121216] border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-medium tracking-wider">
               Cash on Delivery (COD)
             </span>
-            <span className="bg-white border border-zinc-200 px-2.5 py-1 text-[10px] font-medium tracking-wider">
+            <span className="bg-white dark:bg-[#121216] border border-zinc-200 dark:border-zinc-800 px-2.5 py-1 text-[10px] font-medium tracking-wider">
               TCS / Leopards Courier
             </span>
           </div>

@@ -70,20 +70,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ]}
       />
 
-      <div className="mb-8 pb-4 border-b border-zinc-200">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325]">
+      <div className="mb-8 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#b48325] dark:text-[#d4af37]">
           Perfume Search Directory
         </span>
-        <h1 className="font-heading text-3xl sm:text-4xl font-bold text-zinc-950 mt-1">
+        <h1 className="font-serif text-3xl sm:text-4xl font-medium text-zinc-950 dark:text-[#f4f4f5] mt-1">
           {query ? (
             <>
-              Search Results for <span className="text-amber-900">&ldquo;{query}&rdquo;</span>
+              Search Results for <span className="text-amber-900 dark:text-[#f5e7b2]">&ldquo;{query}&rdquo;</span>
             </>
           ) : (
             "Browse Fragrances"
           )}
         </h1>
-        <p className="text-xs sm:text-sm text-zinc-500 mt-1">
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
           {query
             ? `Found ${results.length} fragrance match${results.length === 1 ? "" : "es"}.`
             : "Type a perfume name, note, or scent profile in the search bar above."}
@@ -94,14 +94,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <ProductGrid products={results} />
       ) : (
         <div className="space-y-12">
-          <div className="bg-zinc-50 rounded-2xl border border-zinc-200 p-8 sm:p-12 text-center max-w-xl mx-auto">
-            <div className="w-16 h-16 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400 mx-auto mb-4">
+          <div className="bg-zinc-50 dark:bg-[#111115] rounded-2xl border border-zinc-200 dark:border-white/10 p-8 sm:p-12 text-center max-w-xl mx-auto transition-colors">
+            <div className="w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-400 dark:text-[#d4af37] mx-auto mb-4">
               <Search className="w-8 h-8" />
             </div>
-            <h2 className="font-heading text-xl font-bold text-zinc-900">
+            <h2 className="font-serif text-xl font-medium text-zinc-900 dark:text-zinc-100">
               No direct scent match found
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-500 mt-2">
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-2">
               Try searching for common accords like &ldquo;Oud&rdquo;, &ldquo;Rose&rdquo;, &ldquo;Amber&rdquo;, or &ldquo;Bergamot&rdquo;, or explore our curated collections below.
             </p>
 
@@ -110,7 +110,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <Link
                   key={tag}
                   href={`/search?q=${encodeURIComponent(tag)}`}
-                  className="px-3 py-1 bg-white border border-zinc-300 rounded-full text-xs font-semibold text-zinc-800 hover:border-[#d4af37]"
+                  className="px-3 py-1 bg-white dark:bg-[#181820] border border-zinc-300 dark:border-zinc-700 rounded-full text-xs font-semibold text-zinc-800 dark:text-zinc-200 hover:border-[#d4af37] dark:hover:border-[#d4af37] transition-colors"
                 >
                   #{tag}
                 </Link>
@@ -121,7 +121,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <div>
             <div className="flex items-center gap-2 mb-6">
               <Sparkles className="w-4 h-4 text-[#d4af37]" />
-              <h2 className="font-heading text-xl font-bold text-zinc-950">
+              <h2 className="font-serif text-xl font-medium text-zinc-950 dark:text-[#f4f4f5]">
                 Recommended Best Sellers
               </h2>
             </div>

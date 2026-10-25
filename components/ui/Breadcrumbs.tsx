@@ -42,10 +42,10 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd) }}
       />
-      <nav aria-label="Breadcrumb" className="py-3 text-xs text-zinc-500">
+      <nav aria-label="Breadcrumb" className="py-3 text-xs text-zinc-500 dark:text-zinc-400">
         <ol className="flex items-center flex-wrap gap-1.5">
           <li className="flex items-center gap-1.5">
-            <Link href="/" className="hover:text-zinc-950 flex items-center gap-1 transition-colors">
+            <Link href="/" className="hover:text-zinc-950 dark:hover:text-[#d4af37] flex items-center gap-1 transition-colors">
               <Home className="w-3.5 h-3.5" />
               <span>Home</span>
             </Link>
@@ -55,13 +55,13 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
             const isLast = idx === filteredItems.length - 1;
             return (
               <li key={idx} className="flex items-center gap-1.5">
-                <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+                <ChevronRight className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-600" />
                 {isLast || !item.href ? (
-                  <span className="text-zinc-900 font-semibold truncate max-w-xs sm:max-w-md">
+                  <span className="text-zinc-900 dark:text-zinc-100 font-semibold truncate max-w-xs sm:max-w-md">
                     {item.label}
                   </span>
                 ) : (
-                  <Link href={item.href} className="hover:text-zinc-950 capitalize transition-colors">
+                  <Link href={item.href} className="hover:text-zinc-950 dark:hover:text-[#d4af37] capitalize transition-colors">
                     {item.label}
                   </Link>
                 )}
