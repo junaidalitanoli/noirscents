@@ -36,7 +36,8 @@ function getSupabaseConfig() {
   const url = process.env.SUPABASE_URL?.trim();
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   if (url && serviceKey && !url.includes("your-project") && !serviceKey.includes("your_service_role")) {
-    return { url: url.replace(/\/$/, ""), key: serviceKey };
+    const cleanUrl = url.replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
+    return { url: cleanUrl, key: serviceKey };
   }
   return null;
 }
