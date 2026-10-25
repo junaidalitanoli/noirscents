@@ -1,38 +1,16 @@
 import { NextResponse } from "next/server";
 import { listOrders, updateOrderStatus, getOrderStorageStatus } from "@/lib/orders/orderStorage";
 import { OrderStatus } from "@/types";
-
-function verifyAdminAuth(req: Request): boolean {
-  const adminSecret = process.env.ADMIN_SECRET || process.env.ADMIN_INBOX_SECRET;
-
-  // Fail closed if admin secret is not configured
-  if (!adminSecret || adminSecret.trim() === "" || adminSecret.includes("your_admin_secret_token_here")) {
-    return false;
-  }
-
-  // Accept token ONLY via secure headers (reject URL query parameters)
-  const headerToken = req.headers.get("x-admin-token") || req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
-
-  if (!headerToken) {
-    return false;
-  }
-
-  return headerToken.trim() === adminSecret.trim();
-}
+import { verifyAdminAuth } from "@/lib/admin/auth";
 
 /**
  * GET /api/orders
  * Returns list of server-persisted orders for authenticated admin dashboard
  */
 export async function GET(req: Request) {
-  if (!verifyAdminAuth(req)) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Unauthorized access. Valid admin authentication token required in x-admin-token or Authorization header.",
-      },
-      { status: 401 }
-    );
+  const auth = verifyAdminAuth(req);
+  if (!auth.authorized) {
+    return auth.response!;
   }
 
   try {
@@ -63,11 +41,9 @@ export async function GET(req: Request) {
  * Updates an order status (Pending -> Shipped -> Delivered)
  */
 export async function PATCH(req: Request) {
-  if (!verifyAdminAuth(req)) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized access." },
-      { status: 401 }
-    );
+  const auth = verifyAdminAuth(req);
+  if (!auth.authorized) {
+    return auth.response!;
   }
 
   try {

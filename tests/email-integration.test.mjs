@@ -610,19 +610,55 @@ async function runTests() {
     "Duplicate submission with identical idempotencyKey returns existing order and prevents duplicate dispatch"
   );
 
-  // TEST 29: Order confirmation cannot be fabricated by modifying local storage (public lookup 404)
-  const fakeLookupReq = new Request("http://localhost/api/order/NS-NONEXISTENT-99999", {
+  // TEST 28b: Injection or invalid characters in idempotencyKey are sanitized and never return an existing order as duplicate
+  const injectionKey = `key_malicious_)_or_(id.neq.0)*,`;
+  const injectionReq = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.28b" },
+    body: JSON.stringify({
+      idempotencyKey: injectionKey,
+      order: {
+        customer: {
+          fullName: "Security Test User",
+          phone: "03219876543",
+          address: "123 Secure St",
+          city: "Lahore",
+        },
+        items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+      },
+    }),
+  });
+  const injectionRes = await sendOrderPost(injectionReq);
+  const injectionData = await injectionRes.json();
+  assert(
+    injectionRes.status === 200 &&
+      injectionData.success === true &&
+      injectionData.isDuplicate !== true &&
+      injectionData.orderId !== validOrderData.orderId,
+    "Idempotency key containing ')', '*', or ',' is treated as invalid and never returns another customer's order"
+  );
+
+  // TEST 29: Order confirmation lookup strictly rejects invalid formats (400) and nonexistent orders (404)
+  const wildcardReq1 = new Request("http://localhost/api/order/NS-*", { method: "GET" });
+  const wildcardRes1 = await orderLookupGet(wildcardReq1, { params: Promise.resolve({ orderId: "NS-*" }) });
+  assert(wildcardRes1.status === 400, "Public order lookup strictly returns HTTP 400 for wildcard NS-*");
+
+  const wildcardReq2 = new Request("http://localhost/api/order/NS-%25", { method: "GET" });
+  const wildcardRes2 = await orderLookupGet(wildcardReq2, { params: Promise.resolve({ orderId: "NS-%" }) });
+  assert(wildcardRes2.status === 400, "Public order lookup strictly returns HTTP 400 for wildcard NS-%");
+
+  const fakeLookupReq = new Request("http://localhost/api/order/NS-999999999", {
     method: "GET",
   });
   const fakeLookupRes = await orderLookupGet(fakeLookupReq, {
-    params: Promise.resolve({ orderId: "NS-NONEXISTENT-99999" }),
+    params: Promise.resolve({ orderId: "NS-999999999" }),
   });
   assert(
     fakeLookupRes.status === 404,
     "Order confirmation lookup strictly returns HTTP 404 for nonexistent order ID (prevents phantom confirmations)"
   );
 
-  // TEST 30: Public order lookup endpoint masks sensitive customer phone
+  // TEST 30: Public order lookup endpoint masks sensitive customer phone and omits address and notes
   const validLookupReq = new Request(`http://localhost/api/order/${validOrderData.orderId}`, {
     method: "GET",
   });
@@ -634,8 +670,10 @@ async function runTests() {
     validLookupRes.status === 200 &&
       validLookupData.success === true &&
       validLookupData.order.customer.phone.includes("****") &&
-      !validLookupData.order.customer.phone.includes("03211234567"),
-    "Public order lookup endpoint sanitizes customer phone to prevent PII leakage"
+      !validLookupData.order.customer.phone.includes("03211234567") &&
+      validLookupData.order.customer.address === undefined &&
+      validLookupData.order.customer.notes === undefined,
+    "Public order lookup endpoint sanitizes customer phone to prevent PII leakage and strips address/notes"
   );
 
   // TEST 31: Admin order retrieval requires authentication (fails closed)
@@ -742,6 +780,213 @@ async function runTests() {
       preservedOrder.id === unconfiguredData.orderId &&
       preservedOrder.customer.fullName === "Usman Tariq",
     "Email service unconfigured/failure after persistence preserves COD order safely in storage"
+  );
+
+  // TEST 36: Production checkout without Supabase strictly returns HTTP 503 without leaking env secrets
+  const origNodeEnv = process.env.NODE_ENV;
+  const origSupabaseUrl = process.env.SUPABASE_URL;
+  const origSupabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  try {
+    process.env.NODE_ENV = "production";
+    delete process.env.SUPABASE_URL;
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    const prodUnconfiguredReq = new Request("http://localhost/api/send-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.36" },
+      body: JSON.stringify({
+        order: {
+          customer: {
+            fullName: "Prod Test Customer",
+            phone: "03001234567",
+            address: "Main Boulevard, Gulberg III",
+            city: "Lahore",
+          },
+          items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+        },
+      }),
+    });
+    const prodUnconfiguredRes = await sendOrderPost(prodUnconfiguredReq);
+    const prodUnconfiguredData = await prodUnconfiguredRes.json();
+
+    assert(
+      prodUnconfiguredRes.status === 503 &&
+        prodUnconfiguredData.success === false &&
+        !JSON.stringify(prodUnconfiguredData).includes("SUPABASE") &&
+        !JSON.stringify(prodUnconfiguredData).includes("SERVICE_ROLE"),
+      "Production checkout without Supabase storage strictly returns HTTP 503 with generic error"
+    );
+  } finally {
+    process.env.NODE_ENV = origNodeEnv;
+    if (origSupabaseUrl) process.env.SUPABASE_URL = origSupabaseUrl;
+    if (origSupabaseKey) process.env.SUPABASE_SERVICE_ROLE_KEY = origSupabaseKey;
+  }
+
+  // TEST 37: Rapid consecutive orders generate distinct 8-digit server order IDs
+  const rapidReq1 = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.37a" },
+    body: JSON.stringify({
+      idempotencyKey: `rapid_key_1_${Date.now()}`,
+      order: {
+        customer: { fullName: "Rapid User 1", phone: "03001111111", address: "Addr 1", city: "Lahore" },
+        items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+      },
+    }),
+  });
+  const rapidReq2 = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.37b" },
+    body: JSON.stringify({
+      idempotencyKey: `rapid_key_2_${Date.now()}`,
+      order: {
+        customer: { fullName: "Rapid User 2", phone: "03002222222", address: "Addr 2", city: "Karachi" },
+        items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+      },
+    }),
+  });
+  const [rapidRes1, rapidRes2] = await Promise.all([sendOrderPost(rapidReq1), sendOrderPost(rapidReq2)]);
+  const [rapidData1, rapidData2] = await Promise.all([rapidRes1.json(), rapidRes2.json()]);
+
+  assert(
+    rapidRes1.status === 200 &&
+      rapidRes2.status === 200 &&
+      /^NS-\d{8}$/.test(rapidData1.orderId) &&
+      /^NS-\d{8}$/.test(rapidData2.orderId) &&
+      rapidData1.orderId !== rapidData2.orderId,
+    "Rapid consecutive orders receive distinct, cryptographically random 8-digit server order IDs (format NS-XXXXXXXX)"
+  );
+
+  // TEST 38: Client sending pre-existing order ID does not collide or drop order; new order receives new server ID
+  const existingOrderId = rapidData1.orderId;
+  const collisionAttemptReq = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.38" },
+    body: JSON.stringify({
+      idempotencyKey: `new_customer_key_${Date.now()}`,
+      order: {
+        id: existingOrderId, // Malicious or colliding client-sent ID
+        customer: { fullName: "New Customer Distinct", phone: "03003333333", address: "Addr 3", city: "Islamabad" },
+        items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+      },
+    }),
+  });
+  const collisionAttemptRes = await sendOrderPost(collisionAttemptReq);
+  const collisionAttemptData = await collisionAttemptRes.json();
+  const retrievedCollisionOrder = await getOrderById(collisionAttemptData.orderId);
+  const retrievedOriginalOrder = await getOrderById(existingOrderId);
+
+  assert(
+    collisionAttemptRes.status === 200 &&
+      collisionAttemptData.success === true &&
+      collisionAttemptData.orderId !== existingOrderId &&
+      retrievedCollisionOrder !== null &&
+      retrievedCollisionOrder.customer.fullName === "New Customer Distinct" &&
+      retrievedOriginalOrder !== null &&
+      retrievedOriginalOrder.customer.fullName === "Rapid User 1",
+    "Sending a pre-existing order ID does not drop order; server generates fresh ID and saves new order safely"
+  );
+
+  // TEST 39: Customer notes are preserved in storage and rendered safely in customer/admin email templates
+  const notesReq = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.39" },
+    body: JSON.stringify({
+      idempotencyKey: `notes_key_${Date.now()}`,
+      order: {
+        customer: {
+          fullName: "Zainab Bibi",
+          phone: "03004444444",
+          address: "House 55, Street 9",
+          city: "Faisalabad",
+          notes: "Please call on arrival & do not ring bell <script>alert(1)</script>",
+        },
+        items: [{ product: { id: "fn-001" }, size: { ml: 50 }, quantity: 1 }],
+      },
+    }),
+  });
+  const notesRes = await sendOrderPost(notesReq);
+  const notesData = await notesRes.json();
+  const storedNotesOrder = await getOrderById(notesData.orderId);
+  const customerEmailTpl = storedNotesOrder ? generateOrderCustomerEmail(storedNotesOrder) : null;
+  const adminEmailTpl = storedNotesOrder ? generateOrderAdminEmail(storedNotesOrder) : null;
+
+  assert(
+    notesRes.status === 200 &&
+      storedNotesOrder !== null &&
+      storedNotesOrder.customer.notes === "Please call on arrival & do not ring bell <script>alert(1)</script>" &&
+      customerEmailTpl !== null &&
+      customerEmailTpl.html.includes("Please call on arrival &amp; do not ring bell &lt;script&gt;alert(1)&lt;/script&gt;") &&
+      adminEmailTpl !== null &&
+      adminEmailTpl.html.includes("Please call on arrival &amp; do not ring bell &lt;script&gt;alert(1)&lt;/script&gt;"),
+    "Customer delivery notes are preserved in storage and HTML-escaped in customer & admin email templates"
+  );
+
+  // TEST 40: Extra fields and client spreads in items/product are stripped from storage
+  const extraFieldsReq = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.40" },
+    body: JSON.stringify({
+      idempotencyKey: `extra_fields_key_${Date.now()}`,
+      order: {
+        customer: {
+          fullName: "Security Auditor",
+          phone: "03005555555",
+          address: "123 Defense Road",
+          city: "Lahore",
+          notes: "Check extra fields",
+          injectedCustomerField: "MALICIOUS_KEY_DO_NOT_STORE",
+        },
+        createdAt: "1999-01-01T00:00:00.000Z", // Past forged createdAt
+        items: [
+          {
+            product: { id: "fn-001", maliciousKey: "HACKED_PRODUCT_DATA", admin: true },
+            size: { ml: 50, price: 999999 },
+            quantity: 1,
+            extraCartField: "SHOULD_BE_STRIPPED",
+          },
+        ],
+      },
+    }),
+  });
+  const extraFieldsRes = await sendOrderPost(extraFieldsReq);
+  const extraFieldsData = await extraFieldsRes.json();
+  const storedExtraOrder = await getOrderById(extraFieldsData.orderId);
+
+  assert(
+    extraFieldsRes.status === 200 &&
+      storedExtraOrder !== null &&
+      storedExtraOrder.customer.injectedCustomerField === undefined &&
+      storedExtraOrder.items[0].extraCartField === undefined &&
+      storedExtraOrder.items[0].product.maliciousKey === undefined &&
+      storedExtraOrder.items[0].product.admin === undefined &&
+      new Date(storedExtraOrder.createdAt).getFullYear() >= 2025,
+    "Extra client-provided fields are stripped from items/product/customer and createdAt is authoritative server timestamp"
+  );
+
+  // TEST 41: Order with excessive items (> 20 items) is rejected with HTTP 400
+  const excessiveItemsList = Array.from({ length: 21 }, (_, i) => ({
+    product: { id: "fn-001" },
+    size: { ml: 50 },
+    quantity: 1,
+  }));
+  const excessiveItemsReq = new Request("http://localhost/api/send-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-forwarded-for": "10.0.0.41" },
+    body: JSON.stringify({
+      order: {
+        customer: { fullName: "Bulk Buyer", phone: "03006666666", address: "Wholesale Market", city: "Lahore" },
+        items: excessiveItemsList,
+      },
+    }),
+  });
+  const excessiveItemsRes = await sendOrderPost(excessiveItemsReq);
+  const excessiveItemsData = await excessiveItemsRes.json();
+
+  assert(
+    excessiveItemsRes.status === 400 &&
+      excessiveItemsData.error?.includes("20 items"),
+    "Orders exceeding 20 items ceiling are strictly rejected with HTTP 400"
   );
 
   console.log("==========================================================");

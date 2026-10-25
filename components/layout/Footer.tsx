@@ -23,9 +23,9 @@ export default function Footer() {
     setNewsletterStatus("loading");
     setTimeout(() => {
       setNewsletterStatus("success");
-      setFeedbackMessage("Thank you for subscribing! Your VIP welcome discount has been registered.");
+      setFeedbackMessage("Newsletter service jald shuru ho rahi hai (Coming Soon). Subscriptions launch ke baad active hongi.");
       setNewsletterEmail("");
-    }, 600);
+    }, 400);
   };
 
   const instagramUrl = STORE_CONFIG.instagramUrl || "https://instagram.com/noirscents";
@@ -40,13 +40,13 @@ export default function Footer() {
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center space-y-4">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#b48325]">
-              Private Olfactory Reserve
+              Private Olfactory Reserve &bull; Coming Soon
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold uppercase tracking-wide text-zinc-950">
               Subscribe to Noir Scent
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-light">
-              Join our private circle for VIP invitations to limited edition extrait decanters, fragrance launches, and exclusive member discounts across Pakistan.
+              VIP invitations, limited extrait reserve decanters, aur fragrance announcements. Online subscriptions jald launch hone wali hain (Coming Soon).
             </p>
 
             {/* Newsletter Form & Feedback Banner */}

@@ -19,6 +19,17 @@ import { formatPrice } from "@/lib/formatters";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { Order } from "@/types";
 
+type PublicOrder = Omit<Order, "customer"> & {
+  customer: {
+    fullName: string;
+    phone: string;
+    city: string;
+    email?: string;
+    address?: string;
+    notes?: string;
+  };
+};
+
 interface OrderSuccessClientProps {
   orderId: string;
 }
@@ -28,7 +39,7 @@ export default function OrderSuccessClient({ orderId }: OrderSuccessClientProps)
   const { getOrderById } = useOrderStore();
 
   const localOrder = isHydrated ? getOrderById(orderId) : undefined;
-  const [serverOrder, setServerOrder] = useState<Order | null>(null);
+  const [serverOrder, setServerOrder] = useState<PublicOrder | null>(null);
   const [isServerLoading, setIsServerLoading] = useState(true);
   const [serverNotFound, setServerNotFound] = useState(false);
 
@@ -188,9 +199,11 @@ export default function OrderSuccessClient({ orderId }: OrderSuccessClientProps)
               <p className="text-sm font-bold text-zinc-900 flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-zinc-500" /> {order.customer.city}, Pakistan
               </p>
-              <p className="text-zinc-600 leading-relaxed">{order.customer.address}</p>
-              {order.customer.notes && (
-                <p className="text-zinc-500 italic mt-1">&ldquo;{order.customer.notes}&rdquo;</p>
+              {localOrder?.customer?.address && (
+                <p className="text-zinc-600 leading-relaxed">{localOrder.customer.address}</p>
+              )}
+              {localOrder?.customer?.notes && (
+                <p className="text-zinc-500 italic mt-1">&ldquo;{localOrder.customer.notes}&rdquo;</p>
               )}
             </div>
           </div>

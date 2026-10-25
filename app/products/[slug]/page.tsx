@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Star, ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import { ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
 import { getProductBySlug, getProductsByCategory, getAllProducts } from "@/lib/data";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
@@ -107,9 +107,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       ? "Deals & Bundles"
       : "Testers";
 
-  const ratingVal = product.rating || 4.9;
-  const reviewCountVal = product.reviewCount || 148;
-
   // Schema.org JSON-LD
   const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -132,11 +129,6 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         "@type": "Organization",
         name: "Noir Scent",
       },
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: ratingVal.toString(),
-      reviewCount: reviewCountVal.toString(),
     },
   };
 
@@ -199,18 +191,10 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </p>
             )}
 
-            {/* Rating Stars & Customer Count */}
-            <div className="flex items-center gap-2.5 mt-2.5 text-xs">
-              <div className="flex items-center text-amber-500">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="font-extrabold text-zinc-900 font-mono">
-                {ratingVal} / 5.0
-              </span>
-              <span className="text-zinc-500 font-light">
-                ({reviewCountVal} verified customer reviews in Pakistan)
+            {/* Reviews Status */}
+            <div className="flex items-center gap-2 mt-2 text-xs">
+              <span className="text-[11px] uppercase tracking-wider text-zinc-400 font-medium">
+                Reviews launch ke baad
               </span>
             </div>
           </div>

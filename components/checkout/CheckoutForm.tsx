@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, AlertCircle, Lock } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
@@ -9,10 +9,59 @@ import { PAKISTANI_CITIES, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from
 import { isValidPakistaniPhone, formatPakistaniPhone, formatPrice } from "@/lib/formatters";
 import { Order } from "@/types";
 
+const IDEMPOTENCY_STORAGE_KEY = "ns_checkout_idempotency_key";
+
+function getStoredIdempotencyKey(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const key = sessionStorage.getItem(IDEMPOTENCY_STORAGE_KEY);
+    if (key && /^[A-Za-z0-9_-]{10,100}$/.test(key)) {
+      return key;
+    }
+  } catch {
+    // Ignore sessionStorage errors
+  }
+  return null;
+}
+
+function setStoredIdempotencyKey(key: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(IDEMPOTENCY_STORAGE_KEY, key);
+  } catch {
+    // Ignore sessionStorage errors
+  }
+}
+
+function clearStoredIdempotencyKey(): void {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(IDEMPOTENCY_STORAGE_KEY);
+  } catch {
+    // Ignore sessionStorage errors
+  }
+}
+
 export default function CheckoutForm() {
   const router = useRouter();
   const { items, getSubtotal, clearCart } = useCartStore();
   const { addOrder } = useOrderStore();
+  const idempotencyKeyRef = useRef<string>("");
+
+  const getOrCreateIdempotencyKey = () => {
+    if (idempotencyKeyRef.current && /^[A-Za-z0-9_-]{10,100}$/.test(idempotencyKeyRef.current)) {
+      return idempotencyKeyRef.current;
+    }
+    const stored = getStoredIdempotencyKey();
+    if (stored) {
+      idempotencyKeyRef.current = stored;
+      return stored;
+    }
+    const newKey = `ns_chk_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    idempotencyKeyRef.current = newKey;
+    setStoredIdempotencyKey(newKey);
+    return newKey;
+  };
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -73,8 +122,9 @@ export default function CheckoutForm() {
     setIsSubmitting(true);
     setSubmitError("");
 
-    // Client idempotency key to prevent accidental duplicate submission
-    const idempotencyKey = `ns_chk_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    // Client idempotency key: preserved across retries and refreshes until order succeeds
+    const idempotencyKey = getOrCreateIdempotencyKey();
+    // Temporary client ID used strictly as a client-side fallback if server response omits orderId
     const randomDigits = Math.floor(10000 + Math.random() * 90000);
     const clientTempOrderId = `NS-${randomDigits}`;
 
@@ -126,6 +176,10 @@ export default function CheckoutForm() {
 
       addOrder(verifiedOrder);
       clearCart();
+
+      // Clear idempotency key on successful order so subsequent distinct checkouts get a fresh key
+      clearStoredIdempotencyKey();
+      idempotencyKeyRef.current = "";
 
       // Redirect to Order Confirmation page with server-confirmed order ID
       router.push(`/order-success/${confirmedOrderId}`);

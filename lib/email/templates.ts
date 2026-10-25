@@ -281,6 +281,14 @@ export function generateOrderCustomerEmail(order: Order): {
                   <td style="padding: 3px 0; color: #78716c;">Contact Phone:</td>
                   <td style="padding: 3px 0; color: #1c1917;">${escapeHtml(order.customer.phone)}</td>
                 </tr>
+                ${
+                  order.customer.notes
+                    ? `<tr>
+                        <td style="padding: 3px 0; color: #78716c; vertical-align: top;">Delivery Notes:</td>
+                        <td style="padding: 3px 0; color: #57534e; font-style: italic;">"${escapeHtml(order.customer.notes)}"</td>
+                      </tr>`
+                    : ""
+                }
                 <tr>
                   <td style="padding: 3px 0; color: #78716c;">Payment:</td>
                   <td style="padding: 3px 0; font-weight: bold; color: #047857;">Cash on Delivery (Pay to courier rider)</td>
@@ -344,7 +352,7 @@ DELIVERY INFORMATION:
 Recipient: ${order.customer.fullName}
 Address: ${order.customer.address}, ${order.customer.city}
 Phone: ${order.customer.phone}
-Payment: Cash on Delivery (Pay rider upon arrival)
+${order.customer.notes ? `Delivery Notes: "${order.customer.notes}"\n` : ""}Payment: Cash on Delivery (Pay rider upon arrival)
 
 ITEMS:
 ${itemsText}

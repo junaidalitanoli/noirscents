@@ -101,7 +101,7 @@ export async function POST(req: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: error.message,
+          error: "Message send nahi ho saka. Barah-e-karam baad mein koshish karein ya WhatsApp par rabta karein.",
         },
         { status: 500 }
       );
@@ -116,7 +116,10 @@ export async function POST(req: Request) {
     const msg = err instanceof Error ? err.message : "Unknown error";
     console.error("[ContactAPI] Uncaught error:", msg);
     return NextResponse.json(
-      { success: false, error: msg },
+      {
+        success: false,
+        error: "Message send nahi ho saka. Barah-e-karam baad mein koshish karein ya WhatsApp par rabta karein.",
+      },
       { status: 500 }
     );
   }

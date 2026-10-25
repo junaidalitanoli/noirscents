@@ -114,7 +114,7 @@ export async function sendOrderEmails(order: Order): Promise<OrderEmailResult> {
       } else {
         customerEmailSent = true;
         customerMessageId = data?.id;
-        console.log(`[OrderEmailService] Customer confirmation sent to ${order.customer.email} (ID: ${data?.id})`);
+        console.log(`[OrderEmailService] Customer confirmation sent for #${order.id} (ID: ${data?.id})`);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);

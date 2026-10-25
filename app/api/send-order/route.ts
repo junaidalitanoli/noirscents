@@ -5,7 +5,7 @@ import { sendOrderEmails } from "@/lib/email/orderService";
 import { checkRateLimit, getClientIp } from "@/lib/email/rateLimiter";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/constants";
-import { saveOrder, updateOrderEmailStatus } from "@/lib/orders/orderStorage";
+import { saveOrder, updateOrderEmailStatus, generateServerOrderId } from "@/lib/orders/orderStorage";
 
 export async function POST(req: Request) {
   try {
@@ -44,7 +44,11 @@ export async function POST(req: Request) {
 
     const payload = body as { order: Order; idempotencyKey?: string };
     const order = payload.order;
-    const idempotencyKey = typeof payload.idempotencyKey === "string" ? payload.idempotencyKey.trim().slice(0, 100) : undefined;
+    const rawIdempotency = typeof payload.idempotencyKey === "string" ? payload.idempotencyKey.trim() : undefined;
+    const idempotencyKey =
+      rawIdempotency && /^[A-Za-z0-9_-]{10,100}$/.test(rawIdempotency)
+        ? rawIdempotency
+        : undefined;
 
     if (!order.customer || typeof order.customer !== "object") {
       return NextResponse.json(
@@ -87,6 +91,13 @@ export async function POST(req: Request) {
     if (!order.items || !Array.isArray(order.items) || order.items.length === 0) {
       return NextResponse.json(
         { error: "Order must contain at least one fragrance item." },
+        { status: 400 }
+      );
+    }
+
+    if (order.items.length > 20) {
+      return NextResponse.json(
+        { error: "Order cannot contain more than 20 items. For bulk orders, please contact support on WhatsApp." },
         { status: 400 }
       );
     }
@@ -152,14 +163,15 @@ export async function POST(req: Request) {
 
       serverSubtotal += unitPrice * quantity;
 
+      // Clean item object strictly without spreading client-provided extra data
       validatedItems.push({
-        ...item,
+        id: typeof item.id === "string" && item.id.trim() ? item.id.trim().slice(0, 50) : `${catalogProduct.id}-${matchedSize.ml}`,
+        productId: catalogProduct.id,
         product: {
-          ...item.product,
           id: catalogProduct.id,
           slug: catalogProduct.slug,
           name: catalogProduct.name,
-        },
+        } as unknown as CartItem["product"],
         size: {
           ml: matchedSize.ml,
           price: unitPrice,
@@ -172,10 +184,8 @@ export async function POST(req: Request) {
     const serverShippingFee = serverSubtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE;
     const serverTotal = serverSubtotal + serverShippingFee;
 
-    // Stable server order ID generation
-    const serverOrderId = (order.id && /^NS-\d{4,8}$/.test(order.id.trim()))
-      ? order.id.trim()
-      : `NS-${Date.now().toString().slice(-5)}${Math.floor(1000 + Math.random() * 9000)}`;
+    // Authoritative server order ID generation (client order.id is strictly ignored)
+    const serverOrderId = generateServerOrderId();
 
     const verifiedOrder: Order = {
       id: serverOrderId,
@@ -187,6 +197,9 @@ export async function POST(req: Request) {
           : undefined,
         address: address.trim().slice(0, 250),
         city: city.trim().slice(0, 50),
+        notes: typeof order.customer.notes === "string" && order.customer.notes.trim()
+          ? order.customer.notes.trim().slice(0, 300)
+          : undefined,
       },
       items: validatedItems,
       subtotal: serverSubtotal,
@@ -194,7 +207,7 @@ export async function POST(req: Request) {
       total: serverTotal,
       status: "Pending",
       paymentMethod: "Cash on Delivery",
-      createdAt: order.createdAt || new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       emailStatus: "pending",
       idempotencyKey,
     };
@@ -204,6 +217,16 @@ export async function POST(req: Request) {
 
     if (!storageResult.success) {
       console.error("[Noir Scent Server] Order persistence failed:", storageResult.error);
+      const isUnconfigured = storageResult.error?.toLowerCase().includes("storage not configured");
+      if (isUnconfigured) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "Order processing service is currently unavailable. Please try again later or contact support on WhatsApp.",
+          },
+          { status: 503 }
+        );
+      }
       return NextResponse.json(
         {
           success: false,
@@ -226,12 +249,14 @@ export async function POST(req: Request) {
       });
     }
 
+    const finalOrder = storageResult.order;
+
     // 2. STEP 2: Downstream Email Dispatch (Admin + Customer)
     let emailStatus: "sent" | "failed" | "unconfigured" = "unconfigured";
     let emailError: string | undefined;
 
     try {
-      const emailResult = await sendOrderEmails(verifiedOrder);
+      const emailResult = await sendOrderEmails(finalOrder);
       if (emailResult.success) {
         emailStatus = "sent";
       } else {
@@ -245,19 +270,18 @@ export async function POST(req: Request) {
     }
 
     // Update stored order record with email status
-    await updateOrderEmailStatus(verifiedOrder.id, emailStatus, emailError);
+    await updateOrderEmailStatus(finalOrder.id, emailStatus, emailError);
 
     // 3. STEP 3: Return authoritative response
     // Order is durably saved regardless of downstream email outcome
     return NextResponse.json({
       success: true,
-      orderId: verifiedOrder.id,
-      subtotal: verifiedOrder.subtotal,
-      shippingFee: verifiedOrder.shippingFee,
-      total: verifiedOrder.total,
+      orderId: finalOrder.id,
+      subtotal: finalOrder.subtotal,
+      shippingFee: finalOrder.shippingFee,
+      total: finalOrder.total,
       storageProvider: storageResult.storageProvider,
       emailStatus,
-      emailError,
       notificationSent: emailStatus === "sent",
     });
   } catch (err: unknown) {
@@ -266,7 +290,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: message,
+        error: "Order process nahi ho saka",
       },
       { status: 500 }
     );

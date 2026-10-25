@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Check, Plus } from "lucide-react";
+import { Check, Plus } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
@@ -75,19 +75,6 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       {/* Info Column Below Image */}
       <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-3">
         <div className="space-y-1.5">
-          {/* Honest Star Rating: Render only if real review data exists */}
-          {product.rating && product.reviewCount ? (
-            <div className="flex items-center gap-1.5 text-amber-500 text-xs">
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="text-[11px] text-zinc-500 font-medium">
-                {product.rating} ({product.reviewCount})
-              </span>
-            </div>
-          ) : null}
 
           {/* Product Name */}
           <h3 className="text-[13px] sm:text-[15px] font-semibold text-[#121212] group-hover:underline underline-offset-4 line-clamp-1">

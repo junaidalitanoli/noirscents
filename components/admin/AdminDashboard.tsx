@@ -119,6 +119,9 @@ export default function AdminDashboard() {
   const averageOrderValue = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
 
   const handleUpdateStatus = async (orderId: string, status: OrderStatus) => {
+    const currentOrder = (serverOrders || localOrders).find((o) => o.id === orderId);
+    const previousStatus = currentOrder?.status;
+
     updateLocalOrderStatus(orderId, status);
     if (serverOrders) {
       setServerOrders(
@@ -127,7 +130,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      await fetch("/api/orders", {
+      const res = await fetch("/api/orders", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -135,8 +138,35 @@ export default function AdminDashboard() {
         },
         body: JSON.stringify({ orderId, status }),
       });
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok || !data?.success) {
+        if (previousStatus) {
+          updateLocalOrderStatus(orderId, previousStatus);
+          if (serverOrders) {
+            setServerOrders(
+              serverOrders.map((o) => (o.id === orderId ? { ...o, status: previousStatus } : o))
+            );
+          }
+        }
+        const errMsg = data?.error || `Failed to update status for order #${orderId}`;
+        setOrdersError(errMsg);
+        return;
+      }
+
+      setOrdersError("");
     } catch (err) {
       console.error("Failed to update status on server:", err);
+      if (previousStatus) {
+        updateLocalOrderStatus(orderId, previousStatus);
+        if (serverOrders) {
+          setServerOrders(
+            serverOrders.map((o) => (o.id === orderId ? { ...o, status: previousStatus } : o))
+          );
+        }
+      }
+      const msg = err instanceof Error ? err.message : "Network error updating order status";
+      setOrdersError(msg);
     }
   };
 

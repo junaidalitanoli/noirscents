@@ -1,13 +1,20 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import { Order, OrderStatus } from "@/types";
+
+export function generateServerOrderId(): string {
+  // Format: NS-XXXXXXXX (8 random digits: 10000000 - 99999999)
+  const num = crypto.randomInt(10000000, 100000000);
+  return `NS-${num}`;
+}
 
 export interface OrderStorageResult {
   success: boolean;
   isDuplicate?: boolean;
   order: Order;
   error?: string;
-  storageProvider: "supabase" | "file";
+  storageProvider: "supabase" | "file" | "none";
 }
 
 export interface StorageStatus {
@@ -97,6 +104,23 @@ function writeLocalOrders(orders: Order[]): boolean {
   }
 }
 
+function mapSupabaseRowToOrder(row: any): Order {
+  return {
+    id: row.id,
+    customer: row.customer,
+    items: row.items,
+    subtotal: Number(row.subtotal),
+    shippingFee: Number(row.shipping_fee),
+    total: Number(row.total),
+    status: row.status as OrderStatus,
+    paymentMethod: row.payment_method,
+    createdAt: row.created_at,
+    emailStatus: row.email_status,
+    emailError: row.email_error,
+    idempotencyKey: row.idempotency_key,
+  };
+}
+
 /**
  * Persists an order durably to Supabase or local storage fallback.
  * Checks for duplicate submissions via idempotency key and existing order ID.
@@ -106,7 +130,25 @@ export async function saveOrder(
   options?: { idempotencyKey?: string }
 ): Promise<OrderStorageResult> {
   const supabase = getSupabaseConfig();
-  const idempotencyKey = options?.idempotencyKey || order.idempotencyKey;
+  const rawKey = options?.idempotencyKey || order.idempotencyKey;
+  const idempotencyKey =
+    typeof rawKey === "string" && /^[A-Za-z0-9_-]{10,100}$/.test(rawKey.trim())
+      ? rawKey.trim()
+      : undefined;
+
+  // In production, durable database storage (Supabase) is strictly required.
+  // File fallback is only permitted in development / testing.
+  if (!supabase && process.env.NODE_ENV === "production") {
+    console.error(
+      "[OrderStorage] Production environment requires database storage, but Supabase is not configured."
+    );
+    return {
+      success: false,
+      order,
+      error: "storage not configured",
+      storageProvider: "none",
+    };
+  }
 
   // 1. Check in-memory idempotency cache
   if (idempotencyKey && idempotencyMap.has(idempotencyKey)) {
@@ -125,91 +167,122 @@ export async function saveOrder(
   // 2. Supabase Storage Adapter
   if (supabase) {
     try {
-      // Check if order with same ID or idempotency key already exists
-      const checkUrl = idempotencyKey
-        ? `${supabase.url}/rest/v1/orders?or=(id.eq.${encodeURIComponent(order.id)},idempotency_key.eq.${encodeURIComponent(idempotencyKey)})&select=*`
-        : `${supabase.url}/rest/v1/orders?id=eq.${encodeURIComponent(order.id)}&select=*`;
+      // Check duplicate strictly by idempotencyKey (not ID)
+      if (idempotencyKey) {
+        const keyUrl = `${supabase.url}/rest/v1/orders?idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&select=*`;
+        const keyRes = await fetch(keyUrl, {
+          headers: {
+            apikey: supabase.key,
+            Authorization: `Bearer ${supabase.key}`,
+          },
+        });
 
-      const checkRes = await fetch(checkUrl, {
-        headers: {
-          apikey: supabase.key,
-          Authorization: `Bearer ${supabase.key}`,
-        },
-      });
-
-      if (checkRes.ok) {
-        const existingRows = await checkRes.json();
-        if (Array.isArray(existingRows) && existingRows.length > 0) {
-          const row = existingRows[0];
-          const mappedOrder: Order = {
-            id: row.id,
-            customer: row.customer,
-            items: row.items,
-            subtotal: Number(row.subtotal),
-            shippingFee: Number(row.shipping_fee),
-            total: Number(row.total),
-            status: row.status as OrderStatus,
-            paymentMethod: row.payment_method,
-            createdAt: row.created_at,
-            emailStatus: row.email_status,
-            emailError: row.email_error,
-            idempotencyKey: row.idempotency_key,
-          };
-          if (idempotencyKey) {
-            idempotencyMap.set(idempotencyKey, row.id);
+        if (keyRes.ok) {
+          const keyRows = await keyRes.json();
+          if (Array.isArray(keyRows) && keyRows.length > 0) {
+            const mappedOrder = mapSupabaseRowToOrder(keyRows[0]);
+            idempotencyMap.set(idempotencyKey, mappedOrder.id);
+            memoryOrders.set(mappedOrder.id, mappedOrder);
+            return {
+              success: true,
+              isDuplicate: true,
+              order: mappedOrder,
+              storageProvider: "supabase",
+            };
           }
-          memoryOrders.set(row.id, mappedOrder);
-          return {
-            success: true,
-            isDuplicate: true,
-            order: mappedOrder,
-            storageProvider: "supabase",
-          };
         }
       }
 
-      // Insert new order into Supabase
-      const payload = {
-        id: order.id,
-        customer: order.customer,
-        items: order.items,
-        subtotal: order.subtotal,
-        shipping_fee: order.shippingFee,
-        total: order.total,
-        status: order.status,
-        payment_method: order.paymentMethod,
-        created_at: order.createdAt,
-        email_status: order.emailStatus || "pending",
-        email_error: order.emailError || null,
-        idempotency_key: idempotencyKey || null,
-      };
+      // Insert new order into Supabase with up to 3 retries on ID collision
+      let currentOrder: Order = { ...order };
+      let insertSuccess = false;
+      const MAX_RETRIES = 3;
 
-      const insertRes = await fetch(`${supabase.url}/rest/v1/orders`, {
-        method: "POST",
-        headers: {
-          apikey: supabase.key,
-          Authorization: `Bearer ${supabase.key}`,
-          "Content-Type": "application/json",
-          Prefer: "return=representation",
-        },
-        body: JSON.stringify(payload),
-      });
+      for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+        const payload = {
+          id: currentOrder.id,
+          customer: currentOrder.customer,
+          items: currentOrder.items,
+          subtotal: currentOrder.subtotal,
+          shipping_fee: currentOrder.shippingFee,
+          total: currentOrder.total,
+          status: currentOrder.status,
+          payment_method: currentOrder.paymentMethod,
+          created_at: currentOrder.createdAt,
+          email_status: currentOrder.emailStatus || "pending",
+          email_error: currentOrder.emailError || null,
+          idempotency_key: idempotencyKey || null,
+        };
 
-      if (!insertRes.ok) {
-        const errorText = await insertRes.text();
-        console.error("[OrderStorage] Supabase insert failed:", insertRes.status, errorText);
-        throw new Error(`Supabase error (${insertRes.status}): ${errorText}`);
+        const insertRes = await fetch(`${supabase.url}/rest/v1/orders`, {
+          method: "POST",
+          headers: {
+            apikey: supabase.key,
+            Authorization: `Bearer ${supabase.key}`,
+            "Content-Type": "application/json",
+            Prefer: "return=representation",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (insertRes.ok) {
+          insertSuccess = true;
+          break;
+        }
+
+        // Unique constraint conflict (HTTP 409)
+        if (insertRes.status === 409) {
+          // Check if conflict was caused by idempotencyKey (true duplicate submission)
+          if (idempotencyKey) {
+            const keyUrl = `${supabase.url}/rest/v1/orders?idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&select=*`;
+            const keyRes = await fetch(keyUrl, {
+              headers: {
+                apikey: supabase.key,
+                Authorization: `Bearer ${supabase.key}`,
+              },
+            });
+            if (keyRes.ok) {
+              const rows = await keyRes.json();
+              if (Array.isArray(rows) && rows.length > 0) {
+                const dupOrder = mapSupabaseRowToOrder(rows[0]);
+                memoryOrders.set(dupOrder.id, dupOrder);
+                idempotencyMap.set(idempotencyKey, dupOrder.id);
+                return {
+                  success: true,
+                  isDuplicate: true,
+                  order: dupOrder,
+                  storageProvider: "supabase",
+                };
+              }
+            }
+          }
+
+          // Conflict was an ID collision on primary key: generate fresh ID and retry
+          console.warn(`[OrderStorage] ID collision on ${currentOrder.id}. Retrying with fresh ID (attempt ${attempt + 1}/${MAX_RETRIES})...`);
+          currentOrder = {
+            ...currentOrder,
+            id: generateServerOrderId(),
+          };
+          continue;
+        }
+
+        console.error("[OrderStorage] Supabase insert failed:", insertRes.status);
+        throw new Error(`Supabase error (${insertRes.status})`);
       }
 
-      memoryOrders.set(order.id, order);
+      if (!insertSuccess) {
+        throw new Error("Failed to persist order after ID collision retries.");
+      }
+
+      memoryOrders.set(currentOrder.id, currentOrder);
       if (idempotencyKey) {
-        idempotencyMap.set(idempotencyKey, order.id);
+        idempotencyMap.set(idempotencyKey, currentOrder.id);
       }
 
       return {
         success: true,
         isDuplicate: false,
-        order,
+        order: currentOrder,
         storageProvider: "supabase",
       };
     } catch (err) {
@@ -228,33 +301,54 @@ export async function saveOrder(
   try {
     const orders = readLocalOrders();
 
-    // Check duplicate by ID or idempotencyKey
-    const existingIndex = orders.findIndex(
-      (o) => o.id === order.id || (idempotencyKey && o.idempotencyKey === idempotencyKey)
-    );
-
-    if (existingIndex >= 0) {
-      const existing = orders[existingIndex];
-      memoryOrders.set(existing.id, existing);
-      if (idempotencyKey) idempotencyMap.set(idempotencyKey, existing.id);
-      return {
-        success: true,
-        isDuplicate: true,
-        order: existing,
-        storageProvider: "file",
-      };
+    // Check duplicate strictly by idempotencyKey (not ID)
+    if (idempotencyKey) {
+      const existingIndex = orders.findIndex((o) => o.idempotencyKey === idempotencyKey);
+      if (existingIndex >= 0) {
+        const existing = orders[existingIndex];
+        memoryOrders.set(existing.id, existing);
+        if (idempotencyKey) idempotencyMap.set(idempotencyKey, existing.id);
+        return {
+          success: true,
+          isDuplicate: true,
+          order: existing,
+          storageProvider: "file",
+        };
+      }
     }
 
-    const orderToSave: Order = {
+    // Handle ID collision on insert: if order.id exists in local storage, retry with fresh ID up to 3 times
+    let orderToSave: Order = {
       ...order,
       idempotencyKey,
     };
 
+    const MAX_FILE_RETRIES = 3;
+    for (let attempt = 0; attempt < MAX_FILE_RETRIES; attempt++) {
+      const isIdTaken = orders.some((o) => o.id.toLowerCase() === orderToSave.id.toLowerCase());
+      if (isIdTaken) {
+        console.warn(`[OrderStorage] Local ID collision on ${orderToSave.id}. Retrying with fresh ID (attempt ${attempt + 1}/${MAX_FILE_RETRIES})...`);
+        orderToSave.id = generateServerOrderId();
+        continue;
+      }
+      break;
+    }
+
     orders.unshift(orderToSave);
-    writeLocalOrders(orders);
-    memoryOrders.set(order.id, orderToSave);
+    const writeOk = writeLocalOrders(orders);
+    if (!writeOk) {
+      console.error("[OrderStorage] Local file write returned false for order", orderToSave.id);
+      return {
+        success: false,
+        order: orderToSave,
+        error: "Failed to write order to local storage file",
+        storageProvider: "file",
+      };
+    }
+
+    memoryOrders.set(orderToSave.id, orderToSave);
     if (idempotencyKey) {
-      idempotencyMap.set(idempotencyKey, order.id);
+      idempotencyMap.set(idempotencyKey, orderToSave.id);
     }
 
     return {
@@ -279,21 +373,29 @@ export async function saveOrder(
  * Retrieve an order by its order ID (case-insensitive)
  */
 export async function getOrderById(orderId: string): Promise<Order | null> {
+  if (!orderId || typeof orderId !== "string") {
+    return null;
+  }
   const cleanId = orderId.trim();
 
-  // Check in-memory cache first
+  // Wildcard rejection: Disallow wildcard characters (*, %, _) to prevent data leakage
+  if (/[*%_]/.test(cleanId)) {
+    return null;
+  }
+
+  // Check in-memory cache first (case-insensitive exact comparison)
   for (const [id, order] of memoryOrders.entries()) {
     if (id.toLowerCase() === cleanId.toLowerCase()) {
       return order;
     }
   }
 
-  // Check Supabase if configured
+  // Check Supabase if configured (exact match eq)
   const supabase = getSupabaseConfig();
   if (supabase) {
     try {
       const res = await fetch(
-        `${supabase.url}/rest/v1/orders?id=ilike.${encodeURIComponent(cleanId)}&select=*`,
+        `${supabase.url}/rest/v1/orders?id=eq.${encodeURIComponent(cleanId)}&select=*`,
         {
           headers: {
             apikey: supabase.key,
@@ -407,16 +509,21 @@ export async function updateOrderStatus(
           body: JSON.stringify({ status }),
         }
       );
-      if (!res.ok) {
-        return false;
+      if (res.ok) {
+        const cached = memoryOrders.get(orderId);
+        if (cached) {
+          memoryOrders.set(orderId, { ...cached, status });
+        }
+        return true;
       }
+      return false;
     } catch (err) {
       console.error("[OrderStorage] Supabase updateOrderStatus error:", err);
       return false;
     }
   }
 
-  // Update in local file
+  // Update in local file (only when Supabase is not configured)
   const orders = readLocalOrders();
   const index = orders.findIndex((o) => o.id === orderId);
   if (index >= 0) {
