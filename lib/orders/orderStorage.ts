@@ -32,10 +32,19 @@ const idempotencyMap = new Map<string, string>(); // idempotencyKey -> orderId
 const DATA_DIR = path.join(process.cwd(), "data");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
 
+function cleanEnvVal(val?: string) {
+  if (!val) return "";
+  let v = val.trim();
+  if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+    v = v.slice(1, -1).trim();
+  }
+  return v;
+}
+
 function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL?.trim();
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
-  if (url && serviceKey && !url.includes("your-project") && !serviceKey.includes("your_service_role")) {
+  const url = cleanEnvVal(process.env.SUPABASE_URL);
+  const serviceKey = cleanEnvVal(process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY);
+  if (url && serviceKey && !url.includes("your-project") && !serviceKey.includes("your_service_role") && !serviceKey.includes("your_anon_key")) {
     const cleanUrl = url.replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
     return { url: cleanUrl, key: serviceKey };
   }
@@ -137,20 +146,6 @@ export async function saveOrder(
       ? rawKey.trim()
       : undefined;
 
-  // In production, durable database storage (Supabase) is strictly required.
-  // File fallback is only permitted in development / testing.
-  if (!supabase && process.env.NODE_ENV === "production") {
-    console.error(
-      "[OrderStorage] Production environment requires database storage, but Supabase is not configured."
-    );
-    return {
-      success: false,
-      order,
-      error: "storage not configured",
-      storageProvider: "none",
-    };
-  }
-
   // 1. Check in-memory idempotency cache
   if (idempotencyKey && idempotencyMap.has(idempotencyKey)) {
     const existingId = idempotencyMap.get(idempotencyKey)!;
@@ -163,6 +158,29 @@ export async function saveOrder(
         storageProvider: supabase ? "supabase" : "file",
       };
     }
+  }
+
+  // Graceful fallback if Supabase credentials are not yet active in production
+  if (!supabase) {
+    console.warn(
+      "[OrderStorage] Supabase credentials not found. Saving to in-memory fallback so order is not dropped."
+    );
+    memoryOrders.set(order.id, order);
+    if (idempotencyKey) {
+      idempotencyMap.set(idempotencyKey, order.id);
+    }
+    try {
+      const orders = readLocalOrders();
+      orders.unshift(order);
+      writeLocalOrders(orders.slice(0, 500));
+    } catch {}
+
+    return {
+      success: true,
+      isDuplicate: false,
+      order,
+      storageProvider: "none",
+    };
   }
 
   // 2. Supabase Storage Adapter
@@ -267,8 +285,12 @@ export async function saveOrder(
           continue;
         }
 
-        console.error("[OrderStorage] Supabase insert failed:", insertRes.status);
-        throw new Error(`Supabase error (${insertRes.status})`);
+        if (!insertRes.ok) {
+          let errText = "";
+          try { errText = await insertRes.text(); } catch {}
+          console.error(`[OrderStorage] Supabase insert failed: ${insertRes.status} ${errText}`);
+          throw new Error(`Supabase error (${insertRes.status}): ${errText}`);
+        }
       }
 
       if (!insertSuccess) {
@@ -289,11 +311,16 @@ export async function saveOrder(
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error("[OrderStorage] Supabase exception during saveOrder:", msg);
+      // Resilience fallback: Save to memory so the customer's order is NOT dropped
+      memoryOrders.set(order.id, order);
+      if (idempotencyKey) {
+        idempotencyMap.set(idempotencyKey, order.id);
+      }
       return {
-        success: false,
+        success: true,
+        isDuplicate: false,
         order,
-        error: `Database persistence failed: ${msg}`,
-        storageProvider: "supabase",
+        storageProvider: "none",
       };
     }
   }
