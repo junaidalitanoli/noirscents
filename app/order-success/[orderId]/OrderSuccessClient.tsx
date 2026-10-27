@@ -14,6 +14,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
+import { useCartStore } from "@/store/cartStore";
 import { useHydrated } from "@/store/useHydrated";
 import { formatPrice } from "@/lib/formatters";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
@@ -37,6 +38,12 @@ interface OrderSuccessClientProps {
 export default function OrderSuccessClient({ orderId }: OrderSuccessClientProps) {
   const isHydrated = useHydrated();
   const { getOrderById } = useOrderStore();
+  const { clearCart } = useCartStore();
+
+  // Clear the shopping bag once the customer has reached the confirmation screen
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
 
   const localOrder = isHydrated ? getOrderById(orderId) : undefined;
   const [serverOrder, setServerOrder] = useState<PublicOrder | null>(null);

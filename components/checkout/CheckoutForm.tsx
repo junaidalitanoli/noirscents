@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, AlertCircle, Lock } from "lucide-react";
+import { ArrowRight, AlertCircle, Lock, CheckCircle2 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useOrderStore } from "@/store/orderStore";
 import { PAKISTANI_CITIES, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE } from "@/lib/constants";
@@ -44,7 +44,7 @@ function clearStoredIdempotencyKey(): void {
 
 export default function CheckoutForm() {
   const router = useRouter();
-  const { items, getSubtotal, clearCart } = useCartStore();
+  const { items, getSubtotal } = useCartStore();
   const { addOrder } = useOrderStore();
   const idempotencyKeyRef = useRef<string>("");
 
@@ -74,6 +74,8 @@ export default function CheckoutForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [confirmedOrderId, setConfirmedOrderId] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState("");
 
   const subtotal = getSubtotal();
@@ -165,24 +167,25 @@ export default function CheckoutForm() {
       }
 
       // Authoritative server-confirmed order ID and figures
-      const confirmedOrderId = typeof data.orderId === "string" ? data.orderId : clientTempOrderId;
+      const finalOrderId = typeof data.orderId === "string" ? data.orderId : clientTempOrderId;
       const verifiedOrder: Order = {
         ...newOrder,
-        id: confirmedOrderId,
+        id: finalOrderId,
         subtotal: typeof data.subtotal === "number" ? data.subtotal : newOrder.subtotal,
         shippingFee: typeof data.shippingFee === "number" ? data.shippingFee : newOrder.shippingFee,
         total: typeof data.total === "number" ? data.total : newOrder.total,
       };
 
       addOrder(verifiedOrder);
-      clearCart();
+      setConfirmedOrderId(finalOrderId);
+      setIsSuccess(true);
 
       // Clear idempotency key on successful order so subsequent distinct checkouts get a fresh key
       clearStoredIdempotencyKey();
       idempotencyKeyRef.current = "";
 
-      // Redirect to Order Confirmation page with server-confirmed order ID
-      router.push(`/order-success/${confirmedOrderId}`);
+      // Seamlessly redirect to Order Confirmation page (cart is emptied when confirmation mounts)
+      router.replace(`/order-success/${finalOrderId}`);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to place your order. Please try again.";
       console.error("[Checkout] Order processing error:", msg);
@@ -399,10 +402,15 @@ export default function CheckoutForm() {
         {/* Submit button */}
         <button
           type="submit"
-          disabled={isSubmitting || items.length === 0}
-          className="w-full py-4 px-6 rounded-xl font-bold text-base bg-[#09090b] dark:bg-[#d4af37] text-[#fef08a] dark:text-[#09090b] hover:bg-zinc-800 dark:hover:bg-[#e5c158] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl flex items-center justify-center gap-2"
+          disabled={isSubmitting || isSuccess || items.length === 0}
+          className="w-full py-4 px-6 rounded-xl font-bold text-base bg-[#09090b] dark:bg-[#d4af37] text-[#fef08a] dark:text-[#09090b] hover:bg-zinc-800 dark:hover:bg-[#e5c158] disabled:opacity-75 disabled:cursor-not-allowed transition-all shadow-xl flex items-center justify-center gap-2"
         >
-          {isSubmitting ? (
+          {isSuccess ? (
+            <span className="flex items-center gap-2 text-emerald-400 dark:text-emerald-950 font-bold">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 dark:text-emerald-900 animate-bounce" />
+              Order Confirmed &bull; Opening Receipt...
+            </span>
+          ) : isSubmitting ? (
             <span className="flex items-center gap-2">
               <span className="w-4 h-4 border-2 border-[#d4af37] dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
               Processing Order &amp; Notifying Dispatch...
@@ -419,6 +427,26 @@ export default function CheckoutForm() {
           By placing your order, you agree to Noir Scent shipping and return policies.
         </p>
       </div>
+
+      {/* Luxury confirmation overlay during transition to prevent empty bag flicker */}
+      {isSuccess && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="bg-zinc-950 border border-[#d4af37]/40 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/30 flex items-center justify-center mx-auto text-[#d4af37]">
+              <CheckCircle2 className="w-8 h-8 text-[#d4af37]" />
+            </div>
+            <h3 className="font-serif text-2xl font-medium text-[#f4f4f5]">Order Placed!</h3>
+            <p className="text-xs text-zinc-400">
+              Order <span className="font-mono text-[#d4af37]">#{confirmedOrderId}</span> confirmed.
+              <br />Redirecting to your order confirmation...
+            </p>
+            <div className="flex items-center justify-center gap-2 text-xs text-[#d4af37]/80 pt-2">
+              <span className="w-3.5 h-3.5 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+              <span>Opening receipt...</span>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
