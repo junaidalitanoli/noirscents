@@ -19,6 +19,7 @@ import {
   KeyRound,
   Mail,
   RefreshCw,
+  Download,
 } from "lucide-react";
 import { useOrderStore } from "@/store/orderStore";
 import { INITIAL_PRODUCTS } from "@/lib/data";
@@ -168,6 +169,54 @@ export default function AdminDashboard() {
       const msg = err instanceof Error ? err.message : "Network error updating order status";
       setOrdersError(msg);
     }
+  };
+
+  const handleExportCleanCsv = () => {
+    if (!orders || orders.length === 0) {
+      alert("No orders available to export.");
+      return;
+    }
+
+    const headers = [
+      "Order ID",
+      "Customer Name",
+      "Phone",
+      "City",
+      "Delivery Address",
+      "Items Ordered",
+      "Total COD (PKR)",
+      "Status",
+      "Order Date"
+    ];
+
+    const rows = orders.map((o) => {
+      const itemsSummary = (o.items || [])
+        .map((i: any) => `${i.quantity || 1}x ${i.product?.name || i.name || "Perfume"} (${i.size?.ml || 50}ml)`)
+        .join("; ");
+
+      return [
+        `"${o.id}"`,
+        `"${(o.customer?.fullName || "").replace(/"/g, '""')}"`,
+        `"${(o.customer?.phone || "").replace(/"/g, '""')}"`,
+        `"${(o.customer?.city || "").replace(/"/g, '""')}"`,
+        `"${(o.customer?.address || "").replace(/"/g, '""')}"`,
+        `"${itemsSummary.replace(/"/g, '""')}"`,
+        o.total,
+        `"${o.status}"`,
+        `"${new Date(o.createdAt).toLocaleString("en-PK", { timeZone: "Asia/Karachi" })}"`
+      ].join(",");
+    });
+
+    const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\r\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `noir-scent-clean-orders-${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // New product form state
@@ -466,6 +515,15 @@ export default function AdminDashboard() {
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                onClick={handleExportCleanCsv}
+                className="px-3 py-1 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-medium text-xs flex items-center gap-1.5 transition-colors shadow-xs"
+                title="Download clean dispatch orders for Excel / Courier"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Export Clean CSV (Excel)
+              </button>
+
               <button
                 onClick={() => fetchOrders()}
                 disabled={loadingOrders}
