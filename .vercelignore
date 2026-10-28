@@ -1,0 +1,9 @@
+.git
+.next
+.netlify
+node_modules
+noirscents
+scratch
+tests
+docs
+*.log

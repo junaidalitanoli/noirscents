@@ -52,3 +52,4 @@ noirscents/
 data/*.json
 !data/.gitkeep
 
+.vercel
