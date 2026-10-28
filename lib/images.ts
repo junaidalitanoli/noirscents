@@ -2,7 +2,7 @@
  * Central registry for site-wide banners, category tiles, and brand imagery.
  * Replacing an image only requires dropping in a file into /public/images with the same filename.
  */
-export const DEFAULT_PRODUCT_IMAGE = "/images/urban-legend-bottle.jpg";
+export const DEFAULT_PRODUCT_IMAGE = "/images/noir-black-flacon.jpg";
 
 export const SITE_IMAGES = {
   logo: {
@@ -26,13 +26,13 @@ export const SITE_IMAGES = {
     },
     aqua: {
       src: "/images/noir-hero-aqua.jpg",
-      alt: "Aqua Mist Crisp Marine & Sea Salt Extrait",
+      alt: "Desert Majesty Saffron & Desert Cedarwood Extrait",
       width: 1920,
       height: 1080,
     },
     rose: {
       src: "/images/noir-hero-rose.jpg",
-      alt: "Royal Amber & Velvety Rose Floral Extraits",
+      alt: "Loyal Heart Golden Amber & Floral Extraits",
       width: 1920,
       height: 1080,
     },
@@ -51,14 +51,14 @@ export const SITE_IMAGES = {
   },
   categories: {
     men: {
-      src: "/images/urban-legend-bottle.jpg",
-      alt: "Men's Luxury Fragrances - Noir Scent",
+      src: "/images/noir-black-flacon.jpg",
+      alt: "Men's Black Edition Luxury Fragrances - Noir Scent",
       width: 1024,
       height: 1024,
     },
     women: {
-      src: "/images/noir-women.jpg",
-      alt: "Women's Artisanal Perfumes - Noir Scent",
+      src: "/images/noir-gold-flacon.jpg",
+      alt: "Women's Gold Edition Artisanal Perfumes - Noir Scent",
       width: 1024,
       height: 1024,
     },

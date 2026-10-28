@@ -57,32 +57,18 @@ export default function HomePage() {
 
   const categories = [
     {
-      title: "Men",
+      title: "Men's Black Edition",
       slug: "men",
-      subtitle: "Bold & Woody Extraits",
+      subtitle: "8 Signature Obsidian 50ml Extraits",
       image: SITE_IMAGES.categories.men.src,
       alt: SITE_IMAGES.categories.men.alt,
     },
     {
-      title: "Women",
+      title: "Women's Gold Edition",
       slug: "women",
-      subtitle: "Velvet Florals & Sweet Ambers",
+      subtitle: "5 Luminous Crystal 50ml Extraits",
       image: SITE_IMAGES.categories.women.src,
       alt: SITE_IMAGES.categories.women.alt,
-    },
-    {
-      title: "Bundles",
-      slug: "deals",
-      subtitle: "Exclusive Value Sets & Duos",
-      image: SITE_IMAGES.categories.deals.src,
-      alt: SITE_IMAGES.categories.deals.alt,
-    },
-    {
-      title: "Testers",
-      slug: "testers",
-      subtitle: "Discovery Flights & Travel Atomizers",
-      image: SITE_IMAGES.categories.testers.src,
-      alt: SITE_IMAGES.categories.testers.alt,
     },
   ];
 
@@ -193,45 +179,47 @@ export default function HomePage() {
       </section>
 
       {/* 5. SECTION: Bundles & Sets (exclusively from deals collection) */}
-      <section id="bundles" className="py-12 sm:py-16 bg-[#fafafa] dark:bg-[#0b0b0e] border-y border-black/8 dark:border-white/10">
-        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8 dark:border-white/10">
-            <div>
-              <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
-                Bundles &amp; Sets
-              </h2>
-              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                Curated twin pairings and multi-bottle sets providing unbeatable value.
-              </p>
+      {bundleProducts.length > 0 && (
+        <section id="bundles" className="py-12 sm:py-16 bg-[#fafafa] dark:bg-[#0b0b0e] border-y border-black/8 dark:border-white/10">
+          <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-end justify-between mb-8 pb-3 border-b border-black/8 dark:border-white/10">
+              <div>
+                <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
+                  Bundles &amp; Sets
+                </h2>
+                <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                  Curated twin pairings and multi-bottle sets providing unbeatable value.
+                </p>
+              </div>
+              <Link
+                href="/collections/deals"
+                className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] dark:text-[#d4af37] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3 transition-colors"
+              >
+                View all <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-            <Link
-              href="/collections/deals"
-              className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] dark:text-[#d4af37] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3 transition-colors"
-            >
-              View all <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            {bundleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+              {bundleProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 6. SECTION: Shop By Category */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
-            Shop By Category
+            Shop By Collection
           </h2>
           <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-            Explore curated olfactory collections formulated for men, women, and discovery flights.
+            Explore handcrafted 50ml extraits formulated in Obsidian Black for Men and Luminous Gold for Women.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8 max-w-4xl mx-auto">
           {categories.map((cat) => (
             <Link
               key={cat.slug}

@@ -37,13 +37,13 @@ export const PAKISTANI_CITIES = [
 export const CATEGORIES = [
   {
     slug: "men",
-    label: "Men",
-    description: "Bold, charismatic, and masculine extrait perfumes designed for enduring all-day sillage in Pakistan.",
+    label: "Men's Black Edition",
+    description: "Bold, charismatic, and masculine 50ml extraits in obsidian black flacons designed for enduring all-day sillage in Pakistan.",
   },
   {
     slug: "women",
-    label: "Women",
-    description: "Enchanting, floral, amber, and gourmand extrait blends with alluring trails and graceful sillage.",
+    label: "Women's Gold Edition",
+    description: "Enchanting, floral, amber, and gourmand 50ml extraits in radiant gold crystal flacons with alluring trails.",
   },
   {
     slug: "testers",
