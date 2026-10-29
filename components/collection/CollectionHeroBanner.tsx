@@ -23,6 +23,7 @@ export default function CollectionHeroBanner({
       icon: typeof Sparkles;
       bgGradient: string;
       borderClass: string;
+      glowColor: string;
       pills: { label: string; highlight?: boolean }[];
       breadcrumbLabel: string;
     }
@@ -35,11 +36,12 @@ export default function CollectionHeroBanner({
       image: "/images/noir-black-flacon.jpg",
       alt: "Noir Scent Men's Obsidian Black 50ml Extrait Flacon on Slate Stone",
       badgeClass:
-        "bg-amber-100/90 text-[#8c6314] border-amber-300/80 dark:bg-zinc-800 dark:text-[#f5e7b2] dark:border-zinc-700",
+        "bg-amber-500/20 text-[#7a4805] border-2 border-amber-500/40 dark:bg-zinc-800 dark:text-[#f5e7b2] dark:border-zinc-700",
       icon: Sparkles,
       bgGradient:
-        "bg-gradient-to-br from-[#faf7f0] via-[#f5ede0] to-[#fbf8f2] dark:from-[#131217] dark:via-[#100f14] dark:to-[#0c0c10]",
-      borderClass: "border-[#e2d5c3] dark:border-white/10",
+        "bg-gradient-to-br from-[#f8f1e2] via-[#eddcc2] to-[#e1caa4] dark:from-[#131217] dark:via-[#100f14] dark:to-[#0c0c10]",
+      borderClass: "border-2 border-[#c59a3f]/60 dark:border-white/10",
+      glowColor: "rgba(217, 148, 44, 0.45)",
       pills: [
         { label: `${count} Signature Extraits`, highlight: true },
         { label: "35% Pure Oil Sillage" },
@@ -56,11 +58,12 @@ export default function CollectionHeroBanner({
       image: "/images/noir-gold-floral.jpg",
       alt: "Noir Scent Loyal Heart Crystal Floral 50ml Extrait with Pink Peonies",
       badgeClass:
-        "bg-rose-100/90 text-rose-800 border-rose-300/80 dark:bg-rose-950/60 dark:text-rose-200 dark:border-rose-800/40",
+        "bg-rose-500/20 text-rose-900 border-2 border-rose-400/60 dark:bg-rose-950/60 dark:text-rose-200 dark:border-rose-800/40",
       icon: Flower2,
       bgGradient:
-        "bg-gradient-to-br from-[#fff7f5] via-[#fdf0ed] to-[#faf3ee] dark:from-[#191216] dark:via-[#140e13] dark:to-[#0f0c10]",
-      borderClass: "border-[#f3d7ce] dark:border-rose-900/40",
+        "bg-gradient-to-br from-[#fef0ed] via-[#fbe0d8] to-[#f6cabb] dark:from-[#191216] dark:via-[#140e13] dark:to-[#0f0c10]",
+      borderClass: "border-2 border-[#e89a8c]/80 dark:border-rose-900/40",
+      glowColor: "rgba(235, 120, 140, 0.45)",
       pills: [
         { label: `${count} Luminous Extraits`, highlight: true },
         { label: "35% Pure Oil Strength" },
@@ -77,11 +80,12 @@ export default function CollectionHeroBanner({
       image: "/images/noir-hero-bundles.jpg",
       alt: "Noir Scent Luxury Fragrance Gift Boxes with Satin Ribbon",
       badgeClass:
-        "bg-amber-100/90 text-[#8c6314] border-amber-300/80 dark:bg-amber-950/40 dark:text-[#f5e7b2] dark:border-amber-700/40",
+        "bg-amber-500/20 text-[#7a4805] border-2 border-amber-500/40 dark:bg-amber-950/40 dark:text-[#f5e7b2] dark:border-amber-700/40",
       icon: Gift,
       bgGradient:
-        "bg-gradient-to-br from-[#fbf8f0] via-[#f6ede0] to-[#f0e2cd] dark:from-[#16141a] dark:via-[#110f14] dark:to-[#0c0b0f]",
-      borderClass: "border-[#e6d8c3] dark:border-white/10",
+        "bg-gradient-to-br from-[#fbf3e5] via-[#f3dfc2] to-[#e8caa0] dark:from-[#16141a] dark:via-[#110f14] dark:to-[#0c0b0f]",
+      borderClass: "border-2 border-[#dcb888]/80 dark:border-white/10",
+      glowColor: "rgba(225, 145, 30, 0.45)",
       pills: [
         { label: "Complimentary Delivery", highlight: true },
         { label: "Rigid Presentation Box" },
@@ -98,11 +102,12 @@ export default function CollectionHeroBanner({
       image: "/images/noir-testers.jpg",
       alt: "Noir Scent Discovery Sample Vials and Presentation Box",
       badgeClass:
-        "bg-stone-200/90 text-stone-800 border-stone-300 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700",
+        "bg-stone-300/60 text-stone-900 border-2 border-stone-400/60 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700",
       icon: Droplets,
       bgGradient:
-        "bg-gradient-to-br from-[#faf9f6] via-[#f4f2ec] to-[#eae6db] dark:from-[#141418] dark:via-[#0f0f13] dark:to-[#0a0a0d]",
-      borderClass: "border-[#ddd7cb] dark:border-white/10",
+        "bg-gradient-to-br from-[#f6f2ea] via-[#ece5d8] to-[#ded4c3] dark:from-[#141418] dark:via-[#0f0f13] dark:to-[#0a0a0d]",
+      borderClass: "border-2 border-[#c5beaf]/80 dark:border-white/10",
+      glowColor: "rgba(195, 175, 145, 0.45)",
       pills: [
         { label: "Precision 5ml Atomizers", highlight: true },
         { label: "35% Oil Extrait Strength" },
@@ -119,11 +124,12 @@ export default function CollectionHeroBanner({
       image: "/images/royal-amber-bottle.jpg",
       alt: "Noir Scent Royal Amber Faceted Crystal 50ml Extrait Flacon",
       badgeClass:
-        "bg-amber-100/90 text-[#8c6314] border-amber-300/80 dark:bg-amber-950/40 dark:text-[#f5e7b2] dark:border-amber-700/40",
+        "bg-amber-500/20 text-[#7a4805] border-2 border-amber-500/40 dark:bg-amber-950/40 dark:text-[#f5e7b2] dark:border-amber-700/40",
       icon: Sparkles,
       bgGradient:
-        "bg-gradient-to-br from-[#fdfcf9] via-[#f7f2e6] to-[#f2e6d2] dark:from-[#131318] dark:via-[#0e0e12] dark:to-[#09090b]",
-      borderClass: "border-[#e5d9c8] dark:border-white/10",
+        "bg-gradient-to-br from-[#faf2e4] via-[#f2e1c4] to-[#e6cca3] dark:from-[#131318] dark:via-[#0e0e12] dark:to-[#09090b]",
+      borderClass: "border-2 border-[#d4af37]/70 dark:border-white/10",
+      glowColor: "rgba(225, 160, 45, 0.45)",
       pills: [
         { label: "13 Masterpiece Extraits", highlight: true },
         { label: "8 Men & 5 Women Editions" },
@@ -142,19 +148,14 @@ export default function CollectionHeroBanner({
       {/* Breadcrumb Navigation */}
       <Breadcrumbs items={[{ label: current.breadcrumbLabel }]} />
 
-      {/* Luminous Luxury Hero Card */}
+      {/* Saturated Luxury Hero Card */}
       <div
-        className={`relative rounded-3xl ${current.bgGradient} border ${current.borderClass} p-6 sm:p-8 lg:p-10 overflow-hidden shadow-sm transition-colors`}
+        className={`relative rounded-3xl ${current.bgGradient} ${current.borderClass} p-6 sm:p-8 lg:p-10 overflow-hidden shadow-md transition-colors`}
       >
-        {/* Soft Ambient Radiance */}
+        {/* Rich Ambient Radiance */}
         <div
-          className="absolute -right-20 -top-20 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-40 dark:opacity-20"
-          style={{
-            background:
-              category === "women"
-                ? "rgba(244, 180, 195, 0.5)"
-                : "rgba(212, 175, 55, 0.4)",
-          }}
+          className="absolute -right-20 -top-20 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-50 dark:opacity-20"
+          style={{ background: current.glowColor }}
         />
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
@@ -162,19 +163,19 @@ export default function CollectionHeroBanner({
           <div className="order-2 lg:order-1 lg:col-span-7 space-y-4 sm:space-y-5 text-left">
             {/* Eyebrow Pill */}
             <div
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] font-bold uppercase tracking-widest shadow-2xs ${current.badgeClass}`}
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest shadow-xs ${current.badgeClass}`}
             >
               <Icon className="w-3.5 h-3.5 shrink-0" />
               <span>{current.eyebrow}</span>
             </div>
 
             {/* Exactly ONE H1 for the page */}
-            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-stone-950 dark:text-zinc-100 leading-tight">
+            <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[#1a140e] dark:text-zinc-100 leading-tight">
               {current.title}
             </h1>
 
             {/* Editorial Description */}
-            <p className="text-xs sm:text-sm text-stone-700 dark:text-zinc-300 font-light leading-relaxed max-w-2xl">
+            <p className="text-xs sm:text-sm text-stone-800 dark:text-zinc-300 font-normal leading-relaxed max-w-2xl">
               {current.tagline}
             </p>
 
@@ -183,17 +184,17 @@ export default function CollectionHeroBanner({
               {current.pills.map((pill) => (
                 <span
                   key={pill.label}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-semibold tracking-wide border shadow-2xs ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10.5px] font-bold tracking-wide border shadow-2xs ${
                     pill.highlight
                       ? "bg-[#121212] text-white border-black dark:bg-[#c9a96a] dark:text-[#09090b] dark:border-[#c9a96a]"
-                      : "bg-white/80 dark:bg-white/5 border-stone-200/90 dark:border-white/10 text-stone-700 dark:text-zinc-300"
+                      : "bg-white/90 dark:bg-white/5 border-stone-300 dark:border-white/10 text-stone-800 dark:text-zinc-300"
                   }`}
                 >
                   <CheckCircle2
                     className={`w-3 h-3 ${
                       pill.highlight
                         ? "text-[#c9a96a] dark:text-[#09090b]"
-                        : "text-[#9b6f1e] dark:text-[#c9a96a]"
+                        : "text-[#8c530b] dark:text-[#c9a96a]"
                     }`}
                   />
                   <span>{pill.label}</span>
@@ -202,25 +203,27 @@ export default function CollectionHeroBanner({
             </div>
           </div>
 
-          {/* Right Column: Authentic Perfume Flacon Showcase */}
+          {/* Right Column: Authentic Perfume Flacon Pedestal */}
           <div className="order-1 lg:order-2 lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-xs sm:max-w-sm aspect-[4/3] sm:aspect-square lg:aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border-2 border-[#c5a059]/40 shadow-lg group">
-              <Image
-                src={current.image}
-                alt={current.alt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 420px"
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-3 left-3 right-3 text-white text-[11px] font-semibold flex items-center justify-between">
-                <span className="bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px]">
-                  50ml Extrait Flacon
-                </span>
-                <span className="bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px] text-[#f5e7b2]">
-                  35% Oil
-                </span>
+            <div className="relative w-full max-w-xs sm:max-w-sm aspect-[4/3] sm:aspect-square lg:aspect-[4/3] rounded-[24px] overflow-hidden bg-white dark:bg-zinc-900 p-2 border-2 border-[#c5a059]/60 shadow-xl group">
+              <div className="relative w-full h-full rounded-[18px] overflow-hidden">
+                <Image
+                  src={current.image}
+                  alt={current.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 420px"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-3 right-3 text-white text-[11px] font-semibold flex items-center justify-between">
+                  <span className="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px]">
+                    50ml Extrait Flacon
+                  </span>
+                  <span className="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px] text-[#f5e7b2]">
+                    35% Oil
+                  </span>
+                </div>
               </div>
             </div>
           </div>

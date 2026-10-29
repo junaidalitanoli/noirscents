@@ -81,47 +81,47 @@ export default function HomePage() {
       {/* 1. EDITORIAL HERO: Exactly ONE H1, Focused Luxury Visual & Direct CTAs */}
       <HeroBanner />
 
-      {/* 2. VALUE PROPOSITION BAR (Luminous Haute Parfumerie Aesthetic) */}
-      <div className="bg-gradient-to-r from-[#fbf9f4] via-[#f7f2e8] to-[#faf6ed] dark:bg-[#0d0d12] text-stone-900 dark:text-stone-200 border-y border-[#e6ddd0] dark:border-white/10 py-4 px-3 sm:px-6 transition-colors shadow-2xs">
+      {/* 2. VALUE PROPOSITION BAR (Haute Parfumerie Atelier Bar) */}
+      <div className="bg-gradient-to-r from-[#faf2e4] via-[#f4e6d0] to-[#faf2e4] dark:bg-[#0d0d12] text-stone-900 dark:text-stone-200 border-y-2 border-[#d4af37]/40 py-4 px-3 sm:px-6 transition-colors shadow-xs">
         <div className="max-w-[1320px] mx-auto">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
             <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
-              <div className="w-8 h-8 rounded-full bg-amber-100 border border-amber-300 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0 shadow-2xs">
-                <Truck className="w-4 h-4 text-[#9b6f1e] dark:text-[#c9a96a]" />
+              <div className="w-8 h-8 rounded-full bg-amber-400/25 border-2 border-amber-500/50 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0 shadow-xs">
+                <Truck className="w-4 h-4 text-[#8c530b] dark:text-[#c9a96a]" />
               </div>
               <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">Free TCS Shipping</p>
-                <p className="text-[9.5px] sm:text-[11px] text-stone-600 dark:text-stone-400 font-medium">Orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} &amp; above</p>
+                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">Free TCS Shipping</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-700 dark:text-stone-400 font-medium">Orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} &amp; above</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-300 dark:bg-emerald-950/40 dark:border-emerald-500/20 flex items-center justify-center shrink-0 shadow-2xs">
-                <Banknote className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+              <div className="w-8 h-8 rounded-full bg-emerald-400/25 border-2 border-emerald-500/50 dark:bg-emerald-950/40 dark:border-emerald-500/20 flex items-center justify-center shrink-0 shadow-xs">
+                <Banknote className="w-4 h-4 text-emerald-800 dark:text-emerald-400" />
               </div>
               <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">Cash on Delivery</p>
-                <p className="text-[9.5px] sm:text-[11px] text-stone-600 dark:text-stone-400 font-medium">Nationwide Doorstep Pay</p>
+                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">Cash on Delivery</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-700 dark:text-stone-400 font-medium">Nationwide Doorstep Pay</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
-              <div className="w-8 h-8 rounded-full bg-amber-100 border border-amber-300 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0 shadow-2xs">
-                <Sparkles className="w-4 h-4 text-[#9b6f1e] dark:text-[#c9a96a]" />
+              <div className="w-8 h-8 rounded-full bg-amber-400/25 border-2 border-amber-500/50 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0 shadow-xs">
+                <Sparkles className="w-4 h-4 text-[#8c530b] dark:text-[#c9a96a]" />
               </div>
               <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">All-Day Longevity</p>
-                <p className="text-[9.5px] sm:text-[11px] text-stone-600 dark:text-stone-400 font-medium">35% Pure Extrait Oil</p>
+                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">All-Day Longevity</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-700 dark:text-stone-400 font-medium">35% Pure Extrait Oil</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5 p-1.5 sm:justify-center">
-              <div className="w-8 h-8 rounded-full bg-blue-100 border border-blue-300 dark:bg-blue-950/40 dark:border-blue-500/20 flex items-center justify-center shrink-0 shadow-2xs">
-                <ShieldCheck className="w-4 h-4 text-blue-700 dark:text-blue-400" />
+              <div className="w-8 h-8 rounded-full bg-blue-400/25 border-2 border-blue-500/50 dark:bg-blue-950/40 dark:border-blue-500/20 flex items-center justify-center shrink-0 shadow-xs">
+                <ShieldCheck className="w-4 h-4 text-blue-800 dark:text-blue-400" />
               </div>
               <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-stone-900 dark:text-white uppercase tracking-wider">{STORE_CONFIG.returnWindowDays}-Day Guarantee</p>
-                <p className="text-[9.5px] sm:text-[11px] text-stone-600 dark:text-stone-400 font-medium">Hassle-free Scent Swap</p>
+                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">{STORE_CONFIG.returnWindowDays}-Day Guarantee</p>
+                <p className="text-[9.5px] sm:text-[11px] text-stone-700 dark:text-stone-400 font-medium">Hassle-free Scent Swap</p>
               </div>
             </div>
           </div>
