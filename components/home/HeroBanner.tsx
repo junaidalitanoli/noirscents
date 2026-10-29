@@ -1,50 +1,103 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, ArrowRight } from "lucide-react";
-import { SITE_IMAGES } from "@/lib/images";
+import { Sparkles, ArrowRight, ShieldCheck, Droplet } from "lucide-react";
 
 export default function HeroBanner() {
+  const [activeFlacon, setActiveFlacon] = useState<"black" | "gold">("black");
+
+  const flacons = {
+    black: {
+      name: "Obsidian Black Flacon",
+      sub: "50ml Extrait de Parfum • For Men",
+      image: "/images/noir-black-flacon.jpg",
+      alt: "Noir Scent Obsidian Black 50ml Extrait de Parfum Bottle",
+      badge: "Men's Black Reserve",
+      link: "/products/desert-majesty",
+    },
+    gold: {
+      name: "Luminous Gold Flacon",
+      sub: "50ml Extrait de Parfum • For Women",
+      image: "/images/noir-gold-flacon.jpg",
+      alt: "Noir Scent Luminous Gold 50ml Extrait de Parfum Bottle",
+      badge: "Women's Gold Crystal",
+      link: "/products/loyal-heart",
+    },
+  };
+
+  const current = flacons[activeFlacon];
+
   return (
-    <section className="relative w-full bg-[#faf8f5] dark:bg-[#09090b] border-b border-black/8 dark:border-white/10 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-28">
+    <section className="relative w-full bg-[#0a0a0d] text-white border-b border-white/10 overflow-hidden">
+      {/* Warm Golden Ambient Glow Background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 65% 55% at 75% 45%, rgba(201, 169, 106, 0.18) 0%, rgba(10, 10, 13, 0) 70%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30"
+        style={{
+          background:
+            "radial-gradient(circle 40% at 20% 25%, rgba(201, 169, 106, 0.12) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Left Column: Editorial Headline & Actions */}
           <div className="lg:col-span-7 space-y-6 text-left">
             {/* Eyebrow Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-700/40 text-[11px] font-bold uppercase tracking-[0.2em] text-[#9b6f1e] dark:text-[#f5e7b2]">
-              <Sparkles className="w-3.5 h-3.5 text-[#b48325] dark:text-[#d4af37]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#181820] border border-[#c9a96a]/40 text-[11px] font-bold uppercase tracking-[0.22em] text-[#f5e7b2] shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-[#c9a96a]" />
               <span>Haute Parfumerie &bull; Artisanal Extrait</span>
             </div>
 
             {/* Exactly ONE H1 for the page */}
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-zinc-950 dark:text-zinc-100 leading-[1.08]">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-white leading-[1.08]">
               Crafted For{" "}
-              <span className="italic font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#9b6f1e] via-[#c59a3f] to-[#7d5612] dark:from-[#f5e7b2] dark:via-[#d4af37] dark:to-[#b48325]">
+              <span className="italic font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#ffe8b3] via-[#c9a96a] to-[#d4af37]">
                 Extraordinary
               </span>{" "}
               People.
             </h1>
 
-            <p className="font-serif text-base sm:text-xl text-zinc-700 dark:text-zinc-300 tracking-wide">
+            <p className="font-serif text-base sm:text-xl text-[#e5d6ba] tracking-wide">
               Scents That Command Respect &bull; Formulated For Pakistan&apos;s Climate
             </p>
 
-            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl font-light leading-relaxed">
-              Handcrafted in small batches with generous fragrance oil concentrations. Rich, enduring extraits that evolve gracefully on warm skin without evaporating in intense heat.
+            <p className="text-xs sm:text-sm text-zinc-300 max-w-xl font-light leading-relaxed">
+              Handcrafted in small batches with a 35% pure fragrance oil concentration. Rich, enduring extraits that evolve gracefully on warm skin without evaporating in intense heat.
             </p>
+
+            {/* Feature Highlights Pills */}
+            <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-zinc-300">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+                <Droplet className="w-3.5 h-3.5 text-[#c9a96a]" />
+                <span>35% Pure Oil Extrait</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#c9a96a]" />
+                <span>Cash on Delivery Nationwide</span>
+              </div>
+            </div>
 
             {/* CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <a
                 href="#best-sellers"
-                className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#121212] dark:bg-[#d4af37] text-white dark:text-[#09090b] text-xs font-semibold uppercase tracking-[0.16em] hover:bg-black dark:hover:bg-[#e5c378] transition-all rounded-xs shadow-md"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#c9a96a] hover:bg-[#dfbe7c] text-[#0a0a0d] text-xs font-bold uppercase tracking-[0.18em] transition-all rounded-xs shadow-lg shadow-[#c9a96a]/20 active:scale-95 cursor-pointer"
               >
                 <span>Shop Best Sellers</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
               <Link
                 href="/collections/all"
-                className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-white dark:bg-[#15151a] border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-200 text-xs font-semibold uppercase tracking-[0.16em] hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all rounded-xs"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white/20 hover:border-[#c9a96a] text-white hover:text-[#f5e7b2] text-xs font-semibold uppercase tracking-[0.18em] hover:bg-white/5 transition-all rounded-xs cursor-pointer"
               >
                 Explore All Fragrances
               </Link>
@@ -53,28 +106,61 @@ export default function HeroBanner() {
 
           {/* Right Column: Visual Showcase Flacon */}
           <div className="lg:col-span-5 relative">
-            <div className="relative aspect-[4/5] sm:aspect-square lg:aspect-[4/5] w-full max-w-lg mx-auto rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-xl">
+            {/* Flacon Switcher Tabs (Black vs Gold) */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <button
+                type="button"
+                onClick={() => setActiveFlacon("black")}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer border ${
+                  activeFlacon === "black"
+                    ? "bg-[#181820] text-[#f5e7b2] border-[#c9a96a] shadow-xs"
+                    : "bg-black/40 text-zinc-400 border-white/10 hover:text-white"
+                }`}
+              >
+                ✦ Men&apos;s Obsidian
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveFlacon("gold")}
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer border ${
+                  activeFlacon === "gold"
+                    ? "bg-[#181820] text-[#f5e7b2] border-[#c9a96a] shadow-xs"
+                    : "bg-black/40 text-zinc-400 border-white/10 hover:text-white"
+                }`}
+              >
+                ✦ Women&apos;s Gold
+              </button>
+            </div>
+
+            {/* Main Showcase Flacon Frame with 100% visible centered bottle */}
+            <div className="relative aspect-square w-full max-w-md mx-auto rounded-2xl overflow-hidden bg-[#121216] border border-[#c9a96a]/30 shadow-2xl shadow-black/80 group">
               <Image
-                src={SITE_IMAGES.heroBanners.signature.src}
-                alt={SITE_IMAGES.heroBanners.signature.alt}
+                src={current.image}
+                alt={current.alt}
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 560px"
-                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 480px"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 p-3 bg-white/95 dark:bg-[#121216]/95 backdrop-blur-md rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs flex items-center justify-between">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+
+              {/* Floating Bottom Product Card with Link */}
+              <div className="absolute bottom-3 left-3 right-3 p-3.5 bg-[#0a0a0d]/90 backdrop-blur-md rounded-xl border border-white/15 text-xs flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-zinc-950 dark:text-zinc-100 uppercase tracking-wider text-[11px]">
-                    Signature Reserve Flacon
+                  <p className="font-semibold text-white uppercase tracking-wider text-[11px]">
+                    {current.name}
                   </p>
-                  <p className="text-[10px] text-zinc-500 dark:text-zinc-400">
-                    50ml Handcrafted Extrait de Parfum
+                  <p className="text-[10.5px] text-[#c9a96a] font-medium mt-0.5">
+                    {current.sub}
                   </p>
                 </div>
-                <span className="text-[10px] font-bold text-[#b48325] dark:text-[#d4af37] uppercase tracking-wider">
-                  Pure Luxury
-                </span>
+                <Link
+                  href={current.link}
+                  className="px-3.5 py-1.5 bg-[#c9a96a] hover:bg-[#dfbe7c] text-[#0a0a0d] text-[10.5px] font-bold uppercase tracking-wider rounded-xs flex items-center gap-1 transition-colors"
+                >
+                  <span>View</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
               </div>
             </div>
           </div>
@@ -83,4 +169,3 @@ export default function HeroBanner() {
     </section>
   );
 }
-

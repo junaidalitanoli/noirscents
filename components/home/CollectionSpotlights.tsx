@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Flower2 } from "lucide-react";
-import { SITE_IMAGES } from "@/lib/images";
 
 export default function CollectionSpotlights() {
   return (
@@ -43,7 +42,7 @@ export default function CollectionSpotlights() {
           <div className="lg:col-span-6">
             <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-stone-100 dark:bg-zinc-900 border border-stone-200 dark:border-zinc-800 shadow-md">
               <Image
-                src={SITE_IMAGES.heroBanners.aqua.src}
+                src="/images/noir-black-oud.jpg"
                 alt="Noir Scent Men's Black Collection Extraits"
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"
@@ -60,7 +59,7 @@ export default function CollectionSpotlights() {
           <div className="lg:col-span-6 order-2 lg:order-1">
             <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-amber-50 dark:bg-zinc-900 border border-amber-200/80 dark:border-zinc-800 shadow-md">
               <Image
-                src={SITE_IMAGES.heroBanners.rose.src}
+                src="/images/noir-gold-flacon.jpg"
                 alt="Noir Scent Women's Gold Collection Extraits"
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"
