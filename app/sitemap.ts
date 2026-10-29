@@ -1,16 +1,27 @@
 import { MetadataRoute } from "next";
-import { INITIAL_PRODUCTS } from "@/lib/data";
-import { CATEGORIES } from "@/lib/constants";
-import { SITE_URL } from "@/lib/site";
+import { getAllProducts } from "@/lib/data";
+import { SITE_URL } from "@/lib/site-config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Core static pages (omitting lastModified and changeFrequency/priority)
+  // Core static pages
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
     },
     {
       url: `${SITE_URL}/collections/all`,
+    },
+    {
+      url: `${SITE_URL}/collections/men`,
+    },
+    {
+      url: `${SITE_URL}/collections/women`,
+    },
+    {
+      url: `${SITE_URL}/collections/testers`,
+    },
+    {
+      url: `${SITE_URL}/collections/deals`,
     },
     {
       url: `${SITE_URL}/pages/about`,
@@ -32,16 +43,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Collection category routes
-  const collectionRoutes: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
-    url: `${SITE_URL}/collections/${cat.slug}`,
-  }));
-
-  // Individual product routes (real per-item createdAt date only)
-  const productRoutes: MetadataRoute.Sitemap = INITIAL_PRODUCTS.map((product) => ({
+  // Dynamic product routes generated strictly from actual catalog data
+  const products = getAllProducts();
+  const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${SITE_URL}/products/${product.slug}`,
     ...(product.createdAt ? { lastModified: new Date(product.createdAt) } : {}),
   }));
 
-  return [...staticRoutes, ...collectionRoutes, ...productRoutes];
+  return [...staticRoutes, ...productRoutes];
 }

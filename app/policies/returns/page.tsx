@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { RefreshCw } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { BRAND_NAME } from "@/lib/constants";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { formatPrice } from "@/lib/formatters";
 
 export const metadata: Metadata = {
-  title: "Returns & Exchanges Policy",
-  description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan. Zero-risk doorstep bottle swaps.`,
+  title: { absolute: "7-Day Scent Swap & Exchange Policy | Noir Scent" },
+  description:
+    "Explore our 7-day hassle-free fragrance exchange policy at Noir Scent across Pakistan. Simple, zero-risk doorstep bottle swaps for your peace of mind.",
   alternates: {
     canonical: "/policies/returns",
   },
   openGraph: {
-    title: "Returns & Exchanges Policy",
-    description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
+    title: "7-Day Scent Swap & Exchange Policy | Noir Scent",
+    description:
+      "Explore our 7-day hassle-free fragrance exchange policy at Noir Scent across Pakistan. Simple, zero-risk doorstep bottle swaps for your peace of mind.",
     url: "/policies/returns",
     siteName: "Noir Scent",
     images: [
@@ -30,8 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Returns & Exchanges Policy",
-    description: `${STORE_CONFIG.returnWindowDays}-Day hassle-free fragrance exchange policy at ${BRAND_NAME} across Pakistan.`,
+    title: "7-Day Scent Swap & Exchange Policy | Noir Scent",
+    description:
+      "Explore our 7-day hassle-free fragrance exchange policy at Noir Scent across Pakistan. Simple, zero-risk doorstep bottle swaps for your peace of mind.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

@@ -17,6 +17,8 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
   const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
   const shippingFee = subtotal === 0 ? 0 : isFreeShipping ? 0 : STANDARD_SHIPPING_FEE;
   const total = subtotal + shippingFee;
+  const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const progressPercent = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
   return (
     <div className="bg-zinc-50 dark:bg-[#111115] border border-zinc-200/80 dark:border-white/10 rounded-2xl p-6 space-y-6 transition-colors">
@@ -27,6 +29,26 @@ export default function OrderSummary({ items, subtotal }: OrderSummaryProps) {
         <span className="text-xs bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200 font-semibold px-2.5 py-0.5 rounded-full border border-transparent dark:border-amber-700/50">
           Cash On Delivery
         </span>
+      </div>
+
+      {/* Free Delivery Threshold Bar */}
+      <div className="bg-white dark:bg-[#16161c] p-3 rounded-xl border border-zinc-200/80 dark:border-zinc-800 text-xs">
+        {amountToFreeShipping > 0 ? (
+          <p className="text-zinc-700 dark:text-zinc-300">
+            Add <strong className="font-semibold text-black dark:text-[#f5e7b2]">{formatPrice(amountToFreeShipping)}</strong> more for{" "}
+            <span className="font-semibold uppercase text-black dark:text-[#f5e7b2]">Free Delivery</span>!
+          </p>
+        ) : (
+          <p className="text-emerald-800 dark:text-emerald-400 font-semibold">
+            ✓ You qualified for Free Delivery Across Pakistan!
+          </p>
+        )}
+        <div className="w-full bg-zinc-200 dark:bg-zinc-800 h-1.5 mt-2 overflow-hidden rounded-full">
+          <div
+            className="bg-black dark:bg-[#d4af37] h-1.5 transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
       </div>
 
       {/* Items list */}

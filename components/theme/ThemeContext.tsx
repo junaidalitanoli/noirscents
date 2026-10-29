@@ -16,37 +16,40 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = "noir_theme";
 
+function applyTheme(t: Theme) {
+  if (typeof document === "undefined") return;
+  const root = document.documentElement;
+  if (t === "dark") {
+    root.classList.add("dark");
+  } else {
+    root.classList.remove("dark");
+  }
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    let resolvedTheme: Theme = "light";
     try {
       const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
       if (savedTheme === "dark" || savedTheme === "light") {
-        setThemeState(savedTheme);
-        applyTheme(savedTheme);
+        resolvedTheme = savedTheme;
       } else {
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const initialTheme: Theme = prefersDark ? "dark" : "light";
-        setThemeState(initialTheme);
-        applyTheme(initialTheme);
+        resolvedTheme = prefersDark ? "dark" : "light";
       }
     } catch {
-      // Fallback in environments with blocked storage
-      applyTheme("light");
+      resolvedTheme = "light";
     }
-    setMounted(true);
-  }, []);
 
-  const applyTheme = (t: Theme) => {
-    const root = document.documentElement;
-    if (t === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  };
+    applyTheme(resolvedTheme);
+    requestAnimationFrame(() => {
+      setThemeState(resolvedTheme);
+      setMounted(true);
+    });
+  }, []);
 
   const setTheme = (nextTheme: Theme) => {
     setThemeState(nextTheme);

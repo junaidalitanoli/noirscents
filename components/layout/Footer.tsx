@@ -3,15 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Phone, Mail, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
-import { BRAND_NAME } from "@/lib/constants";
-import { STORE_CONFIG } from "@/lib/store-config";
+import { SITE_CONFIG } from "@/lib/site-config";
 
 export default function Footer() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!newsletterEmail || !emailRegex.test(newsletterEmail.trim())) {
@@ -21,17 +20,29 @@ export default function Footer() {
     }
 
     setNewsletterStatus("loading");
-    setTimeout(() => {
-      setNewsletterStatus("success");
-      setFeedbackMessage("Newsletter service jald shuru ho rahi hai (Coming Soon). Subscriptions launch ke baad active hongi.");
-      setNewsletterEmail("");
-    }, 400);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: newsletterEmail.trim() }),
+      });
+      if (res.ok) {
+        setNewsletterStatus("success");
+        setFeedbackMessage("Thank you for subscribing to Noir Scent Private Reserve.");
+        setNewsletterEmail("");
+      } else {
+        throw new Error();
+      }
+    } catch {
+      setNewsletterStatus("error");
+      setFeedbackMessage("Subscription request failed. Please try again or reach out on WhatsApp.");
+    }
   };
 
-  const instagramUrl = STORE_CONFIG.instagramUrl || "https://instagram.com/noirscents";
-  const facebookUrl = STORE_CONFIG.facebookUrl || "https://facebook.com/noirscents";
-  const tiktokUrl = "https://tiktok.com/@noirscents";
-  const whatsappUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}`;
+  const instagramUrl = SITE_CONFIG.socials.instagram;
+  const facebookUrl = SITE_CONFIG.socials.facebook;
+  const tiktokUrl = SITE_CONFIG.socials.tiktok;
+  const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsappNumber}`;
 
   return (
     <footer className="bg-[#f8f8f8] dark:bg-[#070709] text-zinc-600 dark:text-zinc-400 border-t border-black/8 dark:border-white/10 text-xs tracking-wider transition-colors duration-200">
@@ -40,13 +51,13 @@ export default function Footer() {
         <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center space-y-4">
             <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#b48325] dark:text-[#d4af37]">
-              Private Olfactory Reserve &bull; Coming Soon
+              Private Olfactory Reserve
             </span>
             <h2 className="font-heading font-serif text-2xl sm:text-3xl font-bold uppercase tracking-wide text-zinc-950 dark:text-zinc-100">
               Subscribe to Noir Scent
             </h2>
             <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
-              VIP invitations, limited extrait reserve decanters, aur fragrance announcements. Online subscriptions jald launch hone wali hain (Coming Soon).
+              Receive private invitations, limited extrait reserve decanters, and olfactory announcements directly to your inbox.
             </p>
 
             {/* Newsletter Form & Feedback Banner */}
@@ -164,16 +175,16 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="hover:text-black transition-colors"
                 >
-                  {STORE_CONFIG.whatsappDisplay}
+                  {SITE_CONFIG.whatsappDisplay}
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
                 <a
-                  href={`mailto:${STORE_CONFIG.contactEmail}`}
+                  href={`mailto:${SITE_CONFIG.contactEmail}`}
                   className="hover:text-black transition-colors"
                 >
-                  {STORE_CONFIG.contactEmail}
+                  {SITE_CONFIG.contactEmail}
                 </a>
               </li>
               <li className="flex items-center gap-2 text-zinc-500">
@@ -342,7 +353,7 @@ export default function Footer() {
               href="/"
               className="font-semibold text-black dark:text-[#f4f4f5] uppercase tracking-wider hover:underline underline-offset-4"
             >
-              {BRAND_NAME}
+              {SITE_CONFIG.brandName}
             </Link>
             <span className="mx-2 text-zinc-400 dark:text-zinc-600">&bull;</span>
             <span>Handcrafted in Pakistan</span>

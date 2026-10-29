@@ -27,8 +27,12 @@ export async function generateMetadata({
   return {
     title: pageTitle,
     description: pageDescription,
+    robots: {
+      index: false,
+      follow: false,
+    },
     alternates: {
-      canonical: canonicalUrl,
+      canonical: "/search",
     },
     openGraph: {
       title: pageTitle,

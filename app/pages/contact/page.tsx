@@ -5,14 +5,14 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import ContactFormClient from "./ContactFormClient";
 
 export const metadata: Metadata = {
-  title: "Contact Concierge & Customer Care",
+  title: { absolute: "Contact Concierge & Customer Care | Noir Scent" },
   description:
     "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
   alternates: {
     canonical: "/pages/contact",
   },
   openGraph: {
-    title: "Contact Concierge & Customer Care",
+    title: "Contact Concierge & Customer Care | Noir Scent",
     description:
       "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
     url: "/pages/contact",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Concierge & Customer Care",
+    title: "Contact Concierge & Customer Care | Noir Scent",
     description:
       "Get in touch with Noir Scent for fragrance consultations, order tracking, and nationwide delivery support. Fast assistance via WhatsApp and email.",
     images: [DEFAULT_PRODUCT_IMAGE],

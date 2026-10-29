@@ -93,9 +93,9 @@ RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ## 4. Inbound Email Receiving & Webhooks
 
 ### 1. Webhook Endpoint
-- **URL**: `https://noirscents.netlify.app/api/resend/webhook`
+- **URL**: `https://www.noirscent.com/api/resend/webhook`
 - **Method**: `POST`
-- **Health Check**: `GET https://noirscents.netlify.app/api/resend/webhook` (returns status `200 OK`)
+- **Health Check**: `GET https://www.noirscent.com/api/resend/webhook` (returns status `200 OK`)
 
 ### 2. Supported Events
 - `email.received`: Triggered whenever an inbound email arrives at your domain.
@@ -166,11 +166,11 @@ In **Resend Dashboard** -> **Emails** -> **Receiving**:
 
 1. Navigate to [https://resend.com/webhooks](https://resend.com/webhooks).
 2. Click **Add Webhook**.
-3. **Endpoint URL**: `https://noirscents.netlify.app/api/resend/webhook`
+3. **Endpoint URL**: `https://www.noirscent.com/api/resend/webhook`
 4. **Events to subscribe**: Check **`email.received`** (and optionally `email.delivered`, `email.bounced`).
 5. Click **Create Webhook**.
 6. Copy the **Signing Secret** (starts with `whsec_...`).
-7. Paste this secret into your **Netlify Environment Variables** under `RESEND_WEBHOOK_SECRET`.
+7. Paste this secret into your **Environment Variables** under `RESEND_WEBHOOK_SECRET`.
 
 ---
 
@@ -179,14 +179,14 @@ In **Resend Dashboard** -> **Emails** -> **Receiving**:
 ### Local Automated Test Suite
 Run the automated test runner locally to verify template generation, HTML sanitization, Svix signatures, rate limiting, and idempotency:
 ```bash
-npx tsx scratch/test_resend_integration.mjs
+npx tsx tests/email-integration.test.mjs
 ```
-Expected output: `13 PASSED, 0 FAILED`.
+Expected output: All tests passing.
 
 ### Live Inbound Webhook Health Check
-Verify that your deployed Netlify webhook endpoint is active and listening:
+Verify that your deployed webhook endpoint is active and listening:
 ```bash
-curl -X GET https://noirscents.netlify.app/api/resend/webhook
+curl -X GET https://www.noirscent.com/api/resend/webhook
 ```
 Response:
 ```json

@@ -125,18 +125,17 @@ export default function NotesPyramid({ notes, macerationDays = 45 }: NotesPyrami
         </div>
       </div>
 
-      {/* Super Maceration Certificate Note */}
-      <div className="p-4 bg-[#fbf9f4] dark:bg-[#16161c] border border-[#e8dfcf] dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs transition-colors">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck className="w-5 h-5 text-[#b48325] dark:text-[#d4af37] shrink-0" />
-          <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed font-light">
-            <strong className="text-zinc-950 dark:text-zinc-100 font-semibold">{macerationDays}-Day Vault Maturation:</strong> All Noir Scent creations undergo temperature-controlled dark chamber maceration to seamlessly merge natural perfume oils and eliminate harshness.
-          </p>
+      {/* Maceration Note from Data */}
+      {macerationDays ? (
+        <div className="p-4 bg-[#fbf9f4] dark:bg-[#16161c] border border-[#e8dfcf] dark:border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs transition-colors">
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck className="w-5 h-5 text-[#b48325] dark:text-[#d4af37] shrink-0" />
+            <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed font-light">
+              <strong className="text-zinc-950 dark:text-zinc-100 font-semibold">{macerationDays}-Day Vault Maturation:</strong> Noir Scent formulations undergo temperature-controlled dark chamber maceration to seamlessly merge fragrance oils.
+            </p>
+          </div>
         </div>
-        <span className="text-[11px] font-bold text-[#b48325] dark:text-[#d4af37] uppercase tracking-wider shrink-0 bg-white dark:bg-[#121216] px-3 py-1 border border-[#e8dfcf] dark:border-zinc-800">
-          Quality Certified
-        </span>
-      </div>
+      ) : null}
     </div>
   );
 }

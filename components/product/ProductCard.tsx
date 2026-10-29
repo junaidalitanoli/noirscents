@@ -59,9 +59,9 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
         {/* Badges */}
         <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10 pointer-events-none">
-          {product.isBestSeller && (
+          {product.badge && (
             <span className="bg-[#121212] dark:bg-[#18181c] text-white dark:text-[#f5e7b2] border border-transparent dark:border-[#d4af37]/40 text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-              Best Seller
+              {product.badge}
             </span>
           )}
           {hasDiscount && (

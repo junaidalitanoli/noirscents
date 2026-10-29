@@ -3,10 +3,11 @@ import Link from "next/link";
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, Compass, Droplet } from "lucide-react";
 import { BRAND_NAME } from "@/lib/constants";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { SITE_CONFIG } from "@/lib/site-config";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "Our Heritage & Artisanal Philosophy | Noir Scent",
+  title: { absolute: "Our Heritage & Artisanal Philosophy | Noir Scent" },
   description:
     "Discover the story of Noir Scent: artisanal Extrait de Parfum handcrafted to deliver enduring luxury and sophisticated sillage across Pakistan.",
   alternates: {
@@ -43,6 +44,12 @@ export default function AboutPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 w-full space-y-16">
       <Breadcrumbs items={[{ label: "About Us" }]} />
 
+      {SITE_CONFIG.isDemo && (
+        <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 p-4 rounded-xl text-center text-xs text-amber-800 dark:text-amber-200">
+          <strong>Demonstration Notice:</strong> This digital storefront prototype is configured in educational demo mode.
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="text-center space-y-5 max-w-3xl mx-auto">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-700/50 text-xs text-[#9b6f1e] dark:text-[#f5e7b2] font-bold uppercase tracking-widest shadow-2xs">
@@ -59,6 +66,7 @@ export default function AboutPage() {
       </div>
 
       {/* Founder's Letter / Brand Story */}
+      {/* TODO: Review and customize this placeholder brand story and founder letter */}
       <div className="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white rounded-3xl p-8 sm:p-12 lg:p-16 border border-zinc-800 shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">

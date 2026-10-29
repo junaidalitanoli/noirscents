@@ -6,7 +6,8 @@ import { INITIAL_PRODUCTS } from "@/lib/data";
 import { SITE_IMAGES, DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { STORE_CONFIG } from "@/lib/store-config";
 import ProductCard from "@/components/product/ProductCard";
-import HeroSlider from "@/components/home/HeroSlider";
+import HeroBanner from "@/components/home/HeroBanner";
+import CollectionSpotlights from "@/components/home/CollectionSpotlights";
 
 export const metadata: Metadata = {
   title: {
@@ -44,6 +45,9 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const menCount = INITIAL_PRODUCTS.filter((p) => p.category === "men").length;
+  const womenCount = INITIAL_PRODUCTS.filter((p) => p.category === "women").length;
+
   // Best sellers: our top 4 flagship extraits
   const bestSellers = INITIAL_PRODUCTS.filter((p) => p.isBestSeller).slice(0, 4);
 
@@ -59,14 +63,14 @@ export default function HomePage() {
     {
       title: "Men's Black Edition",
       slug: "men",
-      subtitle: "8 Signature Obsidian 50ml Extraits",
+      subtitle: `${menCount} Signature Obsidian 50ml Extraits`,
       image: SITE_IMAGES.categories.men.src,
       alt: SITE_IMAGES.categories.men.alt,
     },
     {
       title: "Women's Gold Edition",
       slug: "women",
-      subtitle: "5 Luminous Crystal 50ml Extraits",
+      subtitle: `${womenCount} Luminous Crystal 50ml Extraits`,
       image: SITE_IMAGES.categories.women.src,
       alt: SITE_IMAGES.categories.women.alt,
     },
@@ -74,8 +78,8 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col bg-white dark:bg-[#09090b] text-[#121212] dark:text-[#f4f4f5] transition-colors duration-200">
-      {/* 1. HERO CAROUSEL: 4 Distinct Luxury Light & Dark Themes & Auto-Rotating Banners */}
-      <HeroSlider />
+      {/* 1. EDITORIAL HERO: Exactly ONE H1, Focused Luxury Visual & Direct CTAs */}
+      <HeroBanner />
 
       {/* 2. VALUE PROPOSITION BAR (Light & Dark Haute Parfumerie Aesthetic) */}
       <div className="bg-[#faf8f5] dark:bg-[#0e0e12] text-stone-800 dark:text-stone-200 border-y border-[#eae4d9] dark:border-white/10 py-3.5 sm:py-4 px-3 sm:px-6 transition-colors">
@@ -106,7 +110,7 @@ export default function HomePage() {
                 <Sparkles className="w-3.5 h-3.5 text-[#b48325] dark:text-[#d4af37]" />
               </div>
               <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 dark:text-stone-100 uppercase tracking-wider">{STORE_CONFIG.longevityText} Longevity</p>
+                <p className="text-[11px] sm:text-xs font-semibold text-stone-950 dark:text-stone-100 uppercase tracking-wider">All-Day Longevity</p>
                 <p className="text-[9.5px] sm:text-[11px] text-stone-500 dark:text-stone-400 font-medium">Pure Artisan Extrait</p>
               </div>
             </div>
@@ -150,33 +154,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. SECTION: Clearance Sale Deals */}
-      <section id="clearance-sale" className="py-10 sm:py-16 bg-[#fafafa]/60 dark:bg-[#0c0c0f]/80 border-t border-black/6 dark:border-white/10">
-        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="flex items-end justify-between mb-6 sm:mb-8 pb-3 border-b border-black/8 dark:border-white/10">
-            <div>
-              <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
-                Clearance Sale
-              </h2>
-              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                Limited-time discounted signature bottles with exceptional savings.
-              </p>
+      {/* 4. SECTION: Curated Offers */}
+      {clearanceProducts.length > 0 && (
+        <section id="curated-offers" className="py-10 sm:py-16 bg-[#fafafa]/60 dark:bg-[#0c0c0f]/80 border-t border-black/6 dark:border-white/10">
+          <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="flex items-end justify-between mb-6 sm:mb-8 pb-3 border-b border-black/8 dark:border-white/10">
+              <div>
+                <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">
+                  Curated Offers
+                </h2>
+                <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                  Selected signature extraits with special promotional value.
+                </p>
+              </div>
+              <Link
+                href="/collections/deals"
+                className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] dark:text-[#d4af37] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3 transition-colors"
+              >
+                View all <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
             </div>
-            <Link
-              href="/collections/deals"
-              className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-[#121212] dark:text-[#d4af37] hover:underline underline-offset-4 flex items-center gap-1 shrink-0 ml-3 transition-colors"
-            >
-              View all <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            {clearanceProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+              {clearanceProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 5. SECTION: Bundles & Sets (exclusively from deals collection) */}
       {bundleProducts.length > 0 && (
@@ -208,7 +214,10 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* 6. SECTION: Shop By Category */}
+      {/* 6. EDITORIAL SPOTLIGHTS: Men's Obsidian & Women's Gold Masterpieces */}
+      <CollectionSpotlights />
+
+      {/* 7. SECTION: Shop By Category */}
       <section className="py-12 sm:py-16 max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
           <h2 className="text-xl sm:text-3xl font-serif font-medium uppercase tracking-tight text-[#121212] dark:text-[#f4f4f5]">

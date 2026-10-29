@@ -1,27 +1,31 @@
+import { SITE_CONFIG } from "./site-config";
+
 /**
  * Single source of truth for store configuration, policies, and brand standards.
+ * Reads from central lib/site-config.ts.
  */
 export const STORE_CONFIG = {
-  name: "Noir Scent",
-  legalName: "Noir Scent Pakistan",
-  tagline: "Artisanal Luxury Scents Crafted for Pakistan",
-  freeDeliveryThreshold: 3000,
-  standardShippingFee: 250,
-  reverseCourierFee: 200,
-  returnWindowDays: 7,
-  longevityText: "long-lasting sillage",
+  name: SITE_CONFIG.brandName,
+  legalName: SITE_CONFIG.legalName,
+  tagline: SITE_CONFIG.tagline,
+  freeDeliveryThreshold: SITE_CONFIG.freeDeliveryThreshold,
+  standardShippingFee: SITE_CONFIG.deliveryFee,
+  reverseCourierFee: SITE_CONFIG.reverseCourierFee,
+  returnWindowDays: SITE_CONFIG.returnWindowDays,
+  longevityText: "All-Day Sillage",
   concentrationText: "artisanal Extrait de Parfum",
   perfumeType: "Extrait de Parfum",
-  deliveryTime: "2–4 business days",
-  couriers: "TCS / Leopards Courier",
-  contactEmail: "noirscents01@gmail.com",
-  phone: "+92 332 2224331",
-  whatsappNumber: "923322224331",
-  whatsappDisplay: "+92 332 2224331",
-  businessHours: "Monday to Saturday: 10 AM – 8 PM PKT",
-  instagramUrl: (process.env.NEXT_PUBLIC_INSTAGRAM_URL || "").trim(),
-  facebookUrl: (process.env.NEXT_PUBLIC_FACEBOOK_URL || "").trim(),
-  showProjectDisclaimer: process.env.NEXT_PUBLIC_SHOW_PROJECT_DISCLAIMER === "true",
+  deliveryTime: SITE_CONFIG.deliveryTime,
+  couriers: SITE_CONFIG.couriers,
+  contactEmail: SITE_CONFIG.contactEmail,
+  phone: SITE_CONFIG.phone,
+  whatsappNumber: SITE_CONFIG.whatsappNumber,
+  whatsappDisplay: SITE_CONFIG.whatsappDisplay,
+  businessHours: SITE_CONFIG.businessHours,
+  instagramUrl: SITE_CONFIG.socials.instagram,
+  facebookUrl: SITE_CONFIG.socials.facebook,
+  tiktokUrl: SITE_CONFIG.socials.tiktok,
+  showProjectDisclaimer: SITE_CONFIG.isDemo,
   cities: ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Faisalabad"] as const,
   faqs: [
     {
@@ -37,7 +41,7 @@ export const STORE_CONFIG = {
     {
       question: "How long do Noir Scent fragrances last?",
       answer:
-        "Our creations are formulated as concentrated Extrait de Parfum using high-grade perfume oils, engineered for enduring all-day sillage tailored for Pakistan's climate (longevity varies naturally based on skin chemistry and note profiles).",
+        "Our creations are formulated as concentrated Extrait de Parfum using premium perfume oils, engineered for enduring all-day sillage tailored for Pakistan's climate.",
     },
     {
       question: "What concentration are your perfumes?",
@@ -52,7 +56,7 @@ export const STORE_CONFIG = {
     {
       question: "How do I qualify for free shipping?",
       answer:
-        "Free express delivery is automatically applied to all orders of Rs. 3,000 and above. Orders below this threshold have a standard delivery fee of Rs. 250.",
+        `Free express delivery is automatically applied to all orders of Rs. ${SITE_CONFIG.freeDeliveryThreshold.toLocaleString()} and above. Orders below this threshold have a standard delivery fee of Rs. ${SITE_CONFIG.deliveryFee}.`,
     },
   ],
 } as const;

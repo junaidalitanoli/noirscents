@@ -26,7 +26,7 @@ export default function Navbar() {
     { label: "Home", href: "/" },
     { label: "Men", href: "/collections/men" },
     { label: "Women", href: "/collections/women" },
-    { label: "Bundles", href: "/collections/deals" },
+    { label: "Bundles & Offers", href: "/collections/deals" },
     { label: "Testers", href: "/collections/testers" },
     { label: "About", href: "/pages/about" },
   ];
@@ -130,12 +130,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/collections/deals"
-              className="text-[13px] uppercase tracking-[0.1em] font-semibold text-[#cc0000] dark:text-[#f87171] hover:text-[#990000] dark:hover:text-[#fca5a5] hover:underline underline-offset-8 transition-colors py-0.5"
-            >
-              Sale
-            </Link>
           </nav>
         </div>
       </header>
@@ -180,46 +174,46 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery("Urban Legend");
-                  router.push("/search?q=Urban%20Legend");
+                  setSearchQuery("Desert Majesty");
+                  router.push("/search?q=Desert%20Majesty");
                   setSearchModalOpen(false);
                 }}
                 className="underline hover:text-black dark:hover:text-[#d4af37] transition-colors"
               >
-                Urban Legend
+                Desert Majesty
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery("Oud");
-                  router.push("/search?q=Oud");
+                  setSearchQuery("Silk Oud");
+                  router.push("/search?q=Silk%20Oud");
                   setSearchModalOpen(false);
                 }}
                 className="underline hover:text-black dark:hover:text-[#d4af37] transition-colors"
               >
-                Noir Oud
+                Silk Oud
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery("Rose");
-                  router.push("/search?q=Rose");
+                  setSearchQuery("Loyal Heart");
+                  router.push("/search?q=Loyal%20Heart");
                   setSearchModalOpen(false);
                 }}
                 className="underline hover:text-black dark:hover:text-[#d4af37] transition-colors"
               >
-                Velvet Rose
+                Loyal Heart
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  setSearchQuery("Discovery");
-                  router.push("/search?q=Discovery");
+                  setSearchQuery("Raaz");
+                  router.push("/search?q=Raaz");
                   setSearchModalOpen(false);
                 }}
                 className="underline hover:text-black dark:hover:text-[#d4af37] transition-colors"
               >
-                Discovery Set
+                Raaz
               </button>
             </div>
           </div>
@@ -269,15 +263,6 @@ export default function Navbar() {
                     className="text-base font-medium uppercase tracking-[0.08em] text-zinc-900 dark:text-zinc-200 hover:text-black dark:hover:text-[#d4af37] transition-colors block py-1"
                   >
                     All Products
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/collections/deals"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-base font-semibold uppercase tracking-[0.08em] text-[#cc0000] dark:text-[#f87171] hover:text-[#990000] dark:hover:text-[#fca5a5] transition-colors block py-1"
-                  >
-                    Sale Deals
                   </Link>
                 </li>
               </ul>

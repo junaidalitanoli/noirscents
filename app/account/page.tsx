@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
-  Package,
   ShieldCheck,
   Sparkles,
   AlertCircle,
@@ -58,7 +56,7 @@ export default function AccountPage() {
 
     const cleanId = trackOrderId.trim().toUpperCase();
     if (!cleanId) {
-      setTrackError("Barah-e-karam apna Order ID darj karein.");
+      setTrackError("Please enter your Order ID.");
       return;
     }
 
@@ -70,11 +68,11 @@ export default function AccountPage() {
       if (res.ok && data?.success && data?.order) {
         setTrackedOrder(data.order);
       } else {
-        setTrackError("Order nahi mila. Barah-e-karam apna Order ID check karein (maslan NS-12345678).");
+        setTrackError("Order not found. Please verify your Order ID (e.g. NS-12345678).");
       }
     } catch (err) {
       console.error("Order tracking error:", err);
-      setTrackError("Order status check karne mein masla pesh aaya. Barah-e-karam dobara koshish karein.");
+      setTrackError("Unable to retrieve order details at this time. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -126,7 +124,7 @@ export default function AccountPage() {
                   />
                 </div>
                 <span id="track-order-hint" className="text-[11px] text-zinc-500 dark:text-zinc-400 block mt-1">
-                  Apne confirmation SMS, email, ya checkout screen ka 8-digit Order ID darj karein.
+                  Enter the 8-digit Order ID from your confirmation email, SMS, or receipt.
                 </span>
               </div>
 
@@ -238,7 +236,7 @@ export default function AccountPage() {
                   <span className="text-zinc-500 dark:text-zinc-400">Need delivery assistance?</span>
                   <a
                     href={`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-                      `Assalam-o-Alaikum, mujhe apne order #${trackedOrder.id} ki dispatch update chahiye.`
+                      `Hello Noir Scent, I would like an update on my order #${trackedOrder.id}.`
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

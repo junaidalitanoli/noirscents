@@ -7,9 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint app components lib types store",
-    "test:email": "tsx tests/email-integration.test.mjs",
-    "build:netlify": "netlify build --offline",
-    "deploy:netlify": "netlify deploy --prod --no-build"
+    "verify:routes": "tsx scripts/verify-product-routes.mjs",
+    "test:email": "tsx tests/email-integration.test.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.48.0",

@@ -38,6 +38,69 @@ All product photos currently default to `/images/noir-box.jpg` (the black and go
 
 ---
 
+## 📦 Product Catalog Management (Single Source of Truth)
+
+All products across the store (Home, Collections, Product Detail Pages, &ldquo;You may also like&rdquo;, Search, and Sitemap) are powered by **ONE single file**: [`lib/data.ts`](file:///c:/Users/Junaid%20Ali%20Tanoli/OneDrive/Desktop/noir-scents-store/lib/data.ts).
+
+### How to Add a Product:
+1. Open [`lib/data.ts`](file:///c:/Users/Junaid%20Ali%20Tanoli/OneDrive/Desktop/noir-scents-store/lib/data.ts).
+2. Append or insert a new product object into `INITIAL_PRODUCTS` using the full example below.
+3. Drop corresponding photos into `public/images/`.
+4. Run `npm run verify:routes` to test that the slug resolves and prerenders without error.
+
+### How to Remove a Product:
+1. Open [`lib/data.ts`](file:///c:/Users/Junaid%20Ali%20Tanoli/OneDrive/Desktop/noir-scents-store/lib/data.ts).
+2. Remove the product object from `INITIAL_PRODUCTS`.
+3. Run `npm run verify:routes` to verify the catalog consistency.
+
+### Complete Product Entry Template:
+
+```typescript
+{
+  id: "ns-014",
+  slug: "velvet-sultan",
+  name: "Velvet Sultan",
+  category: "men", // "men" | "women" | "testers" | "deals"
+  subtitle: "Smoked Taif Rose, Royal Cambodian Agarwood & Ambergris",
+  inspiration: "Inspired by midnight courts and royal Arabian gardens under starry desert skies.",
+  accords: ["Smoked Oud", "Taif Rose", "Baltic Amber", "Dark Patchouli", "Coriander"],
+  gender: "Men", // "Men" | "Women" | "Unisex"
+  season: "Fall & Winter Evenings",
+  occasion: "Formal Receptions, Black-Tie Galas & Celebrations",
+  concentration: "Extrait de Parfum (35% Fragrance Oil Concentration)",
+  macerationDays: 45,
+  description:
+    "An authoritative and deeply hypnotic extrait that commands respect from the first encounter. Sun-drenched Taif rose absolute opens into aged royal Cambodian agarwood, grounded by dark mineral amber and earthy patchouli for an all-day majestic trail.",
+  images: [
+    "/images/noir-black-flacon.jpg",
+    "/images/noir-black-oud.jpg"
+  ],
+  sizes: [
+    { ml: 50, price: 3450 }
+  ],
+  compareAtPrice: 5800, // Optional: only set if offering an actual discount
+  badge: "Best Seller", // Optional: "Best Seller" | "New Arrival" | custom string (shown only when set)
+  notes: {
+    top: ["Taif Rose Absolute", "Cardamom Seed", "Bergamot"],
+    heart: ["Royal Cambodian Oud", "Smoked Birch", "Labdanum Resin"],
+    base: ["Dark Mineral Amber", "Bourbon Vetiver", "Baltic Ambergris"]
+  },
+  majorIngredients: [
+    { name: "Taif Rose Absolute", percentage: "15%" },
+    { name: "Cambodian Agarwood Resinoid", percentage: "14%" },
+    { name: "Baltic Ambergris Accord", percentage: "8%" },
+    { name: "Bourbon Vetiver Root Oil", percentage: "6%" }
+  ],
+  longevity: 5, // 1 to 5 scale (5 = All-Day Sillage)
+  projection: "Majestic & Commanding (All-Day Sillage)",
+  isBestSeller: true,
+  isNewArrival: false,
+  createdAt: "2025-03-01T10:00:00Z"
+}
+```
+
+---
+
 ## 🌟 Architecture & Reference Match Breakdown
 
 The storefront architecture matches the Shopify Dawn theme layout:
@@ -91,6 +154,50 @@ RESEND_API_KEY=re_your_api_key_here
 # Receiving email address for order notifications
 MY_RECEIVING_EMAIL=noirscents01@gmail.com
 ```
+
+---
+
+## 🌐 Domain Configuration & Vercel 301 www Redirect
+
+The canonical production host is `https://www.noirscent.com` (with `www`).
+All non-www traffic must 301 permanently redirect to `www`.
+
+### How to configure on Vercel:
+1. In your **Vercel Project Dashboard**, navigate to **Settings > Domains**.
+2. Add both domains:
+   - `www.noirscent.com`
+   - `noirscent.com`
+3. Set `www.noirscent.com` as the **Primary Domain**.
+4. Vercel will automatically prompt: *"Redirect noirscent.com to www.noirscent.com"*. Select **Redirect to www.noirscent.com (Status Code: 301 Permanent Redirect)**.
+5. In your DNS registrar (e.g. Namecheap, Cloudflare, GoDaddy):
+   - Add a `CNAME` record for `www` pointing to `cname.vercel-dns.com`.
+   - Add an `A` record for `@` pointing to `76.76.21.21` (or follow Vercel's DNS recommendations).
+6. Set the production environment variable in Vercel:
+   ```env
+   NEXT_PUBLIC_SITE_URL=https://www.noirscent.com
+   ```
+   Once set, redeploy the project. Pre-launch protection will immediately deactivate, enabling full search engine indexing and public sitemaps.
+
+---
+
+## 🔍 Testing Structured Data (Google Rich Results)
+
+All structured data across the storefront uses standard Schema.org JSON-LD via the reusable `<JsonLd>` component:
+- **Global**: `Organization` (with brand metadata and customer care WhatsApp contact point) and `WebSite` (with internal search action).
+- **Navigation**: `BreadcrumbList` on collections, product detail pages, and policy pages.
+- **Product Pages**: `Product` schema with name, description, high-resolution image array, SKU, brand, and complete `Offer` specification:
+  - `priceCurrency`: `PKR`
+  - `price`: dynamic from product data
+  - `availability`: `InStock` or `OutOfStock` based on inventory
+  - `itemCondition`: `https://schema.org/NewCondition`
+  - `shippingDetails`: Free shipping above Rs. 3,000 threshold or Rs. 250 flat rate, 2–4 business days delivery across Pakistan (`PK`).
+  - `hasMerchantReturnPolicy`: 7-day scent exchange policy (`PK`).
+  - No fake reviews or aggregate ratings.
+
+### How to test:
+1. Open the **[Google Rich Results Test](https://search.google.com/test/rich-results)**.
+2. Enter the URL of your deployed product page (or paste the rendered page HTML via *Code* tab).
+3. Verify that **Product snippets**, **Merchant listings**, and **Breadcrumbs** are detected with 0 errors.
 
 ---
 

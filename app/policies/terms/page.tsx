@@ -6,14 +6,16 @@ import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions",
-  description: `Terms and conditions for ordering from ${BRAND_NAME} in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.`,
+  title: { absolute: "Terms and Conditions | Noir Scent" },
+  description:
+    "Terms and conditions for ordering from Noir Scent in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.",
   alternates: {
     canonical: "/policies/terms",
   },
   openGraph: {
-    title: "Terms and Conditions",
-    description: `Terms and conditions for ordering from ${BRAND_NAME} in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.`,
+    title: "Terms and Conditions | Noir Scent",
+    description:
+      "Terms and conditions for ordering from Noir Scent in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.",
     url: "/policies/terms",
     siteName: "Noir Scent",
     images: [
@@ -29,8 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Terms and Conditions",
-    description: `Terms and conditions for ordering from ${BRAND_NAME} in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.`,
+    title: "Terms and Conditions | Noir Scent",
+    description:
+      "Terms and conditions for ordering from Noir Scent in Pakistan. Details on Cash on Delivery orders, courier dispatch, and scent exchanges.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

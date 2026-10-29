@@ -7,6 +7,7 @@ import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { getAbsoluteUrl } from "@/lib/site";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import ImageGallery from "@/components/product/ImageGallery";
 import ProductDetailClient from "@/components/product/ProductDetailClient";
 import ProductPerformanceMatrix from "@/components/product/ProductPerformanceMatrix";
@@ -48,13 +49,12 @@ export async function generateMetadata({
   }
 
   const primaryImage = product.images?.[0] || DEFAULT_PRODUCT_IMAGE;
-  const pageTitle = `${product.name} Extrait de Parfum | Noir Scent Pakistan`;
-  const pageDescription = product.subtitle
-    ? `${product.name} — ${product.subtitle}. Handcrafted artisanal Extrait de Parfum with 12+ hours sillage. Cash on Delivery across Pakistan.`
-    : `Experience ${product.name} Extrait de Parfum in Pakistan. Artisanal luxury perfume with ${STORE_CONFIG.longevityText} longevity and Cash on Delivery nationwide.`;
+  const gender = product.category === "women" ? "Women" : product.category === "men" ? "Men" : "Men & Women";
+  const pageTitle = `${product.name} Extrait de Parfum for ${gender} – 50ml | Noir Scent`;
+  const pageDescription = `Buy ${product.name} Extrait de Parfum for ${gender} (50ml) in Pakistan. Handcrafted luxury fragrance with all-day sillage and nationwide Cash on Delivery.`;
 
   return {
-    title: pageTitle,
+    title: { absolute: pageTitle },
     description: pageDescription,
     alternates: {
       canonical: `/products/${product.slug}`,
@@ -108,12 +108,19 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       : "Testers";
 
   // Schema.org JSON-LD
+  const productImages =
+    product.images && product.images.length > 0
+      ? product.images.map((img) => getAbsoluteUrl(img))
+      : [getAbsoluteUrl(DEFAULT_PRODUCT_IMAGE)];
+
+  const isFreeDelivery = product.sizes[0].price >= STORE_CONFIG.freeDeliveryThreshold;
+
   const productJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: product.description,
-    image: getAbsoluteUrl(product.images?.[0] || DEFAULT_PRODUCT_IMAGE),
+    image: productImages,
     brand: {
       "@type": "Brand",
       name: "Noir Scent",
@@ -123,11 +130,50 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       "@type": "Offer",
       priceCurrency: "PKR",
       price: product.sizes[0].price,
-      availability: "https://schema.org/InStock",
+      availability:
+        (product.stock === undefined || product.stock > 0)
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
       url: getAbsoluteUrl(`/products/${product.slug}`),
+      itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
         name: "Noir Scent",
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: isFreeDelivery ? 0 : STORE_CONFIG.standardShippingFee,
+          currency: "PKR",
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "PK",
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 2,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 2,
+            maxValue: 4,
+            unitCode: "DAY",
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "PK",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: STORE_CONFIG.returnWindowDays,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn",
       },
     },
   };
@@ -135,10 +181,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   return (
     <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full space-y-12 sm:space-y-16">
       {/* Product JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
-      />
+      <JsonLd data={productJsonLd} />
 
       {/* Top Navigation: Breadcrumbs + Batch Cert Pill */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-black/6 dark:border-white/10">
@@ -151,7 +194,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         />
         <div className="flex items-center gap-2 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
           <ShieldCheck className="w-3.5 h-3.5 text-[#c5a059] dark:text-[#d4af37]" />
-          <span>Batch #NS-2025 &bull; 45-Day Macerated &bull; Small Batch</span>
+          <span>{product.macerationDays ? `${product.macerationDays}-Day Macerated • ` : ""}Small Batch</span>
         </div>
       </div>
 
@@ -191,18 +234,16 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
               </p>
             )}
 
-            {/* Reviews Status */}
-            <div className="flex items-center gap-2 mt-2 text-xs">
-              <span className="text-[11px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-medium">
-                Reviews launch ke baad
-              </span>
-            </div>
+
           </div>
 
-          {/* Quick Teaser / Summary */}
+          {/* Quick Teaser / Summary (1-2 sentences) */}
           <div className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-light border-y border-black/8 dark:border-white/10 py-3">
-            <p className="line-clamp-3 hover:line-clamp-none transition-all">
-              {product.description}
+            <p>
+              {product.shortDescription ||
+                (product.description.includes(". ")
+                  ? product.description.split(". ").slice(0, 2).join(". ") + "."
+                  : product.description)}
             </p>
           </div>
 

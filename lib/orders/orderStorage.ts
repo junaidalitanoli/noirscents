@@ -114,7 +114,22 @@ function writeLocalOrders(orders: Order[]): boolean {
   }
 }
 
-function mapSupabaseRowToOrder(row: any): Order {
+interface SupabaseOrderRow {
+  id: string;
+  customer: Order["customer"];
+  items: Order["items"];
+  subtotal: number | string;
+  shipping_fee: number | string;
+  total: number | string;
+  status: string;
+  payment_method: string;
+  created_at: string;
+  email_status?: string;
+  email_error?: string;
+  idempotency_key?: string;
+}
+
+function mapSupabaseRowToOrder(row: SupabaseOrderRow): Order {
   return {
     id: row.id,
     customer: row.customer,
@@ -123,9 +138,9 @@ function mapSupabaseRowToOrder(row: any): Order {
     shippingFee: Number(row.shipping_fee),
     total: Number(row.total),
     status: row.status as OrderStatus,
-    paymentMethod: row.payment_method,
+    paymentMethod: (row.payment_method || "Cash on Delivery") as Order["paymentMethod"],
     createdAt: row.created_at,
-    emailStatus: row.email_status,
+    emailStatus: row.email_status as Order["emailStatus"],
     emailError: row.email_error,
     idempotencyKey: row.idempotency_key,
   };
@@ -346,7 +361,7 @@ export async function saveOrder(
     }
 
     // Handle ID collision on insert: if order.id exists in local storage, retry with fresh ID up to 3 times
-    let orderToSave: Order = {
+    const orderToSave: Order = {
       ...order,
       idempotencyKey,
     };

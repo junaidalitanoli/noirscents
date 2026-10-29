@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllProducts, getProductsByCategory } from "@/lib/data";
-import { CATEGORIES } from "@/lib/constants";
 import { Category } from "@/types";
 import { DEFAULT_PRODUCT_IMAGE, SITE_IMAGES } from "@/lib/images";
 import ProductGrid from "@/components/product/ProductGrid";
@@ -31,7 +30,7 @@ const COLLECTION_METADATA: Record<
   }
 > = {
   all: {
-    title: "All Handcrafted Extrait Perfumes",
+    title: "All Artisanal Extrait Perfumes in Pakistan | Noir Scent",
     description:
       "Explore our entire catalogue of handcrafted artisanal Extrait de Parfum, sample sets, and bundles with Cash on Delivery in Pakistan.",
     intro:
@@ -39,15 +38,15 @@ const COLLECTION_METADATA: Record<
     image: DEFAULT_PRODUCT_IMAGE,
   },
   men: {
-    title: "Men's Perfumes in Pakistan",
+    title: "Men's Extrait Perfumes in Pakistan | Noir Scent",
     description:
-      "Shop long-lasting masculine extrait perfumes in Pakistan. Bold woody, spicy, and fresh notes crafted for enduring all-day sillage.",
+      "Shop long-lasting masculine extrait perfumes in Pakistan. Handcrafted woody, spicy, and smoky notes with all-day sillage and nationwide Cash on Delivery.",
     intro:
       "Designed for the charismatic modern man, our men's collection features bold woody accords, smoldering ouds, and revitalizing fresh notes. Formulated to triumph over Pakistan's climate, these extraits project with distinguished authority and enduring presence. Order with seamless Cash on Delivery across Karachi, Lahore, Islamabad, and nationwide.",
     image: SITE_IMAGES.categories.men.src,
   },
   women: {
-    title: "Women's Perfumes in Pakistan",
+    title: "Women's Extrait Perfumes in Pakistan | Noir Scent",
     description:
       "Discover enchanting floral, amber, and gourmand extrait perfumes for women in Pakistan. High fragrance oil concentration with graceful projection.",
     intro:
@@ -55,15 +54,15 @@ const COLLECTION_METADATA: Record<
     image: SITE_IMAGES.categories.women.src,
   },
   testers: {
-    title: "Perfume Discovery Sets & Testers",
+    title: "Perfume Discovery Sets & Testers in Pakistan | Noir Scent",
     description:
-      "Sample luxury perfumes with our discovery sets and travel testers. Find your signature extrait fragrance before ordering full bottles.",
+      "Sample luxury perfumes with our discovery sets and travel testers in Pakistan. Experience signature artisanal extraits before choosing a full bottle.",
     intro:
       "Uncertain which fragrance best complements your skin chemistry? Our discovery sets and travel spray atomizers let you experience our most celebrated extraits at home before choosing a full bottle. Each sample flight features concentrated extrait formulations and includes complimentary smelling strips.",
     image: SITE_IMAGES.categories.testers.src,
   },
   deals: {
-    title: "Perfume Bundles & Deals",
+    title: "Perfume Bundles & Offers in Pakistan | Noir Scent",
     description:
       "Curated fragrance bundles, duo packs, and clearance specials at exceptional value. Free delivery across Pakistan on orders of Rs. 3,000 and above.",
     intro:
@@ -78,14 +77,14 @@ export async function generateMetadata({
   const { category } = await params;
   if (!VALID_CATEGORIES.includes(category)) {
     return {
-      title: "Collection Not Found",
+      title: { absolute: "Collection Not Found | Noir Scent" },
     };
   }
 
   const meta = COLLECTION_METADATA[category] || COLLECTION_METADATA.all;
 
   return {
-    title: meta.title,
+    title: { absolute: meta.title },
     description: meta.description,
     alternates: {
       canonical: `/collections/${category}`,
@@ -98,9 +97,9 @@ export async function generateMetadata({
       images: [
         {
           url: meta.image,
-          width: 1024,
-          height: 1024,
-          alt: `${meta.title} by Noir Scent`,
+          width: 1200,
+          height: 630,
+          alt: meta.title,
         },
       ],
       locale: "en_PK",
@@ -123,17 +122,25 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
   }
 
   const isAll = category === "all";
-  const catMeta = CATEGORIES.find((c) => c.slug === category);
   const products = isAll
     ? getAllProducts()
     : getProductsByCategory(category as Category);
 
   const meta = COLLECTION_METADATA[category] || COLLECTION_METADATA.all;
-  const label = isAll ? "All Products" : catMeta?.label || category;
+  const breadcrumbLabel =
+    category === "men"
+      ? "Men"
+      : category === "women"
+      ? "Women"
+      : category === "testers"
+      ? "Testers"
+      : category === "deals"
+      ? "Bundles & Offers"
+      : "All Fragrances";
 
   return (
     <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full">
-      <Breadcrumbs items={[{ label }]} />
+      <Breadcrumbs items={[{ label: breadcrumbLabel }]} />
 
       {/* Collection Banner with 2-3 sentence intro */}
       <div className="py-6 sm:py-8 mb-6 border-b border-black/8 dark:border-white/10 space-y-3">

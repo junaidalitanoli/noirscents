@@ -3,6 +3,10 @@ export type Category = "men" | "women" | "testers" | "deals";
 export interface ProductSize {
   ml: number;
   price: number;
+  compareAtPrice?: number;
+  stock?: number;
+  label?: string;
+  sku?: string;
 }
 
 export interface FragranceNotes {
@@ -42,12 +46,16 @@ export interface Product {
   isNewArrival: boolean;
   sizeLabel?: string;
   badge?: string;
+  stock?: number;
   rating?: number;
   reviewCount?: number;
   createdAt: string;
 
   // Rich luxury olfactory & performance fields
   subtitle?: string;
+  shortDescription?: string; // 1-2 sentence concise teaser for PDP intro
+  story?: string; // Detailed atelier inspiration story
+  longevityHours?: string; // e.g. "12+ Hours" (TODO: Store owner to confirm real values)
   inspiration?: string;
   accords?: string[];
   gender?: "Men" | "Women" | "Unisex";

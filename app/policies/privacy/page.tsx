@@ -5,14 +5,16 @@ import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: `Customer data protection and privacy standards at ${BRAND_NAME}. We operate exclusively on Cash on Delivery with zero card data storage.`,
+  title: { absolute: "Privacy Policy | Noir Scent" },
+  description:
+    "Review customer data protection and privacy standards at Noir Scent. We operate exclusively on Cash on Delivery with zero card data collection in Pakistan.",
   alternates: {
     canonical: "/policies/privacy",
   },
   openGraph: {
-    title: "Privacy Policy",
-    description: `Customer data protection and privacy standards at ${BRAND_NAME}. We operate exclusively on Cash on Delivery with zero card data storage.`,
+    title: "Privacy Policy | Noir Scent",
+    description:
+      "Review customer data protection and privacy standards at Noir Scent. We operate exclusively on Cash on Delivery with zero card data collection in Pakistan.",
     url: "/policies/privacy",
     siteName: "Noir Scent",
     images: [
@@ -28,8 +30,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy",
-    description: `Customer data protection and privacy standards at ${BRAND_NAME}. We operate exclusively on Cash on Delivery with zero card data storage.`,
+    title: "Privacy Policy | Noir Scent",
+    description:
+      "Review customer data protection and privacy standards at Noir Scent. We operate exclusively on Cash on Delivery with zero card data collection in Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

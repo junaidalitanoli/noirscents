@@ -1,13 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Cormorant_Garamond } from "next/font/google";
+import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import JsonLd from "@/components/seo/JsonLd";
 import { ThemeProvider } from "@/components/theme/ThemeContext";
-import { SITE_URL, getAbsoluteUrl } from "@/lib/site";
+import { SITE_URL, getAbsoluteUrl, IS_PRODUCTION_DOMAIN } from "@/lib/site-config";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
@@ -17,17 +18,16 @@ export const viewport: Viewport = {
   themeColor: "#121212",
 };
 
-const montserrat = Montserrat({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-serif",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -46,10 +46,26 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  robots: IS_PRODUCTION_DOMAIN
+    ? {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      }
+    : {
+        index: false,
+        follow: false,
+      },
   openGraph: {
     title: defaultTitle,
     description: defaultDescription,
-    url: SITE_URL,
+    url: "/",
     siteName: "Noir Scent",
     images: [
       {
@@ -91,6 +107,16 @@ export default function RootLayout({
         logo: getAbsoluteUrl("/images/logo.svg"),
         email: STORE_CONFIG.contactEmail,
         telephone: STORE_CONFIG.phone,
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: `+${STORE_CONFIG.whatsappNumber}`,
+            contactType: "Customer Support & Orders",
+            contactOption: "WhatsApp",
+            areaServed: "PK",
+            availableLanguage: ["English", "Urdu"],
+          },
+        ],
         ...(sameAs.length > 0 ? { sameAs } : {}),
         address: {
           "@type": "PostalAddress",
@@ -115,7 +141,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning className={`${montserrat.variable} ${cormorant.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${cormorant.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -134,10 +160,7 @@ export default function RootLayout({
             `,
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(rootJsonLd) }}
-        />
+        <JsonLd data={rootJsonLd} />
       </head>
       <body className="font-sans bg-white dark:bg-[#09090b] text-[#121212] dark:text-[#f4f4f5] antialiased flex flex-col min-h-screen transition-colors duration-200">
         <ThemeProvider>

@@ -51,8 +51,8 @@ export default function ImageGallery({ images, productName, badge }: ImageGaller
           </div>
         )}
 
-        {/* Main Large Image with curved luxury border & hover highlight */}
-        <div className="relative flex-1 aspect-square w-full bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 hover:border-[#c5a059]/70 dark:hover:border-[#d4af37] overflow-hidden rounded-2xl group shadow-sm hover:shadow-md transition-all duration-300">
+        {/* Main Large Image with 4:5 aspect ratio & luxury presentation */}
+        <div className="relative flex-1 aspect-[4/5] w-full bg-[#f4f4f5] dark:bg-[#121216] border border-black/8 dark:border-white/10 hover:border-[#c5a059]/70 dark:hover:border-[#d4af37] overflow-hidden rounded-2xl group shadow-sm hover:shadow-md transition-all duration-300">
           <Image
             src={currentImage}
             alt={`${productName} Extrait de Parfum bottle by Noir Scent`}

@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Zap } from "lucide-react";
+import { Zap, MessageCircle } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import { STORE_CONFIG } from "@/lib/store-config";
 
 interface MobileStickyBarProps {
   product: Product;
@@ -76,20 +77,36 @@ export default function MobileStickyBar({ product }: MobileStickyBarProps) {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={handleInstantBuy}
-          disabled={isNavigating}
-          id="mobile-sticky-order-cod-btn"
-          className="px-4 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md active:scale-95 transition-all duration-300 disabled:opacity-80"
-        >
-          {isNavigating ? (
-            <span className="w-3.5 h-3.5 border-2 border-white dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <Zap className="w-3.5 h-3.5 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b]" />
-          )}
-          <span>{isNavigating ? "Securing..." : "Order COD"}</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Secondary: WhatsApp Quick Order */}
+          <a
+            href={`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
+              `Hello Noir Scent, I would like to order ${product.name} (50ml) with Cash on Delivery.`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Order via WhatsApp"
+            className="min-h-[44px] min-w-[44px] px-3 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-lg flex items-center justify-center transition-colors shadow-xs shrink-0"
+          >
+            <MessageCircle className="w-5 h-5 fill-current" />
+          </a>
+
+          {/* Primary: Order with Cash on Delivery */}
+          <button
+            type="button"
+            onClick={handleInstantBuy}
+            disabled={isNavigating}
+            id="mobile-sticky-order-cod-btn"
+            className="min-h-[44px] px-4 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e5c158] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider shrink-0 flex items-center gap-1.5 shadow-md active:scale-95 transition-all duration-300 disabled:opacity-80 rounded-lg"
+          >
+            {isNavigating ? (
+              <span className="w-3.5 h-3.5 border-2 border-white dark:border-[#09090b] border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <Zap className="w-3.5 h-3.5 text-[#c5a059] fill-[#c5a059] dark:text-[#09090b] dark:fill-[#09090b]" />
+            )}
+            <span>{isNavigating ? "Securing..." : "Order COD"}</span>
+          </button>
+        </div>
       </div>
     </div>
   );

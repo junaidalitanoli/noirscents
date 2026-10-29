@@ -48,7 +48,7 @@ export default function ProductStoryAndApplication({ product }: ProductStoryAndA
             </h3>
           </div>
           <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
-            {product.description}
+            {product.story || product.description}
           </p>
           {product.inspiration && (
             <div className="pt-2">
@@ -59,12 +59,12 @@ export default function ProductStoryAndApplication({ product }: ProductStoryAndA
           )}
         </div>
 
-        {/* Right: How to Apply for 14+ Hours */}
+        {/* Right: How to Apply for Optimal Sillage */}
         <div className="p-6 sm:p-8 bg-white dark:bg-[#111115] border border-black/8 dark:border-white/10 space-y-4 transition-colors">
           <div className="flex items-center gap-2.5 pb-3 border-b border-black/8 dark:border-white/10">
             <Droplets className="w-4 h-4 text-[#c5a059] dark:text-[#d4af37]" />
             <h3 className="text-sm font-semibold uppercase tracking-wider text-[#121212] dark:text-[#f4f4f5]">
-              How to Wear for 14+ Hours Sillage
+              How to Wear for {product.longevityHours || "All-Day"} Sillage
             </h3>
           </div>
           <div className="space-y-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-light">

@@ -117,7 +117,7 @@ export default function ProductPerformanceMatrix({ product }: ProductPerformance
                   Lasting Power
                 </p>
                 <span className="text-[11px] font-bold text-zinc-900 dark:text-zinc-100">
-                  12+ Hours
+                  {product.longevityHours || "12+ Hours"}
                 </span>
               </div>
               <div className="flex gap-1 mt-1.5">

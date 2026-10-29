@@ -191,7 +191,7 @@ export default function AdminDashboard() {
 
     const rows = orders.map((o) => {
       const itemsSummary = (o.items || [])
-        .map((i: any) => `${i.quantity || 1}x ${i.product?.name || i.name || "Perfume"} (${i.size?.ml || 50}ml)`)
+        .map((i) => `${i.quantity || 1}x ${i.product?.name || "Perfume"} (${i.size?.ml || 50}ml)`)
         .join("; ");
 
       return [

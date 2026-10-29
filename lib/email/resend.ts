@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { IS_PRODUCTION_DOMAIN } from "@/lib/site-config";
 
 /**
  * Server-side Resend Client Configuration
@@ -7,8 +8,10 @@ import { Resend } from "resend";
  * Never exposed to the browser.
  */
 
-// Fallback sender email: Resend free tier onboarding sender
-export const DEFAULT_FROM_EMAIL = "Noir Scent <onboarding@resend.dev>";
+// Production verified sender email vs Dev fallback
+export const PRODUCTION_FROM_EMAIL = "Noir Scent <orders@noirscent.com>";
+export const DEV_FALLBACK_FROM_EMAIL = "Noir Scent <onboarding@resend.dev>";
+export const DEFAULT_FROM_EMAIL = DEV_FALLBACK_FROM_EMAIL;
 
 // Primary store concierge notification recipient
 export const DEFAULT_STORE_RECEIVER = "noirscents01@gmail.com";
@@ -26,7 +29,7 @@ export function getSenderEmail(): string {
   if (from && from.trim().length > 0) {
     return from.trim();
   }
-  return DEFAULT_FROM_EMAIL;
+  return IS_PRODUCTION_DOMAIN ? PRODUCTION_FROM_EMAIL : DEV_FALLBACK_FROM_EMAIL;
 }
 
 export function getStoreNotificationEmail(): string {

@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
 import { Truck, ShieldCheck, Clock } from "lucide-react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { BRAND_NAME } from "@/lib/constants";
 import { STORE_CONFIG } from "@/lib/store-config";
 import { formatPrice } from "@/lib/formatters";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
 export const metadata: Metadata = {
-  title: "Shipping & Delivery Policy",
-  description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Karachi, Lahore, Islamabad, and all of Pakistan.`,
+  title: { absolute: "Shipping & Delivery Policy | Noir Scent" },
+  description:
+    "Nationwide Cash on Delivery shipping rules, rates, and transit times for Noir Scent across Karachi, Lahore, Islamabad, and all of Pakistan.",
   alternates: {
     canonical: "/policies/shipping",
   },
   openGraph: {
-    title: "Shipping & Delivery Policy",
-    description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Pakistan.`,
+    title: "Shipping & Delivery Policy | Noir Scent",
+    description:
+      "Nationwide Cash on Delivery shipping rules, rates, and transit times for Noir Scent across Karachi, Lahore, Islamabad, and all of Pakistan.",
     url: "/policies/shipping",
     siteName: "Noir Scent",
     images: [
@@ -30,8 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shipping & Delivery Policy",
-    description: `Nationwide Cash on Delivery shipping rules, rates, and transit times for ${BRAND_NAME} across Pakistan.`,
+    title: "Shipping & Delivery Policy | Noir Scent",
+    description:
+      "Nationwide Cash on Delivery shipping rules, rates, and transit times for Noir Scent across Karachi, Lahore, Islamabad, and all of Pakistan.",
     images: [DEFAULT_PRODUCT_IMAGE],
   },
 };

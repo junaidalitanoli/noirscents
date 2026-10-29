@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
 import { getAbsoluteUrl } from "@/lib/site";
+import JsonLd from "@/components/seo/JsonLd";
 
 export interface BreadcrumbItem {
   label: string;
@@ -38,10 +39,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListJsonLd) }}
-      />
+      <JsonLd data={breadcrumbListJsonLd} />
       <nav aria-label="Breadcrumb" className="py-3 text-xs text-zinc-500 dark:text-zinc-400">
         <ol className="flex items-center flex-wrap gap-1.5">
           <li className="flex items-center gap-1.5">
