@@ -57,7 +57,7 @@ export const SITE_IMAGES = {
       height: 1024,
     },
     women: {
-      src: "/images/noir-gold-flacon.jpg",
+      src: "/images/noir-gold-floral.jpg",
       alt: "Women's Gold Edition Artisanal Perfumes - Noir Scent",
       width: 1024,
       height: 1024,
