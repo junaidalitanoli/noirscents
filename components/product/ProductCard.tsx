@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ShoppingBag, Zap } from "lucide-react";
+import { Check, ShoppingBag, Zap, Star } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
@@ -43,6 +43,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   };
 
   const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
+  const discountPercent =
+    hasDiscount && product.compareAtPrice
+      ? Math.round(((product.compareAtPrice - selectedSize.price) / product.compareAtPrice) * 100)
+      : 0;
   const displaySize = product.sizeLabel || `${selectedSize.ml}ml`;
   const imageAlt = `${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scent`;
 
@@ -75,7 +79,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           )}
           {hasDiscount && (
             <span className="bg-red-700 text-white text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
-              Sale
+              Save {discountPercent}%
             </span>
           )}
         </div>
@@ -91,6 +95,20 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
       {/* Info Column Below Image */}
       <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
         <div className="space-y-1">
+          {/* Gender / Category & Star Rating */}
+          <div className="flex items-center justify-between text-[10.5px]">
+            <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8c530b] dark:text-[#c9a96a]">
+              {product.category === "men" ? "Men's Extrait" : "Women's Extrait"}
+            </span>
+            <div className="flex items-center gap-0.5 text-amber-500 font-bold text-[10.5px]">
+              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+              <span>{product.rating ?? 4.9}</span>
+              <span className="text-stone-400 dark:text-zinc-500 font-normal text-[9.5px]">
+                ({product.reviewCount ?? 140})
+              </span>
+            </div>
+          </div>
+
           {/* Product Name */}
           <h3 className="text-sm sm:text-base font-medium text-stone-950 dark:text-[#f4f4f5] group-hover:text-[#8c530b] dark:group-hover:text-[#d4af37] transition-colors line-clamp-1 font-serif tracking-tight">
             <Link href={`/products/${product.slug}`}>{product.name}</Link>
