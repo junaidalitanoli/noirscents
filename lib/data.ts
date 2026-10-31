@@ -24,6 +24,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     compareAtPrice: 5800,
     sizeLabel: "50 ml",
     badge: "Best Seller",
+    stock: 50,
     rating: 4.9,
     reviewCount: 168,
     notes: {
@@ -64,6 +65,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     compareAtPrice: 5200,
     sizeLabel: "50 ml",
     badge: "Best Seller",
+    stock: 50,
     rating: 4.9,
     reviewCount: 142,
     notes: {
@@ -264,6 +266,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     compareAtPrice: 6000,
     sizeLabel: "50 ml",
     badge: "Best Seller",
+    stock: 50,
     rating: 4.9,
     reviewCount: 148,
     notes: {
@@ -324,6 +327,47 @@ export const INITIAL_PRODUCTS: Product[] = [
     isNewArrival: false,
     createdAt: "2025-02-10T08:00:00Z",
   },
+  {
+    id: "ns-014",
+    slug: "sultan",
+    name: "Sultan",
+    category: "men",
+    subtitle: "Royal Frankincense, Blood Orange & Smoked Omani Cedar",
+    inspiration: "Inspired by the regal architecture, sovereignty, and dignified pageantry of subcontinental royal courts.",
+    accords: ["Smoked Cedarwood", "Royal Frankincense", "Blood Orange", "Crushed Cardamom", "Golden Amber"],
+    gender: "Men",
+    season: "All Seasons — Excels in Evening Gatherings & Winter Celebrations",
+    occasion: "Executive Boardrooms, Royal Banquets & Signature Evenings",
+    concentration: "Extrait de Parfum (35% Fragrance Oil Concentration)",
+    macerationDays: 45,
+    description:
+      "An authoritative woody-spicy Extrait de Parfum created for leaders who command effortless respect. Sultan unfolds with an aristocratic prelude of crisp Italian blood orange, aromatic juniper berries, and crushed cardamom seeds. The composition deepens into a sacred heart of smoldering Omani frankincense, fiery pimento pepper, and wild geranium petals, delivering complex warmth and distinguished character. A stately foundation of Virginia cedarwood, damp oakmoss, and rich green patchouli completes the drydown with profound grounding strength. Formulated with 35% oil concentration, Sultan provides a dignified all-day sillage that thrives across Pakistan's climate.",
+    images: ["/images/sultan-bottle.jpg", "/images/noir-black-flacon.jpg"],
+    sizes: [{ ml: 50, price: 3450, stock: 50 }],
+    compareAtPrice: 5800,
+    sizeLabel: "50 ml",
+    badge: "Best Seller",
+    stock: 50,
+    rating: 4.9,
+    reviewCount: 154,
+    notes: {
+      top: ["Blood Orange", "Aromatic Juniper", "Crushed Cardamom"],
+      heart: ["Omani Frankincense", "Fiery Pimento", "Wild Geranium"],
+      base: ["Smoky Virginia Cedar", "Damp Oakmoss", "Rich Patchouli"],
+    },
+    majorIngredients: [
+      { name: "Omani Frankincense Resinoid", percentage: "15%" },
+      { name: "Smoky Virginian Cedarwood", percentage: "12%" },
+      { name: "Blood Orange Essential Oil", percentage: "10%" },
+      { name: "Crushed Green Cardamom", percentage: "5%" },
+      { name: "Rich Indonesian Patchouli", percentage: "4%" },
+    ],
+    longevity: 5,
+    projection: "Majestic & Commanding (All-Day Sillage)",
+    isBestSeller: true,
+    isNewArrival: false,
+    createdAt: "2025-01-20T10:00:00Z",
+  },
 
   // ==========================================
   // GOLD COLLECTION — WOMEN'S EXTRAITS DE PARFUM (50 ML)
@@ -348,6 +392,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     compareAtPrice: 5600,
     sizeLabel: "50 ml",
     badge: "Best Seller",
+    stock: 50,
     rating: 4.9,
     reviewCount: 162,
     notes: {
@@ -388,6 +433,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     compareAtPrice: 5200,
     sizeLabel: "50 ml",
     badge: "Best Seller",
+    stock: 50,
     rating: 4.9,
     reviewCount: 154,
     notes: {

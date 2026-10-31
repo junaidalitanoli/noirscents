@@ -204,27 +204,21 @@ export default function CollectionHeroBanner({
           </div>
 
           {/* Right Column: Authentic Perfume Flacon Pedestal */}
-          <div className="order-1 lg:order-2 lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-xs sm:max-w-sm aspect-[4/3] sm:aspect-square lg:aspect-[4/3] rounded-[24px] overflow-hidden bg-white dark:bg-zinc-900 p-2 border-2 border-[#c5a059]/60 shadow-xl group">
-              <div className="relative w-full h-full rounded-[18px] overflow-hidden">
-                <Image
-                  src={current.image}
-                  alt={current.alt}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 420px"
-                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute bottom-3 left-3 right-3 text-white text-[11px] font-semibold flex items-center justify-between">
-                  <span className="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px]">
-                    50ml Extrait Flacon
-                  </span>
-                  <span className="bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full uppercase tracking-wider text-[10px] text-[#f5e7b2]">
-                    35% Oil
-                  </span>
-                </div>
-              </div>
+          <div className="order-1 lg:order-2 lg:col-span-5 flex flex-col items-center justify-center">
+            <div className="relative w-full max-w-[260px] sm:max-w-xs aspect-square rounded-[22px] overflow-hidden bg-white dark:bg-zinc-900 border-2 border-[#c5a059]/60 shadow-lg group">
+              <Image
+                src={current.image}
+                alt={current.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 360px"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+              />
+            </div>
+            <div className="mt-2 text-stone-700 dark:text-zinc-300 text-[11px] font-semibold flex items-center gap-2">
+              <span>50ml Artisanal Flacon</span>
+              <span>&bull;</span>
+              <span className="text-[#8c530b] dark:text-[#f5e7b2]">35% Pure Extrait</span>
             </div>
           </div>
         </div>

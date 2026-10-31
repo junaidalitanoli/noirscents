@@ -7,6 +7,8 @@ import { CartItem, Product, ProductSize } from "@/types";
 interface CartState {
   items: CartItem[];
   isOpen: boolean; // Not persisted
+  _hasHydrated: boolean;
+  setHasHydrated: (hasHydrated: boolean) => void;
   addItem: (product: Product, size: ProductSize, quantity?: number) => void;
   incrementItem: (itemId: string) => void;
   decrementItem: (itemId: string) => void;
@@ -24,6 +26,11 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      _hasHydrated: false,
+
+      setHasHydrated: (hasHydrated: boolean) => {
+        set({ _hasHydrated: hasHydrated });
+      },
 
       addItem: (product: Product, size: ProductSize, quantity = 1) => {
         const itemId = `${product.id}-${size.ml}`;
@@ -108,8 +115,11 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "noir-scents-cart-storage",
-      // Exclude `isOpen` from persistence so drawer does not randomly open on fresh page loads
+      // Exclude `isOpen` and `_hasHydrated` from persistence
       partialize: (state) => ({ items: state.items }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

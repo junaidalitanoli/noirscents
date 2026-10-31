@@ -1,18 +1,42 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { useCartStore } from "./cartStore";
 
-const emptySubscribe = () => () => {};
+function subscribe(callback: () => void) {
+  const unsubStore = useCartStore.subscribe(callback);
+  const unsubHydrate =
+    typeof useCartStore.persist?.onFinishHydration === "function"
+      ? useCartStore.persist.onFinishHydration(callback)
+      : () => {};
+
+  return () => {
+    unsubStore();
+    unsubHydrate();
+  };
+}
+
+function getSnapshot(): boolean {
+  if (useCartStore.getState()._hasHydrated) {
+    return true;
+  }
+  if (
+    typeof window !== "undefined" &&
+    typeof useCartStore.persist?.hasHydrated === "function"
+  ) {
+    return useCartStore.persist.hasHydrated();
+  }
+  return false;
+}
+
+function getServerSnapshot(): boolean {
+  return false;
+}
 
 /**
- * React 19 & Next.js 15 safe hydration detector using useSyncExternalStore.
- * Returns false on server/initial client hydration render, and true once hydrated.
- * Avoids cascading renders and hydration mismatches without useEffect setState.
+ * Ensures cart store has truly rehydrated from localStorage before rendering.
+ * Uses useSyncExternalStore for tear-free, hydration-safe state synchronization.
  */
 export function useHydrated(): boolean {
-  return useSyncExternalStore(
-    emptySubscribe,
-    () => true,
-    () => false
-  );
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
