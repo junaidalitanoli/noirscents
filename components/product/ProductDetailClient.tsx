@@ -238,7 +238,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             id="product-add-to-cart-btn"
             className="text-[11px] text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-[#d4af37] underline underline-offset-4 cursor-pointer font-medium transition-colors"
           >
-            {isAdded ? "✓ Added to Shopping Bag" : "+ Add to bag to combine with other scents"}
+            {isAdded ? "✓ Added to Cart" : "+ Add to Cart to combine with other scents"}
           </button>
         </div>
       </div>

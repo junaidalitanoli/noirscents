@@ -160,7 +160,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                   ? "bg-emerald-700 text-white border-emerald-700"
                   : "bg-stone-50 dark:bg-white/5 border-stone-300 dark:border-white/10 text-stone-800 dark:text-zinc-200 hover:bg-stone-100 hover:border-stone-400 dark:hover:bg-white/10 active:scale-[0.98]"
               }`}
-              title="Add to cart bag"
+              title="Add to Cart"
             >
               {isAdded ? (
                 <>
@@ -170,7 +170,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               ) : (
                 <>
                   <ShoppingBag className="w-3 h-3 text-[#8c530b] dark:text-[#c9a96a]" />
-                  <span>+ Bag</span>
+                  <span>Add to Cart</span>
                 </>
               )}
             </button>
