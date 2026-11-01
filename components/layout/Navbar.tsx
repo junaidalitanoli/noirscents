@@ -34,23 +34,21 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-[38px] z-40 bg-white/95 dark:bg-[#09090b]/95 border-b border-black/8 dark:border-white/10 backdrop-blur-md transition-colors duration-200">
-        {/* 1. Mobile Header: Clean, balanced spacing with zero collision */}
-        <div className="lg:hidden max-w-[1400px] mx-auto px-4 h-16 relative flex items-center justify-between">
-          {/* Left: Mobile Drawer Trigger */}
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(true)}
-            className="p-2 -ml-2 text-stone-900 dark:text-stone-100 hover:text-black dark:hover:text-[#d4af37] focus:outline-hidden"
-            aria-label="Open Navigation Menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
-          {/* Center: Brand Name (Centered on Mobile with safe width) */}
-          <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto max-w-[50%]">
+        {/* 1. Mobile Header: Left-aligned Bold Brand Name + Menu & Quick Actions */}
+        <div className="lg:hidden max-w-[1400px] mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Left: Mobile Drawer Trigger + Bold Brand Name */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-1.5 -ml-1 text-stone-900 dark:text-stone-100 hover:text-black dark:hover:text-[#d4af37] focus:outline-hidden"
+              aria-label="Open Navigation Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
             <Link
               href="/"
-              className="text-base sm:text-lg font-bold tracking-[0.18em] uppercase text-stone-950 dark:text-[#f4f4f5] hover:opacity-85 transition-opacity whitespace-nowrap block font-serif"
+              className="text-lg sm:text-xl font-black tracking-[0.22em] uppercase text-stone-950 dark:text-[#f4f4f5] font-serif hover:text-[#8c530b] dark:hover:text-[#d4af37] transition-colors whitespace-nowrap block"
             >
               Noir Scent
             </Link>
@@ -71,36 +69,34 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* 2. Desktop Header: Centered Brand Name + Centered Nav */}
+        {/* 2. Desktop Header: Left-aligned Bold Brand Name + Right Actions */}
         <div className="hidden lg:block max-w-[1400px] mx-auto px-6 lg:px-8">
-          {/* Top Row: Search on Left, Centered Brand Name in Middle, Cart on Right */}
-          <div className="h-20 relative flex items-center justify-between">
-            {/* Desktop Left: Search */}
+          {/* Top Row: Bold Brand Name on Left, Actions on Right */}
+          <div className="h-20 flex items-center justify-between">
+            {/* Desktop Left: Bold, Highly Visible Brand Name */}
             <div className="flex items-center">
-              <button
-                type="button"
-                onClick={() => setSearchModalOpen(true)}
-                className="p-2 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-[#d4af37] flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium transition-colors"
-                aria-label="Search catalog"
-              >
-                <Search className="w-4 h-4" />
-                <span>Search</span>
-              </button>
-            </div>
-
-            {/* Desktop Center: Brand Name */}
-            <div className="absolute left-1/2 -translate-x-1/2 text-center pointer-events-auto">
               <Link
                 href="/"
-                className="text-2xl sm:text-3xl font-extrabold tracking-[0.26em] uppercase text-[#121212] dark:text-[#f4f4f5] font-serif hover:opacity-85 transition-opacity block"
+                className="text-2xl sm:text-3xl lg:text-[32px] font-black tracking-[0.24em] uppercase text-[#121212] dark:text-[#f4f4f5] font-serif hover:text-[#8c530b] dark:hover:text-[#d4af37] transition-colors block"
               >
                 Noir Scent
               </Link>
             </div>
 
-            {/* Desktop Right: Theme Toggle, Contact Link, Customer Account & Cart */}
-            <div className="flex items-center space-x-3.5">
+            {/* Desktop Right: Search, Theme Toggle, Contact Link, Customer Account & Cart */}
+            <div className="flex items-center space-x-4">
+              <button
+                type="button"
+                onClick={() => setSearchModalOpen(true)}
+                className="px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-white/10 bg-stone-50 dark:bg-white/5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-[#d4af37] flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium transition-colors cursor-pointer"
+                aria-label="Search catalog"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>Search</span>
+              </button>
+
               <ThemeToggle variant="pill" />
+
               <Link
                 href="/pages/contact"
                 className="text-xs uppercase tracking-[0.14em] font-medium text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-[#d4af37] transition-colors"

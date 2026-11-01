@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, RotateCcw, Headphones, Sparkles, Truck, Banknote, ShieldCheck } from "lucide-react";
+import { ArrowRight, RotateCcw, Headphones, Sparkles } from "lucide-react";
 import { INITIAL_PRODUCTS } from "@/lib/data";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 import { STORE_CONFIG } from "@/lib/store-config";
@@ -53,54 +53,7 @@ export default function HomePage() {
       {/* 1. COMPACT HERO: Exactly ONE H1, Unobstructed Flacon Showcase & Fast CTAs */}
       <HeroBanner />
 
-      {/* 2. VALUE PROPOSITION BAR (Haute Parfumerie Atelier Bar) */}
-      <div className="bg-gradient-to-r from-[#faf2e4] via-[#f4e6d0] to-[#faf2e4] dark:bg-[#0d0d12] text-stone-900 dark:text-stone-200 border-y-2 border-[#d4af37]/40 py-3.5 px-3 sm:px-6 transition-colors shadow-2xs">
-        <div className="max-w-[1320px] mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6">
-            <div className="flex items-center gap-2 p-1 sm:justify-center">
-              <div className="w-7 h-7 rounded-full bg-amber-400/25 border border-amber-500/50 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0">
-                <Truck className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a]" />
-              </div>
-              <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">Free TCS Shipping</p>
-                <p className="text-[9px] sm:text-[10.5px] text-stone-700 dark:text-stone-400 font-medium">Orders of Rs. {STORE_CONFIG.freeDeliveryThreshold.toLocaleString()} &amp; above</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 p-1 sm:justify-center">
-              <div className="w-7 h-7 rounded-full bg-emerald-400/25 border border-emerald-500/50 dark:bg-emerald-950/40 dark:border-emerald-500/20 flex items-center justify-center shrink-0">
-                <Banknote className="w-3.5 h-3.5 text-emerald-800 dark:text-emerald-400" />
-              </div>
-              <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">Cash on Delivery</p>
-                <p className="text-[9px] sm:text-[10.5px] text-stone-700 dark:text-stone-400 font-medium">Nationwide Doorstep Pay</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 p-1 sm:justify-center">
-              <div className="w-7 h-7 rounded-full bg-amber-400/25 border border-amber-500/50 dark:bg-amber-950/40 dark:border-amber-500/20 flex items-center justify-center shrink-0">
-                <Sparkles className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a]" />
-              </div>
-              <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">All-Day Longevity</p>
-                <p className="text-[9px] sm:text-[10.5px] text-stone-700 dark:text-stone-400 font-medium">35% Pure Extrait Oil</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 p-1 sm:justify-center">
-              <div className="w-7 h-7 rounded-full bg-blue-400/25 border border-blue-500/50 dark:bg-blue-950/40 dark:border-blue-500/20 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-800 dark:text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="text-[11px] sm:text-xs font-bold text-[#1a140e] dark:text-white uppercase tracking-wider">{STORE_CONFIG.returnWindowDays}-Day Guarantee</p>
-                <p className="text-[9px] sm:text-[10.5px] text-stone-700 dark:text-stone-400 font-medium">Hassle-free Scent Swap</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. PRIMARY PRODUCT CATALOG (Scent 'n Stories Product-Oriented Layout with Instant Tabs) */}
+      {/* 2. PRIMARY PRODUCT CATALOG (Product-Oriented Layout with Instant Tabs) */}
       <HomeProductCatalog products={INITIAL_PRODUCTS} />
 
       {/* 4. SECTION: Bundles & Sets (if available) */}
