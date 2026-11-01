@@ -36,11 +36,10 @@ export const SITE_CONFIG = {
   isDemo: process.env.NEXT_PUBLIC_IS_DEMO === "true",
 
   // Contact info
-  // TODO: Replace with hello@noirscent.com once the mailbox exists
-  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "noirscents01@gmail.com",
-  phone: "+92 332 2224331",
-  whatsappNumber: "923322224331",
-  whatsappDisplay: "+92 332 2224331",
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "noirscent.pk@gmail.com",
+  phone: "+92 303 344667",
+  whatsappNumber: "92303344667",
+  whatsappDisplay: "+92 303 344667",
   businessHours: "Monday to Saturday: 10 AM – 8 PM PKT",
 
   // Shipping & Policy Thresholds
@@ -52,11 +51,10 @@ export const SITE_CONFIG = {
   couriers: "TCS / Leopards Courier",
 
   // Social handles
-  // TODO: Verify final social handles once accounts are confirmed
   socials: {
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://instagram.com/noirscents",
-    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://facebook.com/noirscents",
-    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || "https://tiktok.com/@noirscents",
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/noirscent.pk?obrf=MXRpaXpqNm4zeXZkNg==",
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://www.facebook.com/profile.php?id=61595873946277&mibextid=rS40aB7S9Ucbxw6v",
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || "https://vt.tiktok.com/ZSgwrMmRL/",
   },
 } as const;
 

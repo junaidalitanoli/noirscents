@@ -14,7 +14,7 @@ export const DEV_FALLBACK_FROM_EMAIL = "Noir Scent <onboarding@resend.dev>";
 export const DEFAULT_FROM_EMAIL = DEV_FALLBACK_FROM_EMAIL;
 
 // Primary store concierge notification recipient
-export const DEFAULT_STORE_RECEIVER = "noirscents01@gmail.com";
+export const DEFAULT_STORE_RECEIVER = "noirscent.pk@gmail.com";
 
 export function getResendApiKey(): string | undefined {
   const key = process.env.RESEND_API_KEY;
