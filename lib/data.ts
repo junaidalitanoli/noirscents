@@ -594,7 +594,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "The ultimate crown of masculine authority. This royal pairing unites our iconic flagship Desert Majesty with the stately, regal Sultan. Experience the majestic warmth of rare desert saffron threads, smoldering Virginia cedarwood, sacred Omani frankincense, and zesty Italian blood orange. Both extraits are handcrafted at 35% pure perfume oil concentration for commanding, all-day sillage that endures effortlessly across Pakistan's climate. Specially bundled with an exclusive 5% extra discount.",
-    images: ["/images/noir-black-flacon.jpg", "/images/sultan-bottle.jpg"],
+    images: ["/images/bundle-duo-men.jpg", "/images/noir-black-flacon.jpg", "/images/sultan-bottle.jpg"],
     sizes: [{ ml: 100, price: 5850, stock: 40 }],
     compareAtPrice: 11600,
     sizeLabel: "2x 50ml Duo (100ml)",
@@ -637,7 +637,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "Engineered for the discerning executive and connoisseur. Gentleman brings crisp English lavender, smoked Haitian vetiver, and distinguished Tuscan leather, while Raees radiates opulent Cambodian oud chips, warm ambergris, and crushed nutmeg. Two authoritative 50ml flacons designed to command immediate respect from the boardroom to black-tie galas. Specially offered with an additional 5% bundle discount.",
-    images: ["/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
+    images: ["/images/bundle-duo-men.jpg", "/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
     sizes: [{ ml: 100, price: 5750, stock: 40 }],
     compareAtPrice: 11200,
     sizeLabel: "2x 50ml Duo (100ml)",
@@ -680,7 +680,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "A breathtaking celebration of modern feminine grace and romantic allure. Loyal Heart opens with crisp, juicy Williams pear, luminous night-blooming jasmine, and white musk, beautifully paired with Blush's romantic bouquet of Bulgarian Damask rose, crushed wild raspberries, and soft silk cashmeran. Two enchanting 35% pure extrait flacons crafted to leave a magnetic, lingering sillage.",
-    images: ["/images/noir-gold-floral.jpg", "/images/noir-gold-flacon.jpg"],
+    images: ["/images/bundle-duo-women.jpg", "/images/noir-gold-floral.jpg", "/images/noir-gold-flacon.jpg"],
     sizes: [{ ml: 100, price: 5450, stock: 45 }],
     compareAtPrice: 10800,
     sizeLabel: "2x 50ml Duo (100ml)",
@@ -723,7 +723,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "The ultimate dream pairing of intoxicating white floral couture and decadent gourmand sweetness. Florita sparkles with sunny Italian bergamot, Grasse tuberose, and velvety orange blossom, while Sweet Temptation captivates with warm salted caramel, roasted pistachios, and rich Madagascar bourbon vanilla. An irresistible double feature with an extra 5% bundle discount.",
-    images: ["/images/noir-gold-flacon.jpg", "/images/noir-gold-floral.jpg"],
+    images: ["/images/bundle-duo-women.jpg", "/images/noir-gold-flacon.jpg", "/images/noir-gold-floral.jpg"],
     sizes: [{ ml: 100, price: 5590, stock: 40 }],
     compareAtPrice: 11200,
     sizeLabel: "2x 50ml Duo (100ml)",
@@ -766,7 +766,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "The definitive His & Hers artisanal gift pairing. Uniting our #1 best-selling men's flagship Desert Majesty with our signature women's extrait Loyal Heart. An aristocratic harmony of smoldering desert saffron, cedarwood, and leather paired with radiant Williams pear, night jasmine, and silky white musk. The perfect luxury gift for weddings, anniversaries, and couples who cherish excellence.",
-    images: ["/images/noir-black-flacon.jpg", "/images/noir-gold-floral.jpg"],
+    images: ["/images/bundle-couple-duo.jpg", "/images/noir-black-flacon.jpg", "/images/noir-gold-floral.jpg"],
     sizes: [{ ml: 100, price: 5690, stock: 50 }],
     compareAtPrice: 11400,
     sizeLabel: "2x 50ml Couple Pair (100ml)",
@@ -809,7 +809,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "An intensely magnetic couple pairing composed for grand evenings and romantic intimacy. Sultan commands the room with smoldering Omani frankincense, blood orange, fiery pimento, and damp oakmoss, while Secret Love entrances with velvet red roses, sweet lychee nectar, and sensual ambergris. Two magnetic flacons formulated with 35% pure perfume oils.",
-    images: ["/images/sultan-bottle.jpg", "/images/noir-gold-flacon.jpg"],
+    images: ["/images/bundle-couple-duo.jpg", "/images/sultan-bottle.jpg", "/images/noir-gold-flacon.jpg"],
     sizes: [{ ml: 100, price: 5690, stock: 40 }],
     compareAtPrice: 11200,
     sizeLabel: "2x 50ml Couple Pair (100ml)",
@@ -852,7 +852,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "The ultimate powerhouse collector's wardrobe for the gentleman who commands the highest respect. Three full 50ml flacons (150ml total) featuring our crowning masculine extraits: Desert Majesty (smoky saffron & amber), Sultan (regal frankincense & blood orange), and Raees (aristocratic Cambodian oud & ambergris). Formulated with 35% pure perfume oil to cover every boardroom, gala, and signature evening across Pakistan.",
-    images: ["/images/noir-black-flacon.jpg", "/images/sultan-bottle.jpg", "/images/noir-black-oud.jpg"],
+    images: ["/images/bundle-trilogy-trio.jpg", "/images/noir-hero-bundles.jpg", "/images/noir-black-flacon.jpg"],
     sizes: [{ ml: 150, price: 8650, stock: 30 }],
     compareAtPrice: 17600,
     sizeLabel: "3x 50ml Trilogy (150ml)",
@@ -895,7 +895,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 45,
     description:
       "A grand tripartite collection representing the crowning achievements of the Noir Scent atelier. Features our Men's Flagship Desert Majesty (50ml), our Women's Flagship Loyal Heart (50ml), and the connoisseur unisex masterpiece Raaz Reserve (50ml cognac amber & Madagascar vanilla). 150ml of pure artisanal extrait luxury offering unparalleled variety, immense savings, and extraordinary sillage.",
-    images: ["/images/noir-black-flacon.jpg", "/images/noir-gold-floral.jpg", "/images/royal-amber-bottle.jpg"],
+    images: ["/images/bundle-trilogy-trio.jpg", "/images/noir-bundles.jpg", "/images/royal-amber-bottle.jpg"],
     sizes: [{ ml: 150, price: 8750, stock: 30 }],
     compareAtPrice: 17600,
     sizeLabel: "3x 50ml Trilogy (150ml)",
