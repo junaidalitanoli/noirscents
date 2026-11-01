@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   // Bundles & Sets: exclusively from deals / bundles
-  const bundleProducts = INITIAL_PRODUCTS.filter((p) => p.category === "deals").slice(0, 4);
+  const bundleProducts = INITIAL_PRODUCTS.filter((p) => p.category === "deals").slice(0, 8);
 
   return (
     <div className="flex flex-col bg-white dark:bg-[#09090b] text-[#121212] dark:text-[#f4f4f5] transition-colors duration-200">

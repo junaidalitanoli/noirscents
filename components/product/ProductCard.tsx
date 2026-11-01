@@ -98,7 +98,13 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           {/* Gender / Category & Star Rating */}
           <div className="flex items-center justify-between text-[10.5px]">
             <span className="text-[9.5px] font-bold uppercase tracking-wider text-[#8c530b] dark:text-[#c9a96a]">
-              {product.category === "men" ? "Men's Extrait" : "Women's Extrait"}
+              {product.category === "men"
+                ? "Men's Extrait"
+                : product.category === "deals"
+                ? "Bundle & Offer"
+                : product.category === "testers"
+                ? "Discovery Set"
+                : "Women's Extrait"}
             </span>
             <div className="flex items-center gap-0.5 text-amber-500 font-bold text-[10.5px]">
               <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
@@ -134,7 +140,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               )}
             </div>
             <span className="text-[10px] text-stone-500 dark:text-zinc-400 font-medium">
-              50ml Flacon
+              {product.sizeLabel || "50ml Flacon"}
             </span>
           </div>
 

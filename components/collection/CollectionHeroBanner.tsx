@@ -87,10 +87,10 @@ export default function CollectionHeroBanner({
       borderClass: "border-2 border-[#dcb888]/80 dark:border-white/10",
       glowColor: "rgba(225, 145, 30, 0.45)",
       pills: [
-        { label: "Complimentary Delivery", highlight: true },
+        { label: `${count} Curated Sets`, highlight: true },
+        { label: "5% Extra Bundle Discount" },
         { label: "Rigid Presentation Box" },
-        { label: "Custom Duo Pairing" },
-        { label: "7-Day Scent Swap" },
+        { label: "Free TCS Delivery" },
       ],
       breadcrumbLabel: "Bundles & Offers",
     },

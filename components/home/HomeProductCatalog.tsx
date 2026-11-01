@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Sparkles, Flame, User, Heart } from "lucide-react";
+import { Sparkles, Flame, User, Heart, Gift } from "lucide-react";
 import { Product } from "@/types";
 import ProductCard from "@/components/product/ProductCard";
 
@@ -9,13 +9,14 @@ interface HomeProductCatalogProps {
   products: Product[];
 }
 
-type FilterTab = "all" | "men" | "women" | "bestsellers";
+type FilterTab = "all" | "bestsellers" | "men" | "women" | "deals";
 
 export default function HomeProductCatalog({ products }: HomeProductCatalogProps) {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
 
   const menCount = useMemo(() => products.filter((p) => p.category === "men").length, [products]);
   const womenCount = useMemo(() => products.filter((p) => p.category === "women").length, [products]);
+  const dealsCount = useMemo(() => products.filter((p) => p.category === "deals").length, [products]);
   const bestSellerCount = useMemo(() => products.filter((p) => p.isBestSeller).length, [products]);
 
   const displayedProducts = useMemo(() => {
@@ -24,6 +25,8 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
         return products.filter((p) => p.category === "men");
       case "women":
         return products.filter((p) => p.category === "women");
+      case "deals":
+        return products.filter((p) => p.category === "deals");
       case "bestsellers":
         return products.filter((p) => p.isBestSeller);
       default:
@@ -97,6 +100,21 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
             <Heart className="w-3 h-3 text-pink-400" />
             <span>Women ({womenCount})</span>
           </button>
+
+          {dealsCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setActiveTab("deals")}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+                activeTab === "deals"
+                  ? "bg-[#8c530b] text-white dark:bg-[#c9a96a] dark:text-[#09090b] shadow-xs"
+                  : "bg-amber-100/70 dark:bg-amber-950/30 text-[#8c530b] dark:text-amber-300 hover:bg-amber-200/80 dark:hover:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/40"
+              }`}
+            >
+              <Gift className="w-3 h-3 text-amber-500" />
+              <span>Bundles &amp; Offers ({dealsCount})</span>
+            </button>
+          )}
         </div>
       </div>
 
