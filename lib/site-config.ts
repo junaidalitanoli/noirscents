@@ -37,9 +37,9 @@ export const SITE_CONFIG = {
 
   // Contact info
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "noirscent.pk@gmail.com",
-  phone: "+92 303 344667",
-  whatsappNumber: "92303344667",
-  whatsappDisplay: "+92 303 344667",
+  phone: "+92 330 3344667",
+  whatsappNumber: "923303344667",
+  whatsappDisplay: "+92 330 3344667",
   businessHours: "Monday to Saturday: 10 AM – 8 PM PKT",
 
   // Shipping & Policy Thresholds
