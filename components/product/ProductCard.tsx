@@ -43,6 +43,11 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   const displaySize = product.sizeLabel || `${selectedSize.ml}ml`;
   const imageAlt = `${product.name} ${displaySize} Extrait de Parfum bottle by Noir Scent`;
 
+  const isBundle = product.category === "deals";
+  const bundleMatch = isBundle ? product.name.match(/^([^(]+)(?:\(([^)]+)\))?/) : null;
+  const mainTitle = bundleMatch ? bundleMatch[1].trim() : product.name;
+  const includedItems = bundleMatch && bundleMatch[2] ? bundleMatch[2].trim() : null;
+
   return (
     <div
       className="group relative flex flex-col bg-white dark:bg-[#111115] border border-stone-200/90 dark:border-zinc-800/90 rounded-2xl overflow-hidden hover:border-[#c5a059] dark:hover:border-[#d4af37] hover:shadow-xl transition-all duration-300"
@@ -64,29 +69,29 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
         />
 
         {/* Badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 pointer-events-none">
+        <div className="absolute top-2 left-2 flex flex-col gap-1 z-10 pointer-events-none max-w-[65%]">
           {product.badge && (
-            <span className="bg-[#121212]/90 backdrop-blur-xs text-white dark:bg-[#c9a96a] dark:text-[#09090b] text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+            <span className="bg-[#121212]/90 backdrop-blur-xs text-white dark:bg-[#c9a96a] dark:text-[#09090b] text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs truncate">
               {product.badge}
             </span>
           )}
           {hasDiscount && (
-            <span className="bg-red-700 text-white text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs">
+            <span className="bg-red-700 text-white text-[9.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-xs self-start">
               Save {discountPercent}%
             </span>
           )}
         </div>
 
-        {/* 35% Extrait pill on top right */}
+        {/* Category / Oil Concentration pill on top right */}
         <div className="absolute top-2 right-2 z-10 pointer-events-none">
           <span className="bg-white/90 dark:bg-black/80 backdrop-blur-xs text-[#8c530b] dark:text-[#f5e7b2] text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-amber-300/60 dark:border-white/10 shadow-2xs">
-            35% Oil
+            {isBundle ? "Bundle" : "35% Oil"}
           </span>
         </div>
       </Link>
 
       {/* Info Column Below Image */}
-      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between space-y-2">
         <div className="space-y-1">
           {/* Gender / Category & Star Rating */}
           <div className="flex items-center justify-between text-[10.5px]">
@@ -94,7 +99,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
               {product.category === "men"
                 ? "Men's Extrait"
                 : product.category === "deals"
-                ? "Bundle & Offer"
+                ? "Curated Bundle"
                 : product.category === "testers"
                 ? "Discovery Set"
                 : "Women's Extrait"}
@@ -108,32 +113,44 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             </div>
           </div>
 
-          {/* Product Name */}
+          {/* Product Name (Clean & Un-cramped) */}
           <h3 className="text-sm sm:text-base font-medium text-stone-950 dark:text-[#f4f4f5] group-hover:text-[#8c530b] dark:group-hover:text-[#d4af37] transition-colors line-clamp-1 font-serif tracking-tight">
-            <Link href={`/products/${product.slug}`}>{product.name}</Link>
+            <Link href={`/products/${product.slug}`} title={product.name}>
+              {mainTitle}
+            </Link>
           </h3>
 
-          {/* Scent notes summary */}
-          <p className="text-[11px] text-stone-600 dark:text-zinc-400 font-normal line-clamp-1">
-            {product.notes.top[0]} &bull; {product.notes.heart[0]} &bull; {product.notes.base[0]}
-          </p>
+          {/* Scent notes or Bundle Included Fragrances */}
+          {isBundle ? (
+            <p className="text-[11px] font-medium text-[#8c530b] dark:text-[#c9a96a] line-clamp-1">
+              {includedItems || product.subtitle}
+            </p>
+          ) : (
+            <p className="text-[11px] text-stone-600 dark:text-zinc-400 font-normal line-clamp-1">
+              {product.notes.top[0]} &bull; {product.notes.heart[0]} &bull; {product.notes.base[0]}
+            </p>
+          )}
         </div>
 
-        {/* Price & Action Strip */}
-        <div className="pt-2 border-t border-stone-100 dark:border-zinc-800/80 space-y-2.5">
-          <div className="flex items-baseline justify-between">
+        {/* Price & Size Strip (Zero Collision on Mobile) */}
+        <div className="pt-2 border-t border-stone-100 dark:border-zinc-800/80 space-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-1">
             <div className="flex items-baseline gap-1.5 flex-wrap">
               <span className="text-sm sm:text-base font-bold text-[#1a140e] dark:text-[#f5e7b2]">
                 {formatPrice(selectedSize.price)}
               </span>
               {hasDiscount && product.compareAtPrice && (
-                <span className="text-[11px] text-stone-400 dark:text-zinc-500 line-through">
+                <span className="text-[10.5px] text-stone-400 dark:text-zinc-500 line-through">
                   {formatPrice(product.compareAtPrice)}
                 </span>
               )}
             </div>
-            <span className="text-[10px] text-stone-500 dark:text-zinc-400 font-medium">
-              {product.sizeLabel || "50ml Flacon"}
+            <span className="text-[10px] text-stone-500 dark:text-zinc-400 font-medium truncate">
+              {isBundle
+                ? product.sizeLabel
+                  ? product.sizeLabel.replace(/\([^)]*\)/, "").trim()
+                  : "Duo Set"
+                : product.sizeLabel || "50ml Flacon"}
             </span>
           </div>
 
