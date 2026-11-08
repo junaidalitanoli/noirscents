@@ -93,9 +93,9 @@ RESEND_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ## 4. Inbound Email Receiving & Webhooks
 
 ### 1. Webhook Endpoint
-- **URL**: `https://www.noirscent.com/api/resend/webhook`
+- **URL**: `https://www.noirscent.pk/api/resend/webhook`
 - **Method**: `POST`
-- **Health Check**: `GET https://www.noirscent.com/api/resend/webhook` (returns status `200 OK`)
+- **Health Check**: `GET https://www.noirscent.pk/api/resend/webhook` (returns status `200 OK`)
 
 ### 2. Supported Events
 - `email.received`: Triggered whenever an inbound email arrives at your domain.
@@ -166,7 +166,7 @@ In **Resend Dashboard** -> **Emails** -> **Receiving**:
 
 1. Navigate to [https://resend.com/webhooks](https://resend.com/webhooks).
 2. Click **Add Webhook**.
-3. **Endpoint URL**: `https://www.noirscent.com/api/resend/webhook`
+3. **Endpoint URL**: `https://www.noirscent.pk/api/resend/webhook`
 4. **Events to subscribe**: Check **`email.received`** (and optionally `email.delivered`, `email.bounced`).
 5. Click **Create Webhook**.
 6. Copy the **Signing Secret** (starts with `whsec_...`).
@@ -186,7 +186,7 @@ Expected output: All tests passing.
 ### Live Inbound Webhook Health Check
 Verify that your deployed webhook endpoint is active and listening:
 ```bash
-curl -X GET https://www.noirscent.com/api/resend/webhook
+curl -X GET https://www.noirscent.pk/api/resend/webhook
 ```
 Response:
 ```json

@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Check, ShoppingBag, Zap, Star } from "lucide-react";
+import { Check, ShoppingBag, Info, Star } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
 import { useCartStore } from "@/store/cartStore";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
+import ProductNotesModal from "./ProductNotesModal";
 
 interface ProductCardProps {
   product: Product;
@@ -16,10 +16,10 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, priority = false }: ProductCardProps) {
-  const router = useRouter();
   const [selectedSizeIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [isNotesOpen, setIsNotesOpen] = useState(false);
   const { addItem, openCart } = useCartStore();
 
   const selectedSize = product.sizes[selectedSizeIndex] || product.sizes[0];
@@ -33,13 +33,6 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
     setIsAdded(true);
     openCart();
     setTimeout(() => setIsAdded(false), 1500);
-  };
-
-  const handleBuyNowCOD = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addItem(product, selectedSize, 1);
-    router.push("/checkout");
   };
 
   const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
@@ -144,17 +137,21 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             </span>
           </div>
 
-          {/* Dual Instant Action Buttons (Scent 'n Stories Style) */}
+          {/* Dual Instant Action Buttons: Notes / Info + Add to Cart */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
-            {/* 1. Direct Buy Now (Cash on Delivery) */}
+            {/* 1. Olfactory Architecture & Notes Modal */}
             <button
               type="button"
-              onClick={handleBuyNowCOD}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsNotesOpen(true);
+              }}
               className="w-full py-2 px-2 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1 bg-[#121212] hover:bg-black dark:bg-[#c9a96a] dark:hover:bg-[#dfbe7c] text-white dark:text-[#09090b] rounded-lg transition-all shadow-xs active:scale-[0.98] cursor-pointer"
-              title="Order directly with Cash on Delivery"
+              title="View Olfactory Architecture and Notes"
             >
-              <Zap className="w-3 h-3 fill-amber-400 text-amber-400 dark:fill-[#09090b] dark:text-[#09090b]" />
-              <span>Buy (COD)</span>
+              <Info className="w-3 h-3 text-amber-400 dark:text-[#09090b]" />
+              <span>Notes / Info</span>
             </button>
 
             {/* 2. Quick Add to Cart Drawer */}
@@ -183,6 +180,14 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           </div>
         </div>
       </div>
+
+      {/* Product Notes Architecture Modal (Matching Sample UI) */}
+      <ProductNotesModal
+        product={product}
+        isOpen={isNotesOpen}
+        onClose={() => setIsNotesOpen(false)}
+        selectedSizeIndex={selectedSizeIndex}
+      />
     </div>
   );
 }

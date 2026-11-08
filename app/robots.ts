@@ -3,7 +3,7 @@ import { SITE_URL, IS_PRODUCTION_DOMAIN } from "@/lib/site-config";
 
 export default function robots(): MetadataRoute.Robots {
   // PRE-LAUNCH PROTECTION:
-  // While NEXT_PUBLIC_SITE_URL is not exactly https://www.noirscent.com:
+  // While NEXT_PUBLIC_SITE_URL is not exactly https://www.noirscent.pk:
   // Return Disallow: / for all user agents and omit the sitemap line.
   if (!IS_PRODUCTION_DOMAIN) {
     return {

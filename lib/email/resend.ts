@@ -9,7 +9,7 @@ import { IS_PRODUCTION_DOMAIN } from "@/lib/site-config";
  */
 
 // Production verified sender email vs Dev fallback
-export const PRODUCTION_FROM_EMAIL = "Noir Scent <orders@noirscent.com>";
+export const PRODUCTION_FROM_EMAIL = "Noir Scent <orders@noirscent.pk>";
 export const DEV_FALLBACK_FROM_EMAIL = "Noir Scent <onboarding@resend.dev>";
 export const DEFAULT_FROM_EMAIL = DEV_FALLBACK_FROM_EMAIL;
 

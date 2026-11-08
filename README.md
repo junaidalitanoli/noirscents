@@ -159,22 +159,22 @@ MY_RECEIVING_EMAIL=noirscents01@gmail.com
 
 ## 🌐 Domain Configuration & Vercel 301 www Redirect
 
-The canonical production host is `https://www.noirscent.com` (with `www`).
+The canonical production host is `https://www.noirscent.pk` (with `www`).
 All non-www traffic must 301 permanently redirect to `www`.
 
 ### How to configure on Vercel:
 1. In your **Vercel Project Dashboard**, navigate to **Settings > Domains**.
 2. Add both domains:
-   - `www.noirscent.com`
-   - `noirscent.com`
-3. Set `www.noirscent.com` as the **Primary Domain**.
-4. Vercel will automatically prompt: *"Redirect noirscent.com to www.noirscent.com"*. Select **Redirect to www.noirscent.com (Status Code: 301 Permanent Redirect)**.
+   - `www.noirscent.pk`
+   - `noirscent.pk`
+3. Set `www.noirscent.pk` as the **Primary Domain**.
+4. Vercel will automatically prompt: *"Redirect noirscent.pk to www.noirscent.pk"*. Select **Redirect to www.noirscent.pk (Status Code: 301 Permanent Redirect)**.
 5. In your DNS registrar (e.g. Namecheap, Cloudflare, GoDaddy):
    - Add a `CNAME` record for `www` pointing to `cname.vercel-dns.com`.
    - Add an `A` record for `@` pointing to `76.76.21.21` (or follow Vercel's DNS recommendations).
 6. Set the production environment variable in Vercel:
    ```env
-   NEXT_PUBLIC_SITE_URL=https://www.noirscent.com
+   NEXT_PUBLIC_SITE_URL=https://www.noirscent.pk
    ```
    Once set, redeploy the project. Pre-launch protection will immediately deactivate, enabling full search engine indexing and public sitemaps.
 

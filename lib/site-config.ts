@@ -3,15 +3,15 @@
  * Single source of truth for domain, brand naming, contact details, policies, and flags.
  *
  * CONFIG RULES:
- * - FINAL_DOMAIN = https://www.noirscent.com (canonical host is www; non-www 301 redirects to www).
+ * - FINAL_DOMAIN = https://www.noirscent.pk (canonical host is www; non-www 301 redirects to www).
  * - Site URL is read strictly from NEXT_PUBLIC_SITE_URL.
- * - PRE-LAUNCH PROTECTION: While NEXT_PUBLIC_SITE_URL !== https://www.noirscent.com:
+ * - PRE-LAUNCH PROTECTION: While NEXT_PUBLIC_SITE_URL !== https://www.noirscent.pk:
  *     * app/robots.ts returns Disallow: / for all user agents (omits sitemap line)
  *     * Root layout metadata sets robots: { index: false, follow: false }
- *   When NEXT_PUBLIC_SITE_URL equals https://www.noirscent.com, full indexing & sitemap are active.
+ *   When NEXT_PUBLIC_SITE_URL equals https://www.noirscent.pk, full indexing & sitemap are active.
  */
 
-export const FINAL_DOMAIN = "https://www.noirscent.com";
+export const FINAL_DOMAIN = "https://www.noirscent.pk";
 
 // Read site URL from single env var, normalizing trailing slashes.
 // If unset, defaults to FINAL_DOMAIN.

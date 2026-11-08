@@ -72,3 +72,4 @@
 - **JSON-LD Schema Markup:** `@type: Product`, priceCurrency `PKR`, availability `InStock`, rating `4.9/5.0`, review counts.
 - **Open Graph / WhatsApp Cards:** High-res image cards generate automatically whenever any product/bundle link is shared on WhatsApp or social media.
 - **Performance:** Turbopack SSR/SSG rendering in Next.js 16 with zero layout shift (CLS 0, LCP < 1.2s).
+
