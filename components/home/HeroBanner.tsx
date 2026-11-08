@@ -14,22 +14,23 @@ export default function HeroBanner() {
             Cinematic panoramic banner with text elegantly on left
             and full bottles + box completely unobstructed on right.
            ======================================================== */}
-        <div className="hidden md:flex relative w-full rounded-3xl overflow-hidden border border-amber-300/60 dark:border-white/10 shadow-xl min-h-[440px] lg:min-h-[500px] items-center">
-          {/* Panoramic Hero Photography */}
+        <div className="hidden md:flex relative w-full rounded-3xl overflow-hidden border border-amber-300/60 dark:border-white/10 shadow-xl min-h-[420px] lg:min-h-[480px] max-h-[520px] items-center">
+          {/* Panoramic Hero Photography - Enhanced Original HD Asset */}
           <Image
-            src="/images/noir-hero-banner.jpg"
-            alt="Noir Scent Artisanal Extrait Flacons and Presentation Box"
+            src="/images/noir-hero-banner-v2.jpg"
+            alt="Noir Scent Gentleman and Beast Flacons with Signature Packaging"
             fill
             priority
+            quality={95}
             sizes="(max-width: 1280px) 100vw, 1280px"
-            className="object-cover object-right xl:object-center"
+            className="object-cover object-right lg:object-center"
           />
 
-          {/* Soft Left Scrim for Crisp Punchline Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#fbf8f3]/95 via-[#fbf8f3]/80 to-transparent dark:from-[#0a0a0d]/95 dark:via-[#0a0a0d]/75 dark:to-transparent w-3/5 pointer-events-none" />
+          {/* Soft Left Scrim for Crisp Punchline Contrast - stops before bottles begin at ~42% */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#fbf8f3] via-[#fbf8f3]/85 to-transparent dark:from-[#0a0a0d] dark:via-[#0a0a0d]/85 dark:to-transparent w-[42%] max-w-[460px] pointer-events-none" />
 
           {/* Left Text & CTA */}
-          <div className="relative z-10 max-w-lg pl-8 lg:pl-14 py-10 space-y-4 text-left">
+          <div className="relative z-10 max-w-md pl-8 lg:pl-12 py-10 space-y-4 text-left">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 dark:bg-amber-400/10 border border-amber-500/30 dark:border-amber-400/20 rounded-full">
               <Sparkles className="w-3 h-3 text-[#8c530b] dark:text-[#c9a96a]" />
               <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#8c530b] dark:text-[#c9a96a]">
@@ -76,11 +77,12 @@ export default function HeroBanner() {
           {/* 1. Full Unobstructed Product Banner */}
           <div className="relative w-full aspect-[2/1] rounded-2xl overflow-hidden border border-amber-300/60 dark:border-white/10 shadow-lg">
             <Image
-              src="/images/noir-hero-banner.jpg"
-              alt="Noir Scent Luxury Flacons"
+              src="/images/noir-hero-banner-v2.jpg"
+              alt="Noir Scent Gentleman and Beast Flacons with Signature Packaging"
               fill
               priority
-              sizes="100vw"
+              quality={95}
+              sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover object-center"
             />
           </div>

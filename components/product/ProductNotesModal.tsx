@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Wind, Heart, Sparkles, ShoppingBag, Check, Gift, Layers } from "lucide-react";
+import { X, Wind, Heart, Sparkles, ShoppingBag, Check, Gift, Layers, Compass } from "lucide-react";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/formatters";
+import { getAllProducts } from "@/lib/data";
 import { useCartStore } from "@/store/cartStore";
 import { DEFAULT_PRODUCT_IMAGE } from "@/lib/images";
 
@@ -23,6 +24,7 @@ export default function ProductNotesModal({
   selectedSizeIndex = 0,
 }: ProductNotesModalProps) {
   const [isAdded, setIsAdded] = useState(false);
+  const [activeBundleIndex, setActiveBundleIndex] = useState(0);
   const { addItem, openCart } = useCartStore();
 
   const selectedSize = product.sizes[selectedSizeIndex] || product.sizes[0];
@@ -39,6 +41,27 @@ export default function ProductNotesModal({
     ? product.name.replace(/\s*\([^)]+\)/, "").trim()
     : product.name;
 
+  // Resolve matching individual products from catalog to extract their unique independent notes
+  const allCatalogProducts = getAllProducts();
+  const matchedBundleProducts: Product[] = isBundle && includedPerfumes.length > 0
+    ? includedPerfumes
+        .map((perfumeName) => {
+          const cleanName = perfumeName.toLowerCase().replace(/[^a-z0-9]/g, "");
+          return allCatalogProducts.find(
+            (p) =>
+              p.category !== "deals" &&
+              p.name.toLowerCase().replace(/[^a-z0-9]/g, "").includes(cleanName)
+          );
+        })
+        .filter(Boolean) as Product[]
+    : [];
+
+  // Active notes to display (if bundle, switch between individual flacons; otherwise use product.notes)
+  const activeProduct = isBundle && matchedBundleProducts.length > 0
+    ? matchedBundleProducts[activeBundleIndex] || product
+    : product;
+
+  const currentNotes = activeProduct.notes || product.notes;
   const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
 
   // Handle ESC key and prevent body scroll when open
@@ -82,22 +105,28 @@ export default function ProductNotesModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[440px] bg-white dark:bg-[#121215] rounded-3xl shadow-2xl border border-stone-200/90 dark:border-white/10 pt-10 sm:pt-11 pb-5 px-4 sm:px-6 my-auto max-h-[92vh] overflow-y-auto animate-in zoom-in-95 duration-200 text-stone-900 dark:text-zinc-100"
+        className="relative w-full max-w-[450px] bg-white dark:bg-[#121215] rounded-3xl shadow-2xl border border-stone-200/90 dark:border-white/10 pt-10 sm:pt-11 pb-5 px-4 sm:px-6 my-auto max-h-[92vh] overflow-y-auto animate-in zoom-in-95 duration-200 text-stone-900 dark:text-zinc-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ========================================================
             1. Overhanging Luxury Product / Bundle Card
            ======================================================== */}
-        <div className={`absolute -top-8 sm:-top-10 left-4 sm:left-6 rounded-2xl bg-white dark:bg-[#18181d] p-1.5 border-2 border-amber-300/80 dark:border-amber-500/50 shadow-2xl flex items-center justify-center overflow-hidden z-20 ${
-          isBundle ? "w-24 sm:w-28 h-24 sm:h-28 aspect-square" : "w-22 sm:w-26 h-30 sm:h-34"
-        }`}>
+        <div
+          className={`absolute -top-8 sm:-top-10 left-4 sm:left-6 rounded-2xl bg-white dark:bg-[#18181d] p-1.5 border-2 border-amber-300/80 dark:border-amber-500/50 shadow-2xl flex items-center justify-center overflow-hidden z-20 ${
+            isBundle ? "w-24 sm:w-28 h-24 sm:h-28 aspect-square" : "w-22 sm:w-26 h-30 sm:h-34"
+          }`}
+        >
           <div className="relative w-full h-full">
             <Image
-              src={primaryImage}
+              src={
+                isBundle && matchedBundleProducts[activeBundleIndex]?.images?.[0]
+                  ? matchedBundleProducts[activeBundleIndex].images[0]
+                  : primaryImage
+              }
               alt={product.name}
               fill
               sizes="(max-width: 640px) 112px, 128px"
-              className={isBundle ? "object-cover rounded-xl" : "object-contain p-0.5"}
+              className={isBundle && matchedBundleProducts.length === 0 ? "object-cover rounded-xl" : "object-contain p-0.5"}
             />
           </div>
         </div>
@@ -147,52 +176,79 @@ export default function ProductNotesModal({
         </div>
 
         {/* ========================================================
-            3. SPECIAL BUNDLE BOX: "Included Flacons in this Duo/Trio"
+            3. MULTI-PRODUCT SWITCHER FOR BUNDLES (Individual Flacons)
            ======================================================== */}
-        {isBundle && includedPerfumes.length > 0 && (
-          <div className="mt-4 mb-2 p-3 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-400/10 dark:via-white/5 dark:to-transparent border border-amber-300/70 dark:border-amber-500/30 rounded-2xl text-left">
-            <div className="flex items-center justify-between mb-2">
+        {isBundle && matchedBundleProducts.length > 0 && (
+          <div className="mt-4 mb-2 p-2.5 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-400/10 dark:via-white/5 dark:to-transparent border border-amber-300/70 dark:border-amber-500/30 rounded-2xl text-left">
+            <div className="flex items-center justify-between mb-1.5 px-0.5">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#8c530b] dark:text-[#c9a96a] flex items-center gap-1.5">
                 <Gift className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>What&apos;s In This Set ({includedPerfumes.length} Flacons)</span>
+                <span>Select Flacon to View Exact Notes:</span>
               </span>
               <span className="text-[9.5px] font-bold text-amber-800 dark:text-amber-300 bg-amber-200/60 dark:bg-amber-950/80 px-2 py-0.5 rounded-full">
-                {product.sizeLabel || `${includedPerfumes.length}x 50ml`}
+                {product.sizeLabel || `${matchedBundleProducts.length}x 50ml`}
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-              {includedPerfumes.map((perfume, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 p-2 bg-white/90 dark:bg-zinc-900/90 rounded-xl border border-stone-200/70 dark:border-white/10 shadow-2xs"
-                >
-                  <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 flex items-center justify-center font-bold text-[10px] shrink-0">
-                    {idx + 1}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-serif font-bold text-xs text-stone-900 dark:text-white line-clamp-1">
-                      {perfume}
+            {/* Interactive Tab Switcher for each perfume in the bundle */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              {matchedBundleProducts.map((perfume, idx) => {
+                const isSelected = activeBundleIndex === idx;
+                return (
+                  <button
+                    key={perfume.id}
+                    type="button"
+                    onClick={() => setActiveBundleIndex(idx)}
+                    className={`py-2 px-2 rounded-xl text-left transition-all border cursor-pointer ${
+                      isSelected
+                        ? "bg-white dark:bg-zinc-800 border-amber-400 dark:border-amber-500 shadow-sm ring-1 ring-amber-400/30"
+                        : "bg-white/60 dark:bg-white/5 border-stone-200 dark:border-white/10 hover:bg-white dark:hover:bg-white/10"
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                          isSelected ? "bg-amber-500" : "bg-stone-300 dark:bg-zinc-600"
+                        }`}
+                      />
+                      <p className="font-serif font-bold text-xs text-stone-900 dark:text-white truncate">
+                        {perfume.name}
+                      </p>
+                    </div>
+                    <p className="text-[9px] text-stone-500 dark:text-zinc-400 pl-3 truncate">
+                      50ml Extrait (35%)
                     </p>
-                    <p className="text-[9.5px] text-stone-500 dark:text-zinc-400">
-                      50ml Pure Extrait (35%)
-                    </p>
-                  </div>
-                </div>
-              ))}
+                  </button>
+                );
+              })}
             </div>
+          </div>
+        )}
+
+        {/* Active Bottle Impression Tag (If Available) */}
+        {isBundle && activeProduct.inspiration && (
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#fbf9f5] dark:bg-white/5 border border-amber-200/60 dark:border-white/10 rounded-xl my-2 text-left">
+            <Compass className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a] shrink-0" />
+            <p className="text-[10.5px] text-stone-600 dark:text-zinc-300 font-medium leading-snug">
+              <span className="font-bold text-[#8c530b] dark:text-[#c9a96a] uppercase text-[9.5px]">
+                {activeProduct.name} Profile:
+              </span>{" "}
+              {activeProduct.inspiration}
+            </p>
           </div>
         )}
 
         {/* ========================================================
             4. Section Title: Olfactory Architecture
            ======================================================== */}
-        <div className="mt-4 mb-2 text-left flex items-center justify-between">
+        <div className="mt-3.5 mb-2 text-left flex items-center justify-between">
           <span className="text-[10px] sm:text-[10.5px] font-serif font-bold tracking-[0.22em] uppercase text-stone-800 dark:text-zinc-200 flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a]" />
-            <span>{isBundle ? "Curated Scent Architecture" : "Olfactory Architecture"}</span>
+            <span>
+              {isBundle ? `${activeProduct.name} Notes Pyramid` : "Olfactory Architecture"}
+            </span>
           </span>
-          {product.concentration && (
+          {activeProduct.concentration && (
             <span className="text-[9.5px] text-stone-500 dark:text-zinc-400 font-medium">
               35% Oil Extrait
             </span>
@@ -210,7 +266,7 @@ export default function ProductNotesModal({
               <span>Top Notes</span>
             </div>
             <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
-              {product.notes.top.join(", ")}
+              {currentNotes.top.join(", ")}
             </p>
           </div>
 
@@ -221,7 +277,7 @@ export default function ProductNotesModal({
               <span>Heart Notes</span>
             </div>
             <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
-              {product.notes.heart.join(", ")}
+              {currentNotes.heart.join(", ")}
             </p>
           </div>
 
@@ -232,7 +288,7 @@ export default function ProductNotesModal({
               <span>Base Notes</span>
             </div>
             <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
-              {product.notes.base.join(", ")}
+              {currentNotes.base.join(", ")}
             </p>
           </div>
         </div>
@@ -245,7 +301,7 @@ export default function ProductNotesModal({
             Longevity &amp; Sillage:
           </span>
           <span className="font-bold text-stone-900 dark:text-white">
-            {product.projection || (isBundle ? "Double Extrait Longevity (14+ Hours)" : "14+ Hours Radiant Sillage")}
+            {activeProduct.projection || (isBundle ? "Double Extrait Longevity (14+ Hours)" : "14+ Hours Radiant Sillage")}
           </span>
         </div>
 
