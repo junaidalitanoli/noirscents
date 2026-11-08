@@ -101,7 +101,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 50,
     description:
       "Raaz (The Secret) is an enigmatic, deeply hypnotic Extrait de Parfum enveloped in dark nocturnal intrigue. The scent opens with a dark whisper of black truffle, wild blackcurrant nectar, and crackling pink peppercorns that immediately commands attention. The core plunges into smoldering Omani frankincense tears, dark orchid petals, and freshly grated nutmeg, releasing intoxicating ribbons of oriental smoke. As hours progress, the drydown emerges with earthy Indonesian patchouli, bittersweet Venezuelan cacao, and warm Baltic ambergris. Engineered for the man who thrives in the shadows, Raaz wraps the wearer in an intoxicating aura of forbidden luxury.",
-    images: ["/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
+    images: ["/images/bundle-duo-men.jpg", "/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
     sizes: [{ ml: 50, price: 3650 }],
     compareAtPrice: 6200,
     sizeLabel: "50 ml",
@@ -221,7 +221,7 @@ export const INITIAL_PRODUCTS: Product[] = [
     macerationDays: 50,
     description:
       "Raees radiates the unmistakable aura of opulent wealth and aristocratic charisma. Opening with cured Cuban tobacco leaves infused with golden mountain honey and freshly grated Ceylon cinnamon bark, the fragrance greets the room with decadent warmth. The heart unveils prized Cambodian agarwood, roasted tonka bean, and bittersweet dark cacao nibs that create intoxicating depth. A lingering drydown of Madagascar bourbon vanilla caviar, charred amberwood, and frankincense tears wraps the wearer in pure luxury. Designed for special celebratory occasions across Karachi and Lahore, Raees is the sovereign choice of Pakistan's elite.",
-    images: ["/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
+    images: ["/images/bundle-duo-men.jpg", "/images/noir-black-oud.jpg", "/images/noir-black-flacon.jpg"],
     sizes: [{ ml: 50, price: 3750 }],
     compareAtPrice: 6500,
     sizeLabel: "50 ml",
