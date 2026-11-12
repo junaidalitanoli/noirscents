@@ -52,7 +52,7 @@ export default function HeroBanner() {
             <div className="pt-2 flex items-center gap-3">
               <a
                 href="#all-products"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#121212] hover:bg-black dark:bg-[#c9a96a] dark:hover:bg-[#dfbe7c] text-white dark:text-[#09090b] text-xs font-bold uppercase tracking-widest rounded-xl shadow-md active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e2c158] text-white dark:text-[#09090b] text-xs font-bold uppercase tracking-widest rounded-xl shadow-md active:scale-95 transition-all cursor-pointer border border-black dark:border-amber-300/60"
               >
                 <span>Shop Fragrances</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -60,7 +60,7 @@ export default function HeroBanner() {
 
               <Link
                 href="/collections/deals"
-                className="inline-flex items-center gap-1.5 px-5 py-3 bg-white/80 dark:bg-white/10 backdrop-blur-xs border border-stone-300 dark:border-white/15 text-stone-900 dark:text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-white dark:hover:bg-white/15 transition-all shadow-2xs"
+                className="inline-flex items-center gap-1.5 px-5 py-3 bg-white/90 dark:bg-[#1a1a24] backdrop-blur-xs border border-stone-300 dark:border-white/25 text-stone-900 dark:text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-white dark:hover:bg-[#252532] dark:hover:border-amber-400/50 transition-all shadow-xs"
               >
                 <span>Bundles &amp; Offers</span>
               </Link>
@@ -109,7 +109,7 @@ export default function HeroBanner() {
             <div className="pt-1 flex items-center justify-center gap-2.5">
               <a
                 href="#all-products"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#c9a96a] dark:hover:bg-[#dfbe7c] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider rounded-xl shadow-md active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e2c158] text-white dark:text-[#09090b] text-[11px] font-bold uppercase tracking-wider rounded-xl shadow-md active:scale-95 transition-all border border-black dark:border-amber-300/60"
               >
                 <span>Shop Fragrances</span>
                 <ArrowRight className="w-3 h-3" />
@@ -117,7 +117,7 @@ export default function HeroBanner() {
 
               <Link
                 href="/collections/deals"
-                className="inline-flex items-center gap-1 px-4 py-2.5 bg-white dark:bg-white/5 border border-stone-300 dark:border-white/15 text-stone-900 dark:text-white text-[11px] font-bold uppercase tracking-wider rounded-xl hover:bg-stone-50 dark:hover:bg-white/10 transition-all shadow-2xs"
+                className="inline-flex items-center gap-1 px-4 py-2.5 bg-white dark:bg-[#1a1a24] border border-stone-300 dark:border-white/25 text-stone-900 dark:text-white text-[11px] font-bold uppercase tracking-wider rounded-xl hover:bg-stone-50 dark:hover:bg-[#252532] dark:hover:border-amber-400/50 transition-all shadow-xs"
               >
                 <span>Bundles</span>
               </Link>

@@ -14,12 +14,12 @@ export default function CartBadge() {
     <button
       type="button"
       onClick={() => setDrawerOpen(true)}
-      className="relative p-2 text-zinc-900 hover:text-black transition-colors focus:outline-hidden"
+      className="relative p-2 text-zinc-800 dark:text-zinc-200 hover:text-black dark:hover:text-[#d4af37] transition-colors focus:outline-hidden"
       aria-label={`Open shopping cart containing ${count} items`}
     >
       <ShoppingBag className="w-5 h-5" />
       {count > 0 && (
-        <span className="absolute top-1 right-0.5 bg-[#121212] text-white font-bold text-[9px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center animate-fade-in">
+        <span className="absolute top-1 right-0.5 bg-[#121212] text-white dark:bg-[#d4af37] dark:text-[#09090b] font-bold text-[9px] min-w-4 h-4 px-1 rounded-full flex items-center justify-center animate-fade-in shadow-xs">
           {count}
         </span>
       )}

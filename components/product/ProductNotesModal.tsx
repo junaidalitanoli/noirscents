@@ -56,13 +56,18 @@ export default function ProductNotesModal({
         .filter(Boolean) as Product[]
     : [];
 
-  // Active notes to display (if bundle, switch between individual flacons; otherwise use product.notes)
+  // Active notes and bottle to display (if bundle, switch between individual flacons; otherwise use product)
   const activeProduct = isBundle && matchedBundleProducts.length > 0
     ? matchedBundleProducts[activeBundleIndex] || product
     : product;
 
   const currentNotes = activeProduct.notes || product.notes;
   const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > selectedSize.price);
+
+  // Active showcase image
+  const displayImage = isBundle && matchedBundleProducts[activeBundleIndex]?.images?.[0]
+    ? matchedBundleProducts[activeBundleIndex].images[0]
+    : primaryImage;
 
   // Handle ESC key and prevent body scroll when open
   useEffect(() => {
@@ -101,97 +106,110 @@ export default function ProductNotesModal({
       role="dialog"
       aria-modal="true"
       aria-label={`${product.name} Olfactory Architecture`}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/70 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-[450px] bg-white dark:bg-[#121215] rounded-3xl shadow-2xl border border-stone-200/90 dark:border-white/10 pt-10 sm:pt-11 pb-5 px-4 sm:px-6 my-auto max-h-[92vh] overflow-y-auto animate-in zoom-in-95 duration-200 text-stone-900 dark:text-zinc-100"
+        className="relative w-full max-w-[95vw] sm:max-w-xl md:max-w-2xl bg-white dark:bg-[#121216] rounded-3xl shadow-2xl border border-stone-200/90 dark:border-white/15 p-5 sm:p-7 my-auto max-h-[92vh] overflow-y-auto animate-in zoom-in-95 duration-200 text-stone-900 dark:text-zinc-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ========================================================
-            1. Overhanging Luxury Product / Bundle Card
+            1. TOP PRODUCT SHOWCASE & DETAILS HEADER
+            - Generous, complete bottle display (NO negative top clipping)
+            - Large high-res flacon artwork with 100% visibility
            ======================================================== */}
-        <div
-          className={`absolute -top-8 sm:-top-10 left-4 sm:left-6 rounded-2xl bg-white dark:bg-[#18181d] p-1.5 border-2 border-amber-300/80 dark:border-amber-500/50 shadow-2xl flex items-center justify-center overflow-hidden z-20 ${
-            isBundle ? "w-24 sm:w-28 h-24 sm:h-28 aspect-square" : "w-22 sm:w-26 h-30 sm:h-34"
-          }`}
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src={
-                isBundle && matchedBundleProducts[activeBundleIndex]?.images?.[0]
-                  ? matchedBundleProducts[activeBundleIndex].images[0]
-                  : primaryImage
-              }
-              alt={product.name}
-              fill
-              sizes="(max-width: 640px) 112px, 128px"
-              className={isBundle && matchedBundleProducts.length === 0 ? "object-cover rounded-xl" : "object-contain p-0.5"}
-            />
-          </div>
-        </div>
-
-        {/* ========================================================
-            2. Top-Right Header (Badge, Close, Title, Subtitle, Price)
-           ======================================================== */}
-        <div className="pl-24 sm:pl-28 text-left min-h-[95px] flex flex-col justify-between">
-          <div className="flex items-start justify-between gap-1">
-            <span className="bg-[#fbf4e6] dark:bg-amber-950/60 text-[#8c530b] dark:text-[#f5e7b2] border border-amber-300/80 dark:border-amber-700/60 text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.16em] uppercase px-2 py-0.5 rounded-md inline-block">
-              {product.badge || (isBundle ? "5% EXTRA OFF • BUNDLE SET" : "GOLD EDITION")}
-            </span>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-1 -mr-1 -mt-1 text-stone-400 hover:text-stone-800 dark:hover:text-white rounded-full transition-colors cursor-pointer"
-              aria-label="Close dialog"
-            >
-              <X className="w-5 h-5" />
-            </button>
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pb-5 border-b border-stone-200/80 dark:border-white/10">
+          {/* A. Large Complete Product / Bottle Showcase Card */}
+          <div className="relative w-36 sm:w-44 md:w-48 aspect-[3/4] rounded-2xl bg-gradient-to-b from-[#fbf8f3] via-white to-stone-100 dark:from-[#1c1c24] dark:via-[#16161d] dark:to-[#0f0f13] p-3 sm:p-3.5 border-2 border-amber-300/80 dark:border-amber-500/50 shadow-xl flex items-center justify-center shrink-0">
+            <div className="relative w-full h-full">
+              <Image
+                src={displayImage}
+                alt={`${activeProduct.name} Extrait Flacon`}
+                fill
+                priority
+                sizes="(max-width: 640px) 160px, 220px"
+                className="object-contain drop-shadow-md"
+              />
+            </div>
+            {/* Subtle luxury ambient glow */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-amber-500/10 via-transparent to-transparent pointer-events-none" />
           </div>
 
-          <div className="mt-1">
-            {/* Main Product / Bundle Title (Never truncated) */}
-            <h2 className="font-serif text-base sm:text-xl font-bold tracking-tight text-stone-950 dark:text-white leading-tight">
-              {displayNameWithoutParens.toUpperCase()}
-            </h2>
-
-            {/* Subtitle / Volume Details */}
-            <p className="text-[11px] sm:text-xs text-stone-500 dark:text-zinc-400 mt-0.5 font-normal leading-snug">
-              {product.subtitle || `${product.notes.top[0]} & ${product.notes.base[0]}`}
-            </p>
-
-            {/* Price & Savings */}
-            <div className="flex items-baseline gap-2 mt-1">
-              <span className="text-base sm:text-lg font-bold text-[#8c530b] dark:text-[#c9a96a]">
-                {formatPrice(selectedSize.price)}
-              </span>
-              {hasDiscount && product.compareAtPrice && (
-                <span className="text-xs text-stone-400 dark:text-zinc-500 line-through">
-                  {formatPrice(product.compareAtPrice)}
+          {/* B. Product Details, Badge & Actions */}
+          <div className="flex-1 w-full text-center sm:text-left flex flex-col justify-between min-h-[160px]">
+            <div>
+              {/* Top Row: Badge + Close Dialog Button */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="bg-[#fbf4e6] dark:bg-amber-950/80 text-[#8c530b] dark:text-[#f5e7b2] border border-amber-300/80 dark:border-amber-700/60 text-[9px] sm:text-[10px] font-bold tracking-[0.18em] uppercase px-2.5 py-0.5 rounded-md inline-block">
+                  {product.badge || (isBundle ? "EXCLUSIVE BUNDLE DUO • 5% OFF" : "GOLD EDITION • EXTRAIT")}
                 </span>
-              )}
+
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-900 dark:text-zinc-400 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                  aria-label="Close dialog"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Product Title */}
+              <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-stone-950 dark:text-white mt-2 leading-tight">
+                {displayNameWithoutParens.toUpperCase()}
+              </h2>
+
+              {/* Subtitle / Scent Profile */}
+              <p className="text-xs sm:text-sm text-stone-600 dark:text-zinc-300 mt-1 font-medium leading-snug">
+                {activeProduct.subtitle || product.subtitle || `${product.notes.top[0]} & ${product.notes.base[0]}`}
+              </p>
+
+              {/* Price & Savings */}
+              <div className="flex items-baseline justify-center sm:justify-start gap-2.5 mt-2.5">
+                <span className="text-xl sm:text-2xl font-extrabold text-[#8c530b] dark:text-[#d4af37] font-mono">
+                  {formatPrice(selectedSize.price)}
+                </span>
+                {hasDiscount && product.compareAtPrice && (
+                  <span className="text-xs sm:text-sm text-stone-400 dark:text-zinc-500 line-through">
+                    {formatPrice(product.compareAtPrice)}
+                  </span>
+                )}
+                <span className="text-[10.5px] text-stone-600 dark:text-zinc-300 font-medium bg-stone-100 dark:bg-white/10 border border-stone-200 dark:border-white/10 px-2 py-0.5 rounded-md">
+                  {isBundle ? `${matchedBundleProducts.length || 2}x 50ml Duo` : "50ml Pure Extrait"}
+                </span>
+              </div>
+            </div>
+
+            {/* Quick Feature Badges */}
+            <div className="mt-3.5 flex flex-wrap items-center justify-center sm:justify-start gap-2 text-[10px] sm:text-[11px]">
+              <span className="inline-flex items-center gap-1 bg-amber-500/10 dark:bg-amber-400/10 text-[#8c530b] dark:text-amber-300 border border-amber-300/60 dark:border-amber-400/25 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                <Sparkles className="w-3 h-3 text-amber-500" />
+                <span>35% Pure Oil Extrait</span>
+              </span>
+              <span className="inline-flex items-center gap-1 bg-stone-100 dark:bg-white/10 text-stone-700 dark:text-zinc-200 border border-stone-200 dark:border-white/15 px-2.5 py-0.5 rounded-full font-medium">
+                <span>14+ Hours Sillage</span>
+              </span>
             </div>
           </div>
         </div>
 
         {/* ========================================================
-            3. MULTI-PRODUCT SWITCHER FOR BUNDLES (Individual Flacons)
+            2. MULTI-PRODUCT SWITCHER FOR BUNDLES (Individual Flacons)
            ======================================================== */}
         {isBundle && matchedBundleProducts.length > 0 && (
-          <div className="mt-4 mb-2 p-2.5 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-400/10 dark:via-white/5 dark:to-transparent border border-amber-300/70 dark:border-amber-500/30 rounded-2xl text-left">
-            <div className="flex items-center justify-between mb-1.5 px-0.5">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8c530b] dark:text-[#c9a96a] flex items-center gap-1.5">
-                <Gift className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>Select Flacon to View Exact Notes:</span>
+          <div className="mt-4 mb-3 p-3 bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-400/10 dark:via-white/5 dark:to-transparent border border-amber-300/70 dark:border-amber-500/30 rounded-2xl text-left">
+            <div className="flex items-center justify-between mb-2 px-0.5">
+              <span className="text-[10.5px] font-bold uppercase tracking-wider text-[#8c530b] dark:text-[#d4af37] flex items-center gap-1.5">
+                <Gift className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <span>Select Included Flacon to View Notes &amp; Photo:</span>
               </span>
-              <span className="text-[9.5px] font-bold text-amber-800 dark:text-amber-300 bg-amber-200/60 dark:bg-amber-950/80 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold text-amber-900 dark:text-amber-300 bg-amber-200/70 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-300/50 dark:border-amber-700/50">
                 {product.sizeLabel || `${matchedBundleProducts.length}x 50ml`}
               </span>
             </div>
 
             {/* Interactive Tab Switcher for each perfume in the bundle */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {matchedBundleProducts.map((perfume, idx) => {
                 const isSelected = activeBundleIndex === idx;
                 return (
@@ -199,24 +217,24 @@ export default function ProductNotesModal({
                     key={perfume.id}
                     type="button"
                     onClick={() => setActiveBundleIndex(idx)}
-                    className={`py-2 px-2 rounded-xl text-left transition-all border cursor-pointer ${
+                    className={`p-2.5 rounded-xl text-left transition-all border cursor-pointer ${
                       isSelected
-                        ? "bg-white dark:bg-zinc-800 border-amber-400 dark:border-amber-500 shadow-sm ring-1 ring-amber-400/30"
-                        : "bg-white/60 dark:bg-white/5 border-stone-200 dark:border-white/10 hover:bg-white dark:hover:bg-white/10"
+                        ? "bg-white dark:bg-[#1f1f28] border-amber-400 dark:border-amber-400 shadow-md ring-2 ring-amber-400/30"
+                        : "bg-white/70 dark:bg-white/5 border-stone-200 dark:border-white/15 hover:bg-white dark:hover:bg-white/10"
                     }`}
                   >
                     <div className="flex items-center gap-1.5">
                       <span
-                        className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                        className={`w-2 h-2 rounded-full shrink-0 ${
                           isSelected ? "bg-amber-500" : "bg-stone-300 dark:bg-zinc-600"
                         }`}
                       />
-                      <p className="font-serif font-bold text-xs text-stone-900 dark:text-white truncate">
+                      <p className="font-serif font-bold text-xs sm:text-sm text-stone-900 dark:text-white truncate">
                         {perfume.name}
                       </p>
                     </div>
-                    <p className="text-[9px] text-stone-500 dark:text-zinc-400 pl-3 truncate">
-                      50ml Extrait (35%)
+                    <p className="text-[10px] text-stone-500 dark:text-zinc-400 pl-3.5 mt-0.5 truncate">
+                      50ml Artisanal Extrait
                     </p>
                   </button>
                 );
@@ -225,13 +243,13 @@ export default function ProductNotesModal({
           </div>
         )}
 
-        {/* Active Bottle Impression Tag (If Available) */}
+        {/* Active Bottle Impression Profile (If Available) */}
         {isBundle && activeProduct.inspiration && (
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#fbf9f5] dark:bg-white/5 border border-amber-200/60 dark:border-white/10 rounded-xl my-2 text-left">
-            <Compass className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a] shrink-0" />
-            <p className="text-[10.5px] text-stone-600 dark:text-zinc-300 font-medium leading-snug">
-              <span className="font-bold text-[#8c530b] dark:text-[#c9a96a] uppercase text-[9.5px]">
-                {activeProduct.name} Profile:
+          <div className="flex items-center gap-2 px-3.5 py-2 bg-[#fbf9f5] dark:bg-[#181820] border border-amber-200/80 dark:border-white/15 rounded-xl my-2.5 text-left">
+            <Compass className="w-4 h-4 text-[#8c530b] dark:text-[#d4af37] shrink-0" />
+            <p className="text-xs text-stone-700 dark:text-zinc-200 font-medium leading-snug">
+              <span className="font-bold text-[#8c530b] dark:text-[#d4af37] uppercase text-[10px] tracking-wider">
+                {activeProduct.name} Impression:
               </span>{" "}
               {activeProduct.inspiration}
             </p>
@@ -239,82 +257,81 @@ export default function ProductNotesModal({
         )}
 
         {/* ========================================================
-            4. Section Title: Olfactory Architecture
+            3. SECTION TITLE: OLFACTORY ARCHITECTURE
            ======================================================== */}
-        <div className="mt-3.5 mb-2 text-left flex items-center justify-between">
-          <span className="text-[10px] sm:text-[10.5px] font-serif font-bold tracking-[0.22em] uppercase text-stone-800 dark:text-zinc-200 flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#c9a96a]" />
+        <div className="mt-4 mb-2.5 text-left flex items-center justify-between">
+          <span className="text-[11px] sm:text-xs font-serif font-bold tracking-[0.22em] uppercase text-stone-900 dark:text-white flex items-center gap-1.5">
+            <Layers className="w-4 h-4 text-[#8c530b] dark:text-[#d4af37]" />
             <span>
-              {isBundle ? `${activeProduct.name} Notes Pyramid` : "Olfactory Architecture"}
+              {isBundle ? `${activeProduct.name} Scent Architecture` : "Olfactory Architecture"}
             </span>
           </span>
-          {activeProduct.concentration && (
-            <span className="text-[9.5px] text-stone-500 dark:text-zinc-400 font-medium">
-              35% Oil Extrait
-            </span>
-          )}
+          <span className="text-[10px] font-semibold text-stone-500 dark:text-zinc-400">
+            35% Oil Extrait
+          </span>
         </div>
 
         {/* ========================================================
-            5. The 3 Notes Architecture Cards (Top, Heart, Base)
+            4. THE 3 NOTES ARCHITECTURE CARDS (Top, Heart, Base)
            ======================================================== */}
-        <div className="space-y-1.5 text-left">
+        <div className="space-y-2 text-left">
           {/* Top Notes */}
-          <div className="bg-[#fbf9f5] dark:bg-white/5 border border-stone-200/80 dark:border-white/10 rounded-xl p-2.5 sm:p-3">
-            <div className="flex items-center gap-1.5 text-[9px] sm:text-[9.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#c9a96a]">
+          <div className="bg-[#fcfaf6] dark:bg-[#181820] border border-stone-200/90 dark:border-white/15 rounded-xl p-3 sm:p-3.5 shadow-2xs">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#d4af37]">
               <Wind className="w-3.5 h-3.5" />
               <span>Top Notes</span>
             </div>
-            <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
+            <p className="text-xs sm:text-sm text-stone-800 dark:text-zinc-200 font-medium mt-1 leading-snug">
               {currentNotes.top.join(", ")}
             </p>
           </div>
 
           {/* Heart Notes */}
-          <div className="bg-[#fbf9f5] dark:bg-white/5 border border-stone-200/80 dark:border-white/10 rounded-xl p-2.5 sm:p-3">
-            <div className="flex items-center gap-1.5 text-[9px] sm:text-[9.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#c9a96a]">
-              <Heart className="w-3.5 h-3.5 fill-[#8c530b]/20" />
+          <div className="bg-[#fcfaf6] dark:bg-[#181820] border border-stone-200/90 dark:border-white/15 rounded-xl p-3 sm:p-3.5 shadow-2xs">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#d4af37]">
+              <Heart className="w-3.5 h-3.5 fill-[#8c530b]/20 dark:fill-[#d4af37]/20" />
               <span>Heart Notes</span>
             </div>
-            <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
+            <p className="text-xs sm:text-sm text-stone-800 dark:text-zinc-200 font-medium mt-1 leading-snug">
               {currentNotes.heart.join(", ")}
             </p>
           </div>
 
           {/* Base Notes */}
-          <div className="bg-[#fbf9f5] dark:bg-white/5 border border-stone-200/80 dark:border-white/10 rounded-xl p-2.5 sm:p-3">
-            <div className="flex items-center gap-1.5 text-[9px] sm:text-[9.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#c9a96a]">
+          <div className="bg-[#fcfaf6] dark:bg-[#181820] border border-stone-200/90 dark:border-white/15 rounded-xl p-3 sm:p-3.5 shadow-2xs">
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] font-bold tracking-widest uppercase text-[#8c530b] dark:text-[#d4af37]">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Base Notes</span>
             </div>
-            <p className="text-xs text-stone-700 dark:text-zinc-300 font-medium mt-0.5 leading-snug">
+            <p className="text-xs sm:text-sm text-stone-800 dark:text-zinc-200 font-medium mt-1 leading-snug">
               {currentNotes.base.join(", ")}
             </p>
           </div>
         </div>
 
         {/* ========================================================
-            6. Longevity & Sillage Row
+            5. LONGEVITY & SILLAGE ROW
            ======================================================== */}
-        <div className="flex items-center justify-between text-xs py-2 border-t border-stone-100 dark:border-zinc-800/80 mt-3 text-left">
-          <span className="text-stone-500 dark:text-zinc-400 font-normal">
+        <div className="flex items-center justify-between text-xs sm:text-sm py-2.5 border-t border-stone-200 dark:border-zinc-800/80 mt-4 text-left">
+          <span className="text-stone-600 dark:text-zinc-400 font-normal">
             Longevity &amp; Sillage:
           </span>
-          <span className="font-bold text-stone-900 dark:text-white">
-            {activeProduct.projection || (isBundle ? "Double Extrait Longevity (14+ Hours)" : "14+ Hours Radiant Sillage")}
+          <span className="font-bold text-stone-900 dark:text-[#f5e7b2]">
+            {activeProduct.projection || (isBundle ? "Dual Extrait Endurance (14+ Hours)" : "14+ Hours Radiant Sillage")}
           </span>
         </div>
 
         {/* ========================================================
-            7. Action Button: Add to Shopping Bag
+            6. PRIMARY ACTION: ADD TO SHOPPING BAG
+            High-contrast in both light and dark themes
            ======================================================== */}
         <button
           type="button"
           onClick={handleAddToCart}
-          className={`w-full py-3 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase rounded-xl transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-2 mt-2.5 cursor-pointer ${
+          className={`w-full py-3.5 px-5 text-xs sm:text-sm font-bold tracking-widest uppercase rounded-xl transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-2 mt-3 cursor-pointer border ${
             isAdded
-              ? "bg-emerald-700 text-white"
-              : "bg-[#121212] hover:bg-black dark:bg-[#c9a96a] dark:hover:bg-[#dfbe7c] text-white dark:text-[#09090b]"
+              ? "bg-emerald-600 dark:bg-emerald-500 text-white border-emerald-600"
+              : "bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e2c158] text-white dark:text-[#09090b] border-black dark:border-amber-300/70"
           }`}
         >
           {isAdded ? (
@@ -324,24 +341,24 @@ export default function ProductNotesModal({
             </>
           ) : (
             <>
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-4 h-4 text-amber-400 dark:text-[#09090b]" />
               <span>{isBundle ? "Add Bundle to Shopping Bag" : "Add to Shopping Bag"}</span>
             </>
           )}
         </button>
 
         {/* ========================================================
-            8. View Full Product Details Link
+            7. VIEW FULL PRODUCT DETAILS LINK
            ======================================================== */}
-        <div className="text-center mt-2.5">
+        <div className="text-center mt-3">
           <Link
             href={`/products/${product.slug}`}
             onClick={onClose}
-            className="text-[11px] font-medium text-stone-500 dark:text-zinc-400 hover:text-stone-900 dark:hover:text-white underline underline-offset-4 transition-colors"
+            className="text-xs font-semibold text-stone-600 dark:text-zinc-400 hover:text-black dark:hover:text-[#d4af37] underline underline-offset-4 transition-colors"
           >
             {isBundle
-              ? "View Complete Bundle Story & Presentation Box Details \u2192"
-              : "View Complete Fragrance Story & Reviews \u2192"}
+              ? "View Complete Bundle Story & Presentation Details \u2192"
+              : "View Complete Fragrance Story & Customer Reviews \u2192"}
           </Link>
         </div>
       </div>

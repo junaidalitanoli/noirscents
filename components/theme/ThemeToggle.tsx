@@ -111,7 +111,7 @@ export default function ThemeToggle({
       onClick={toggleTheme}
       className={`relative p-2 rounded-full border transition-all duration-300 flex items-center justify-center ${
         isDark
-          ? "bg-[#16161b] border-white/10 text-[#d4af37] hover:border-[#d4af37]/60 hover:bg-[#1e1e24] shadow-xs"
+          ? "bg-[#16161b] border-white/20 text-[#d4af37] hover:border-[#d4af37] hover:bg-[#1e1e24] shadow-xs"
           : "bg-stone-100/80 border-stone-200/90 text-stone-800 hover:text-black hover:border-black/30 hover:bg-stone-200/60 shadow-xs"
       } ${className}`}
       aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}

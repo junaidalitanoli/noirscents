@@ -88,7 +88,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setSearchModalOpen(true)}
-                className="px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-white/10 bg-stone-50 dark:bg-white/5 text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-[#d4af37] flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 rounded-full border border-stone-200 dark:border-white/20 bg-stone-50 dark:bg-[#1a1a24] text-zinc-700 dark:text-zinc-200 hover:text-black dark:hover:text-[#d4af37] dark:hover:border-amber-400/50 flex items-center gap-2 text-xs uppercase tracking-[0.14em] font-medium transition-colors cursor-pointer shadow-2xs"
                 aria-label="Search catalog"
               >
                 <Search className="w-3.5 h-3.5" />

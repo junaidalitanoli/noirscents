@@ -53,10 +53,10 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
           <button
             type="button"
             onClick={() => setActiveTab("all")}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 border ${
               activeTab === "all"
-                ? "bg-[#121212] text-white dark:bg-[#c9a96a] dark:text-[#09090b] shadow-xs"
-                : "bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10"
+                ? "bg-[#121212] text-white border-black dark:bg-[#d4af37] dark:text-[#09090b] dark:border-amber-300 shadow-sm"
+                : "bg-stone-100 hover:bg-stone-200 border-stone-200 text-stone-700 dark:bg-[#1a1a24] dark:border-white/20 dark:text-zinc-200 dark:hover:bg-[#252532] dark:hover:border-amber-400/50 shadow-2xs"
             }`}
           >
             <span>All ({products.length})</span>
@@ -65,10 +65,10 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
           <button
             type="button"
             onClick={() => setActiveTab("bestsellers")}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 border ${
               activeTab === "bestsellers"
-                ? "bg-[#8c530b] text-white dark:bg-[#c9a96a] dark:text-[#09090b] shadow-xs"
-                : "bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10"
+                ? "bg-[#8c530b] text-white border-[#8c530b] dark:bg-[#d4af37] dark:text-[#09090b] dark:border-amber-300 shadow-sm"
+                : "bg-stone-100 hover:bg-stone-200 border-stone-200 text-stone-700 dark:bg-[#1a1a24] dark:border-white/20 dark:text-zinc-200 dark:hover:bg-[#252532] dark:hover:border-amber-400/50 shadow-2xs"
             }`}
           >
             <Flame className="w-3 h-3 text-amber-400" />
@@ -78,10 +78,10 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
           <button
             type="button"
             onClick={() => setActiveTab("men")}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 border ${
               activeTab === "men"
-                ? "bg-[#121212] text-white dark:bg-[#c9a96a] dark:text-[#09090b] shadow-xs"
-                : "bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10"
+                ? "bg-[#121212] text-white border-black dark:bg-[#d4af37] dark:text-[#09090b] dark:border-amber-300 shadow-sm"
+                : "bg-stone-100 hover:bg-stone-200 border-stone-200 text-stone-700 dark:bg-[#1a1a24] dark:border-white/20 dark:text-zinc-200 dark:hover:bg-[#252532] dark:hover:border-amber-400/50 shadow-2xs"
             }`}
           >
             <User className="w-3 h-3" />
@@ -91,10 +91,10 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
           <button
             type="button"
             onClick={() => setActiveTab("women")}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 border ${
               activeTab === "women"
-                ? "bg-[#be185d] text-white dark:bg-[#f472b6] dark:text-[#09090b] shadow-xs"
-                : "bg-stone-100 dark:bg-white/5 text-stone-700 dark:text-zinc-300 hover:bg-stone-200 dark:hover:bg-white/10"
+                ? "bg-[#be185d] text-white border-[#be185d] dark:bg-[#f472b6] dark:text-[#09090b] dark:border-pink-300 shadow-sm"
+                : "bg-stone-100 hover:bg-stone-200 border-stone-200 text-stone-700 dark:bg-[#1a1a24] dark:border-white/20 dark:text-zinc-200 dark:hover:bg-[#252532] dark:hover:border-amber-400/50 shadow-2xs"
             }`}
           >
             <Heart className="w-3 h-3 text-pink-400" />
@@ -105,10 +105,10 @@ export default function HomeProductCatalog({ products }: HomeProductCatalogProps
             <button
               type="button"
               onClick={() => setActiveTab("deals")}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 border ${
                 activeTab === "deals"
-                  ? "bg-[#8c530b] text-white dark:bg-[#c9a96a] dark:text-[#09090b] shadow-xs"
-                  : "bg-amber-100/70 dark:bg-amber-950/30 text-[#8c530b] dark:text-amber-300 hover:bg-amber-200/80 dark:hover:bg-amber-900/40 border border-amber-300/60 dark:border-amber-700/40"
+                  ? "bg-[#8c530b] text-white border-[#8c530b] dark:bg-[#d4af37] dark:text-[#09090b] dark:border-amber-300 shadow-sm"
+                  : "bg-amber-100/70 hover:bg-amber-200/80 border-amber-300/70 text-[#8c530b] dark:bg-[#261f12] dark:border-amber-500/40 dark:text-amber-300 dark:hover:bg-[#322714] dark:hover:border-amber-400 shadow-2xs"
               }`}
             >
               <Gift className="w-3 h-3 text-amber-500" />

@@ -105,8 +105,8 @@ export default function ContactFormClient() {
             <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-8 h-8" />
             </div>
-            <h2 className="font-heading text-2xl font-bold text-zinc-950">Message Sent!</h2>
-            <p className="text-sm text-zinc-600 max-w-sm mx-auto">
+            <h2 className="font-heading text-2xl font-bold text-zinc-950 dark:text-white">Message Sent!</h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-sm mx-auto">
               Thank you for contacting {BRAND_NAME}. Our concierge representative will respond via WhatsApp or email shortly.
             </p>
             <button
@@ -114,7 +114,7 @@ export default function ContactFormClient() {
                 setSubmitted(false);
                 setForm({ name: "", phone: "", subject: "", message: "", website: "" });
               }}
-              className="mt-4 px-6 py-2 bg-zinc-900 text-white rounded-xl text-xs font-semibold cursor-pointer"
+              className="mt-4 px-6 py-2 bg-zinc-900 hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e2c158] text-white dark:text-zinc-950 rounded-xl text-xs font-bold cursor-pointer transition-all shadow-sm"
             >
               Send Another Message
             </button>

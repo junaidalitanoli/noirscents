@@ -50,7 +50,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
 
   return (
     <div
-      className="group relative flex flex-col bg-white dark:bg-[#111115] border border-stone-200/90 dark:border-zinc-800/90 rounded-2xl overflow-hidden hover:border-[#c5a059] dark:hover:border-[#d4af37] hover:shadow-xl transition-all duration-300"
+      className="group relative flex flex-col bg-white dark:bg-[#111116] border border-stone-200/90 dark:border-white/15 rounded-2xl overflow-hidden hover:border-[#c5a059] dark:hover:border-[#d4af37] hover:shadow-xl transition-all duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -155,7 +155,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           </div>
 
           {/* Dual Instant Action Buttons: Notes / Info + Add to Cart */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1">
             {/* 1. Olfactory Architecture & Notes Modal */}
             <button
               type="button"
@@ -164,10 +164,10 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
                 e.stopPropagation();
                 setIsNotesOpen(true);
               }}
-              className="w-full py-2 px-2 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1 bg-[#121212] hover:bg-black dark:bg-[#c9a96a] dark:hover:bg-[#dfbe7c] text-white dark:text-[#09090b] rounded-lg transition-all shadow-xs active:scale-[0.98] cursor-pointer"
+              className="w-full py-2 px-2 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 bg-[#121212] hover:bg-black dark:bg-[#d4af37] dark:hover:bg-[#e2c158] text-white dark:text-[#0a0a0e] border border-black dark:border-amber-300/50 rounded-lg transition-all shadow-xs active:scale-[0.98] cursor-pointer"
               title="View Olfactory Architecture and Notes"
             >
-              <Info className="w-3 h-3 text-amber-400 dark:text-[#09090b]" />
+              <Info className="w-3.5 h-3.5 text-amber-300 dark:text-[#0a0a0e]" />
               <span>Notes / Info</span>
             </button>
 
@@ -175,21 +175,21 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             <button
               type="button"
               onClick={handleQuickAdd}
-              className={`w-full py-2 px-2 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1 rounded-lg border transition-all cursor-pointer ${
+              className={`w-full py-2 px-2 text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 rounded-lg border transition-all cursor-pointer shadow-xs active:scale-[0.98] ${
                 isAdded
-                  ? "bg-emerald-700 text-white border-emerald-700"
-                  : "bg-stone-50 dark:bg-white/5 border-stone-300 dark:border-white/10 text-stone-800 dark:text-zinc-200 hover:bg-stone-100 hover:border-stone-400 dark:hover:bg-white/10 active:scale-[0.98]"
+                  ? "bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-500 dark:border-emerald-500"
+                  : "bg-white dark:bg-[#1f1f28] border-stone-300 dark:border-white/30 text-stone-900 dark:text-white hover:bg-stone-50 dark:hover:bg-[#282834] dark:hover:border-amber-400/60 ring-1 ring-black/5 dark:ring-white/10"
               }`}
               title="Add to Cart"
             >
               {isAdded ? (
                 <>
-                  <Check className="w-3 h-3" />
+                  <Check className="w-3.5 h-3.5" />
                   <span>Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingBag className="w-3 h-3 text-[#8c530b] dark:text-[#c9a96a]" />
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#8c530b] dark:text-[#d4af37]" />
                   <span>Add to Cart</span>
                 </>
               )}
